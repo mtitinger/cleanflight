@@ -933,17 +933,21 @@ GLOBAL_GOALS	= all_targets cppcheck test
 
 .PHONY: $(VALID_TARGETS)
 $(VALID_TARGETS):
-	$(MAKE) TARGET=$@ $(filter-out $(VALID_TARGETS) $(GLOBAL_GOALS), $(MAKECMDGOALS))
+	$(MAKE) -j 4 TARGET=$@ $(filter-out $(VALID_TARGETS) $(GLOBAL_GOALS), $(MAKECMDGOALS))
 
 ## all_targets : Make all TARGETs
 .PHONY: all_targets
 all_targets : $(VALID_TARGETS)
+	md5sum $(BIN_DIR)/*.hex >  all_targets-$(REVISION).md5
 
 ## clean       : clean up all temporary / machine-generated files
 clean:
 	rm -f $(TARGET_BIN) $(TARGET_HEX) $(TARGET_ELF) $(TARGET_OBJS) $(TARGET_MAP)
 	rm -rf $(OBJECT_DIR)/$(TARGET)
 	cd src/test && $(MAKE) clean || true
+
+mrproper: clean
+	rm -rf obj
 
 flash_$(TARGET): $(TARGET_HEX)
 	stty -F $(SERIAL_DEVICE) raw speed 115200 -crtscts cs8 -parenb -cstopb -ixon
@@ -991,7 +995,7 @@ test junittest:
 	cd src/test && $(MAKE) $@
 
 # rebuild everything when makefile changes
-$(TARGET_OBJS) : Makefile
+#$(TARGET_OBJS) : Makefile
 
 # List of buildable ELF files and their object dependencies.
 # It would be nice to compute these lists, but that seems to be just beyond make.
