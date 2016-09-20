@@ -37,13 +37,13 @@
 #include "sensors/battery.h"
 #include "sensors/sensors.h"
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 #include "io/gps.h"
 #endif
 
 #include "io/beeper.h"
 
-#if FLASH_SIZE > 64
+#if CONFIG_FLASH_SIZE > 64
 #define BEEPER_NAMES
 #endif
 
@@ -234,24 +234,19 @@ void beeperSilence(void)
 void beeperConfirmationBeeps(uint8_t beepCount)
 {
     int i;
-    int cLimit;
 
-    i = 0;
-    cLimit = beepCount * 2;
-    if(cLimit > MAX_MULTI_BEEPS)
-        cLimit = MAX_MULTI_BEEPS;  //stay within array size
-    do {
-        beep_multiBeeps[i++] = BEEPER_CONFIRMATION_BEEP_DURATION;       // 20ms beep
-        beep_multiBeeps[i++] = BEEPER_CONFIRMATION_BEEP_GAP_DURATION;   // 200ms pause
-    } while (i < cLimit);
+    for (i = 0; (i < MAX_MULTI_BEEPS) && (i < beepCount * 2) ; i++) {
+        beep_multiBeeps[i] = BEEPER_CONFIRMATION_BEEP_DURATION;       // 20ms beep
+        beep_multiBeeps[i+1] = BEEPER_CONFIRMATION_BEEP_GAP_DURATION;   // 200ms pause
+    };
     beep_multiBeeps[i] = BEEPER_COMMAND_STOP;     //sequence end
     beeper(BEEPER_MULTI_BEEPS);    //initiate sequence
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 void beeperGpsStatus(void)
 {
-    // if GPS fix then beep out number of satellites
+    // if CONFIG_GPS fix then beep out number of satellites
     if (STATE(GPS_FIX) && GPS_numSat >= 5) {
         uint8_t i = 0;
         do {
@@ -277,7 +272,7 @@ void beeperUpdate(void)
 {
     // If beeper option from AUX switch has been selected
     if (rcModeIsActive(BOXBEEPERON)) {
-#ifdef GPS
+#ifdef CONFIG_GPS
         if (feature(FEATURE_GPS)) {
             beeperGpsStatus();
         } else {

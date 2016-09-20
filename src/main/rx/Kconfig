@@ -1,0 +1,52 @@
+menu 	"Receiver Configuration"
+
+
+choice
+	prompt "Select you receiver type"
+	default	SBUS
+
+
+config	CPPM
+	bool "CPPM/PWM"
+	help
+	  CPPM, Parallel PWM.
+
+config	XBUS
+	bool "XBUS"
+	depends on HAS_SERIAL_RX
+	select SERIALRX
+	help
+	  Blah.
+
+config	SBUS
+	bool "SBUS"
+	depends on HAS_SERIAL_RX
+	select SERIALRX
+	help
+	  Blah.
+
+config	SRXL
+	bool "SRXL"
+	depends on HAS_SERIAL_RX
+	select SERIALRX
+	help
+	  Blah.
+
+config	IBUS
+	bool "IBUS"
+	depends on HAS_SERIAL_RX
+	select SERIALRX
+	help
+	  Driver for IBUS (Flysky) receiver.
+
+config	SPEKTRUM_BIND
+	bool "SPEKTRUM"
+	depends on HAS_SPEKTRUM_BIND
+	depends on HAS_SERIAL_RX
+	select SERIALRX
+	help
+	  Driver for spektrum satellite receiver.
+
+endchoice
+endmenu
+

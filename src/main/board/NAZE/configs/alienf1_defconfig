@@ -1,0 +1,42 @@
+
+/*
+ * This file is part of Cleanflight.
+ *
+ * Cleanflight is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Cleanflight is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Cleanflight.  If not, see <http://www.gnu.org/licenses/>.
+ */
+CONFIG_TARGET_ALIENFLIGHT=y
+CONFIG_TARGET_BOARD_IDENTIFIER="AFF1"
+CONFIG_GYRO=y
+CONFIG_ACC=y
+CONFIG_BARO=y
+CONFIG_MAG=y
+CONFIG_BEEPER=y
+CONFIG_SONAR=y
+CONFIG_USE_UART1=y
+CONFIG_USE_UART2=y
+CONFIG_USE_UART3=y
+CONFIG_USE_SOFTSERIAL1=y
+CONFIG_USE_SOFTSERIAL2=y
+CONFIG_LED_STRIP=y
+CONFIG_GPS=y
+CONFIG_BLACKBOX=y
+CONFIG_CONFIG_TELEMETRY=y
+CONFIG_SERIAL_RX=y
+CONFIG_USE_SERVOS=y
+CONFIG_USE_CLI=y
+CONFIG_SPEKTRUM_BIND=y
+CONFIG_USE_SERIAL_4WAY_BLHELI_INTERFACE=y
+CONFIG_DEFAULT_RX_FEATURE FEATURE_RX_SERIAL=y
+CONFIG_DEFAULT FEATURES FEATURE_MOTOR_STOP=y
+CONFIG_HARDWARE_BIND_PLUG=y

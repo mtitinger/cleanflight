@@ -1,0 +1,34 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+config BOARD
+	string
+	option env="BOARD"
+
+source "board/Kconfig"
+
+source "board/$BOARD/Kconfig"
+
+config FLASH_SIZE
+	int "Flash Size (KiB)"
+	default 64 if HAS_FLASH_SIZE64
+	default 128 if HAS_FLASH_SIZE128
+	default 256 if HAS_FLASH_SIZE256
+	help
+	  The flash size in KiB. Some variants may have more.
+
+source "drivers/Kconfig"
+
+source "rx/Kconfig"
+
+source "io/Kconfig"
+
+source "telemetry/Kconfig"
+
+source "blackbox/Kconfig"
+
+source "osd/Kconfig"
+
+#source "common/Kconfig"
+#source "fc/Kconfig"

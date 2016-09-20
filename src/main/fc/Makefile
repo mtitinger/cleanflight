@@ -1,0 +1,11 @@
+obj-y += boot.o
+obj-y += cleanflight_fc.o
+obj-y += config.o
+obj-y += fc_serial.o
+obj-y += fc_tasks.o
+obj-y += msp_server_fc.o
+obj-y += rate_profile.o
+obj-y += rc_adjustments.o
+obj-y += rc_controls.o
+obj-y += rc_curves.o
+obj-y += runtime_config.o

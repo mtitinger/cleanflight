@@ -17,7 +17,12 @@
 
 #include "build/version.h"
 
-const char * const targetName = __TARGET__;
+const char * const targetName = __BOARD__;
 const char * const shortGitRevision = __REVISION__;
+#ifdef __RELEASE__
 const char * const buildDate = __DATE__;
 const char * const buildTime = __TIME__;
+#else
+const char * const buildDate = "md5";
+const char * const buildTime = "md5";
+#endif

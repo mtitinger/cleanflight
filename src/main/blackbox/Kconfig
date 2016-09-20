@@ -1,0 +1,6 @@
+config BLACKBOX
+	bool "Enable Blackbox flight recorder"
+	default y
+	depends on HAS_BLACKBOX
+	help
+	  Blah.

@@ -28,7 +28,7 @@
 
 #include "build/build_config.h"
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
 
 #include "common/maths.h"
 #include "common/axis.h"
@@ -523,7 +523,7 @@ void processMAVLinkTelemetry(void)
         mavlinkSendRCChannelsAndRSSI();
     }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     if (mavlinkStreamTrigger(MAV_DATA_STREAM_POSITION)) {
         mavlinkSendPosition();
     }

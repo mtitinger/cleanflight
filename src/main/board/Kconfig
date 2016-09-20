@@ -1,0 +1,123 @@
+config	HAS_GYRO
+	bool
+	help
+	  Supports a MEMS Gyro.
+
+
+config	HAS_ACC
+	bool
+	help
+	  supports Accelerometers.
+
+config	HAS_BARO
+	bool
+	help
+	  Supports Barometers.
+
+config	HAS_MAG
+	bool
+	help
+	  Supports Magnetic Compass.
+
+config	HAS_BEEPER
+	bool
+	help
+	  Supports a beeper.
+
+config	HAS_SONAR
+	bool
+	help
+	  Supports a sonar.
+
+
+config	HAS_UART2
+	bool
+	help
+	  Supports UART2.
+
+config	HAS_UART3
+	bool
+	help
+	  Supports blah.
+
+config	HAS_SOFTSERIAL1
+	bool
+	help
+	  Supports blah.
+
+config	HAS_SOFTSERIAL2
+	bool
+	help
+	  Supports blah.
+
+config	HAS_LED_STRIP
+	bool
+	help
+	  Supports blah.
+
+config	HAS_GPS
+	bool
+	help
+	  Supports blah.
+
+config	HAS_BLACKBOX
+	bool
+	help
+	  Supports blah.
+
+config	HAS_TELEMETRY
+	bool
+	help
+	  Supports blah.
+
+config	HAS_SERIAL_RX
+	bool
+	help
+	  Supports blah.
+
+config	HAS_SERVOS
+	bool
+	help
+	  Supports blah.
+
+config	HAS_DISPLAY
+	bool
+	help
+	  Supports blah.
+
+config	HAS_CLI
+	bool
+	help
+	  Supports blah.
+
+config	HAS_SPEKTRUM_BIND
+	bool
+	help
+	  Supports blah.
+
+config	HAS_SERIAL_4WAY_BLHELI_INTERFACE
+	bool
+	help
+	  Supports blah.
+
+config	HAS_HARDWARE_BIND_PLUG
+	bool
+	help
+	  Supports blah.
+
+config	CPU_STM32F10X
+	bool
+	help
+	  Supports blah.
+
+config	CPU_STM32F10X_MD
+	bool
+	help
+	  Supports blah.
+
+config	HAS_FLASH_SIZE128
+	bool
+	help
+	  Supports blah.
+
+	

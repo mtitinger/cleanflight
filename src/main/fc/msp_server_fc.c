@@ -103,7 +103,7 @@
 
 #include "fc/msp_server_fc.h"
 
-#ifdef USE_SERIAL_4WAY_BLHELI_INTERFACE
+#ifdef CONFIG_SERIAL_4WAY_BLHELI_INTERFACE
 #include "io/serial_4way.h"
 #endif
 
@@ -112,7 +112,7 @@ extern uint16_t rssi; // FIXME dependency on mw.c
 extern void resetPidProfile(pidProfile_t *pidProfile);
 
 static const char * const flightControllerIdentifier = CLEANFLIGHT_IDENTIFIER; // 4 UPPER CASE alpha numeric characters that identify the flight controller.
-static const char * const boardIdentifier = TARGET_BOARD_IDENTIFIER;
+static const char * const boardIdentifier = CONFIG_TARGET_BOARD_IDENTIFIER;
 
 typedef struct box_e {
     const char *boxName;            // GUI-readable box name
@@ -187,7 +187,7 @@ typedef enum {
     MSP_FLASHFS_BIT_SUPPORTED    = 2,
 } mspFlashfsFlags_e;
 
-#ifdef USE_SERIAL_4WAY_BLHELI_INTERFACE
+#ifdef CONFIG_SERIAL_4WAY_BLHELI_INTERFACE
 void msp4WayIfFn(mspPort_t *msp)
 {
     waitForSerialPortToFinishTransmitting(msp->port);
@@ -283,7 +283,7 @@ static void initActiveBoxIds(void)
     if (feature(FEATURE_SERVO_TILT))
         ena |= 1 << BOXCAMSTAB;
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     if (feature(FEATURE_GPS)) {
         ena |= 1 << BOXGPSHOME;
         ena |= 1 << BOXGPSHOLD;
@@ -297,7 +297,7 @@ static void initActiveBoxIds(void)
 
     ena |= 1 << BOXBEEPERON;
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     if (feature(FEATURE_LED_STRIP)) {
         ena |= 1 << BOXLEDLOW;
     }
@@ -325,7 +325,7 @@ static void initActiveBoxIds(void)
     }
 #endif
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     if (feature(FEATURE_BLACKBOX)){
         ena |= 1 << BOXBLACKBOX;
     }
@@ -711,7 +711,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
 
             sbufWriteU16(dst, failsafeConfig()->failsafe_throttle);
 
-#ifdef GPS
+#ifdef CONFIG_GPS
             sbufWriteU8(dst, gpsConfig()->provider); // gps_type
             sbufWriteU8(dst, 0); // TODO gps_baudrate (an index, cleanflight uses a uint32_t
             sbufWriteU8(dst, gpsConfig()->sbasMode); // gps_ubx_sbas
@@ -738,7 +738,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
                 sbufWriteU8(dst, i + 1);
             break;
 
-#ifdef GPS
+#ifdef CONFIG_GPS
         case MSP_RAW_GPS:
             sbufWriteU8(dst, STATE(GPS_FIX));
             sbufWriteU8(dst, GPS_numSat);
@@ -897,7 +897,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             }
             break;
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
         case MSP_LED_COLORS:
             for (int i = 0; i < LED_CONFIGURABLE_COLOR_COUNT; i++) {
                 hsvColor_t *color = colors(i);
@@ -945,7 +945,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
 
         case MSP_BLACKBOX_CONFIG:
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
             sbufWriteU8(dst, 1); //Blackbox supported
             sbufWriteU8(dst, blackboxConfig()->device);
             sbufWriteU8(dst, blackboxConfig()->rate_num);
@@ -963,7 +963,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             break;
 
         case MSP_TRANSPONDER_CONFIG:
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
             sbufWriteU8(dst, 1); //Transponder supported
             sbufWriteData(dst, transponderConfig()->data, sizeof(transponderConfig()->data));
 #else
@@ -996,7 +996,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             sbufWriteU8(dst, sensorAlignmentConfig()->mag_align);
             break;
 
-#ifdef USE_SERIAL_4WAY_BLHELI_INTERFACE
+#ifdef CONFIG_SERIAL_4WAY_BLHELI_INTERFACE
         case MSP_SET_4WAY_IF:
             // initialize 4way ESC interface, return number of ESCs available
             sbufWriteU8(dst, esc4wayInit());
@@ -1121,7 +1121,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
 
             failsafeConfig()->failsafe_throttle = sbufReadU16(src);
 
-#ifdef GPS
+#ifdef CONFIG_GPS
             gpsConfig()->provider = sbufReadU8(src); // gps_type
             sbufReadU8(src); // gps_baudrate
             gpsConfig()->sbasMode = sbufReadU8(src); // gps_ubx_sbas
@@ -1237,7 +1237,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             readEEPROM();
             break;
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
         case MSP_SET_BLACKBOX_CONFIG:
             // Don't allow config to be updated while Blackbox is logging
             if (!blackboxMayEditConfig())
@@ -1248,7 +1248,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             break;
 #endif
 
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
         case MSP_SET_TRANSPONDER_CONFIG:
             if (len != sizeof(transponderConfig()->data))
                 return -1;
@@ -1263,7 +1263,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             break;
 #endif
 
-#ifdef GPS
+#ifdef CONFIG_GPS
         case MSP_SET_RAW_GPS:
             if (sbufReadU8(src)) {
                 ENABLE_STATE(GPS_FIX);
@@ -1418,7 +1418,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             break;
         }
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
         case MSP_SET_LED_COLORS:
 
             for (int i = 0; i < LED_CONFIGURABLE_COLOR_COUNT && sbufBytesRemaining(src) >= 4; i++) {

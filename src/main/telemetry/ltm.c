@@ -35,7 +35,7 @@
 
 #include "build/build_config.h"
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
 
 #include "common/maths.h"
 #include "common/axis.h"
@@ -118,7 +118,7 @@ static void ltm_finalise(void)
  */
 static void ltm_gframe(void)
 {
-#if defined(GPS)
+#ifdef CONFIG_GPS
     uint8_t gps_fix_type = 0;
     int32_t ltm_alt;
 
@@ -137,7 +137,7 @@ static void ltm_gframe(void)
     ltm_serialise_32(GPS_coord[LON]);
     ltm_serialise_8((uint8_t)(GPS_speed / 100));
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
     ltm_alt = (sensors(SENSOR_SONAR) || sensors(SENSOR_BARO)) ? altitudeHoldGetEstimatedAltitude() : GPS_altitude * 100;
 #else
     ltm_alt = GPS_altitude * 100;
@@ -213,7 +213,7 @@ static void ltm_aframe()
 static void ltm_oframe()
 {
     ltm_initialise_packet('O');
-#if defined(GPS)
+#ifdef CONFIG_GPS
     ltm_serialise_32(GPS_home[LAT]);
     ltm_serialise_32(GPS_home[LON]);
 #else

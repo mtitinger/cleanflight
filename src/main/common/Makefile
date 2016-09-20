@@ -1,0 +1,9 @@
+obj-$(CONFIG_LED_STRIP) += colorconversion.o
+obj-y += crc.o
+obj-y += encoding.o
+obj-y += filter.o
+obj-y += maths.o
+obj-y += pilot.o
+obj-y += printf.o
+obj-y += streambuf.o
+obj-y += typeconversion.o

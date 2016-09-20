@@ -8,7 +8,7 @@
 
 #include <platform.h>
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
 
 #include "common/axis.h"
 #include "common/maths.h"
@@ -300,7 +300,7 @@ void handleSmartPortTelemetry(void)
         int32_t tmpi;
 
         switch(id) {
-#ifdef GPS
+#ifdef CONFIG_GPS
             case FSSP_DATAID_SPEED      :
                 if (sensors(SENSOR_GPS) && STATE(GPS_FIX)) {
                     uint32_t tmpui = (GPS_speed * 36 + 36 / 2) / 100;
@@ -336,7 +336,7 @@ void handleSmartPortTelemetry(void)
                 break;
             //case FSSP_DATAID_ADC1       :
             //case FSSP_DATAID_ADC2       :
-#ifdef GPS
+#ifdef CONFIG_GPS
             case FSSP_DATAID_LATLONG    :
                 if (sensors(SENSOR_GPS) && STATE(GPS_FIX)) {
                     uint32_t tmpui = 0;
@@ -426,7 +426,7 @@ void handleSmartPortTelemetry(void)
                 break;
             case FSSP_DATAID_T2         :
                 if (sensors(SENSOR_GPS)) {
-#ifdef GPS
+#ifdef CONFIG_GPS
                     // provide GPS lock status
                     smartPortSendPackage(id, (STATE(GPS_FIX) ? 1000 : 0) + (STATE(GPS_FIX_HOME) ? 2000 : 0) + GPS_numSat);
                     smartPortHasRequest = 0;
@@ -437,7 +437,7 @@ void handleSmartPortTelemetry(void)
                     smartPortHasRequest = 0;
                 }
                 break;
-#ifdef GPS
+#ifdef CONFIG_GPS
             case FSSP_DATAID_GPS_ALT    :
                 if (sensors(SENSOR_GPS) && STATE(GPS_FIX)) {
                     smartPortSendPackage(id, GPS_altitude * 100); // given in 0.1m , requested in 10 = 1m (should be in mm, probably a bug in opentx, tested on 2.0.1.7)

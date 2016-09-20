@@ -1,0 +1,113 @@
+menu "Motor Type"
+
+comment "Motor type and settings"
+
+choice
+	prompt "Motors"
+	default BRUSHLESS_MOTORS
+
+config	BRUSHED_MOTORS
+	bool "Brushed"
+	help
+	  Brushed motors.
+
+config	BRUSHLESS_MOTORS
+	bool "Brushless"
+	help
+	  Brushless motors.
+
+endchoice
+
+config	MIN_THROTTLE
+	int "Minimal Throttle value for ESC"
+	default 1150
+	help
+	  Blah would be welcome.
+
+config	MAX_THROTTLE
+	int "Maximal Throttle value for ESC"
+	default 1850
+	help
+	  Blah would be welcome.
+	  These are AFAIK defaults for SimonK.
+
+config	MIN_COMMAND
+	int "Minimal RX Command"
+	default 1000
+	help
+	  Blah would be welcome.
+
+config	CERVO_CENTER_PULSE
+	int "Center Pulse"
+	default 1500
+	help
+	  Blah would be welcome.
+
+config	DEFAULT_PWM_RATE
+	int "Default PWM Rate for ESCs"
+	default 16000 if BRUSHED_MOTORS
+	default 400 if BRUSHLESS_MOTORS
+	help
+	  Blah would be welcome.
+
+endmenu
+
+
+
+menuconfig IO_PERIPH
+        bool    "Drone I/Os and Peripherals"
+        help
+	  Blah.
+
+if IO_PERIPH
+
+config	BEEPER
+	bool "Beeper for Batt Alarm or Locator"
+	depends on HAS_BEEPER
+	default y
+	help
+	  Select if you wish to connect a beeper.
+
+config	DISPLAY
+	bool "Configuration Display"
+	depends on HAS_DISPLAY
+	help
+	  Select if you wish to connect Display.
+
+config	TRANSPONDER
+	bool "Infrared Transponder for Racing"
+	help
+	  Select if you wish to hook an IR interface
+	  for the Race transponder.
+
+config	GIMBAL
+	bool "Gimbal Assembly driver"
+	help
+	  Select if you wish to drive a Gimbal.
+
+config	GPS
+	bool "Global Positionning System"
+	depends on HAS_GPS
+	help
+	  Select if you wish to connect to a GPS.
+
+config	LED_STRIP
+	bool "LED Strip Control"
+	depends on HAS_LED_STRIP
+	help
+	  Select if you wish to connect to Led Strip.
+	  Supported brands blah...
+
+config	SERIAL_4WAY_BLHELI_INTERFACE
+        bool "4Way BLHeli Interface"
+        depends on HAS_SERIAL_4WAY_BLHELI_INTERFACE 
+        help
+          Select if you wish to connect i4Way BLHeli.
+
+config	SERVOS
+	bool "Use Servos (other than ESC)"
+	depends on HAS_SERVOS
+	help
+	  Select if you have servos connected.
+
+endif

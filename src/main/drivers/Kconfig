@@ -1,0 +1,145 @@
+menu "Device Drivers"
+
+comment "Drivers for the sensors and orther features"
+
+if HAS_ACC
+
+menuconfig	ACC
+	bool  "Accelerometers"
+	default y
+	help
+	   Enable support for the Accelerometers.
+
+if ACC
+
+config 	ACC_ADXL345
+	bool "ADXL345"
+	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY
+	help
+	  Use MPU65000.
+
+config 	ACC_BMA280
+	bool "BMA280"
+	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY
+	help
+	  Use MPU65000.
+
+config	ACC_MMA8452
+	bool "SPI_MMA8452"
+	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY
+	help
+	  Use MPU65000.
+
+config	ACC_MPU6050
+	bool "SPI_MPU6050"
+	help
+	  Use MPU65000.
+
+config	ACC_MPU6500
+	bool "MPU6500"
+	help
+	  Use MPU65000.
+
+config	ACC_SPI_MPU6500
+	bool "SPI_MPU6500"
+	help
+	  Use MPU65000.
+
+endif
+
+endif # has acc
+
+if HAS_BARO
+
+menuconfig	BARO
+	bool  "Barometers, Altimeters"
+	default y
+	help
+	   Enable support for the Barometric Altimeter.
+
+if BARO
+
+#choice
+#	prompt "Magnetometers Compass"
+#	default BRUSHLESS_MOTORS
+
+config	BARO_BMP085
+	bool "BMP085"
+	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY || OLIMEXINO || IRCFUSIONF3 || CC3D
+	help
+	help
+	  Blah.
+
+config	BARO_BMP280
+	bool "BMP280"
+	depends on NAZE || RMDO || SPRACINGF3EVO || SPRACINGF3MINI
+	help
+	  Blah.
+
+config	BARO_MS5611
+	bool "MS5611"
+	help
+	  Blah.
+#endchoice
+
+endif
+endif # has baro
+
+if HAS_GYRO
+
+menuconfig	GYRO
+	bool  "Gyroscopes"
+	default y
+	help
+	   Enable support for Gyroscopes.
+
+if GYRO
+
+config	GYRO_BMP085
+	bool "BMP085"
+	help
+	  Blah.
+
+endif
+
+endif # has gyro
+
+if HAS_MAG
+
+menuconfig	MAG
+	bool  "Magnetometers, Compass"
+	default y
+	help
+	   Enable support for the Magnetic Compass.
+
+if MAG
+
+config	MAG_BMP085
+	bool "BMP085"
+	help
+	  Blah.
+
+endif
+
+endif # has mag
+
+if HAS_SONAR
+
+menuconfig	SONAR
+	bool  "Sonar"
+	default y
+	help
+	   Enable support for the Magnetic Compass.
+
+if SONAR
+
+config	SONAR_HCSR04
+	bool "HCSR04"
+	help
+	  Blah.
+
+endif
+
+endif # has mag
+
+endmenu

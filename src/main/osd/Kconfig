@@ -1,0 +1,5 @@
+config OSD
+	bool "On Screen Display"
+	default n
+	help
+	  Enable if your setup hav an OSD board....blah.

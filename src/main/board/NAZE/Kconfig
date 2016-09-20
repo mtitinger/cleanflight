@@ -1,0 +1,66 @@
+config NAZE
+        bool
+        default y
+	select HAS_GYRO
+	select HAS_ACC
+	select HAS_BARO
+	select HAS_MAG
+	select HAS_BEEPER
+	select HAS_SONAR
+	select HAS_UART1
+	select HAS_UART2
+	select HAS_UART3
+	select HAS_SOFTSERIAL1
+	select HAS_SOFTSERIAL2
+	select HAS_LED_STRIP
+	select HAS_GPS
+	select HAS_BLACKBOX
+	select HAS_TELEMETRY
+	select HAS_SERVOS
+	select HAS_DISPLAY
+	select HAS_CLI
+	select HAS_SPEKTRUM_BIND
+	select HAS_SERIAL_RX
+	select HAS_SERIAL_4WAY_BLHELI_INTERFACE
+	select HAS_HARDWARE_BIND_PLUG
+	select CPU_STM32F10X
+	select CPU_STM32F10X_MD
+	select HAS_FLASH_SIZE128
+	help
+	  NAZE32 blah help.
+
+
+
+menu "System Type"
+
+#
+# The "ARM system type" choice list is ordered alphabetically by option
+# text.  Please add new entries in the option alphabetic order.
+#
+choice
+        prompt "NAZE system type"
+        default TARGET_NAZE
+
+config	TARGET_NAZE
+	bool "Naze32 Acro board"
+	select HAS_VOLTAGE_DIVIDER
+	select HAS_GTUNE
+	help
+	  This is a blah...
+
+config	TARGET_ALIENFLIGHT
+	bool "ALIEN F1 board"
+	help
+	  This is another blah...
+
+endchoice
+
+endmenu
+
+config TARGET_BOARD_IDENTIFIER
+        string "Board Identifier String"
+        default "NAZE" if TARGET_NAZE
+	default "AFF1" if TARGET_ALIENFLIGHT
+        help
+          Maybe not a good idea to change...
+	

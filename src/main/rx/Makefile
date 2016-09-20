@@ -1,0 +1,9 @@
+obj-y += msp.o rx.o
+obj-$(CONFIG_CPPM) += pwm.o
+obj-$(CONFIG_SRXL) += srxl.o
+obj-$(CONFIG_SUMD) += sumd.o
+obj-$(CONFIG_SUMH) += sumh.o
+obj-$(CONFIG_XBUS) += xbus.o
+obj-$(CONFIG_SBUS) += sbus.o
+obj-$(CONFIG_SPEKTRUM_BIND) += spektrum.o
+obj-$(CONFIG_IBUS) += ibus.o

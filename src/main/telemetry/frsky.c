@@ -25,7 +25,7 @@
 
 #include <platform.h>
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
 
 #include "common/maths.h"
 #include "common/axis.h"
@@ -175,7 +175,7 @@ static void sendBaro(void)
     serialize16(ABS(BaroAlt % 100));
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void sendGpsAltitude(void)
 {
     uint16_t altitude = GPS_altitude;
@@ -208,14 +208,14 @@ static void sendThrottleOrBatterySizeAsRpm(uint16_t deadband3d_throttle)
 static void sendTemperature1(void)
 {
     sendDataHead(ID_TEMPRATURE1);
-#ifdef BARO
+#ifdef CONFIG_BARO
     serialize16((baroTemperature + 50)/ 100); //Airmamaf
 #else
     serialize16(telemTemperature1 / 10);
 #endif
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void sendSatalliteSignalQualityAsTemperature2(void)
 {
     uint16_t satellite = GPS_numSat;
@@ -299,7 +299,7 @@ static void sendLatLong(int32_t coord[2])
     serialize16(coord[LON] < 0 ? 'W' : 'E');
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void sendFakeLatLong(void)
 {
     // Heading is only displayed on OpenTX if non-zero lat/long is also sent
@@ -323,7 +323,7 @@ static void sendFakeLatLongThatAllowsHeadingDisplay(void)
     sendLatLong(coord);
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void sendGPSLatLong(void)
 {
     static uint8_t gpsFixOccured = 0;
@@ -524,7 +524,7 @@ void handleFrSkyTelemetry(uint16_t deadband3d_throttle)
             sendFuelLevel();
         }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
         if (sensors(SENSOR_GPS)) {
             sendSpeed();
             sendGpsAltitude();

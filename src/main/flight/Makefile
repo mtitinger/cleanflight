@@ -1,0 +1,12 @@
+obj-y += altitudehold.o
+obj-y += failsafe.o
+obj-$(CONFIG_GPS) += gps_conversion.o
+obj-y += gtune.o
+obj-y += imu.o
+obj-y += mixer.o
+obj-y += navigation.o
+obj-y += pid.o
+obj-y += pid_luxfloat.o
+obj-y += pid_mw23.o
+obj-y += pid_mwrewrite.o
+obj-y += servos.o

@@ -1,0 +1,50 @@
+menuconfig TELEMETRY
+	bool	"Support for Telemetry"
+	help
+	  Whether the flight controller shall transmit measurements
+	  to the RadioCommand.
+	  Typically the Battery voltage (VFAS) or the ALTitude.
+
+if TELEMETRY
+
+config TELEMETRY_HOTT
+	bool "Support for GRAUPNER Hott"
+	help
+	  Blah help for hott.
+
+if TELEMETRY_HOTT
+
+config TELEMETRY_HOTT_DEBUG
+	bool "Enable Debug output for Hott"
+	help
+	  Blah debug output or Hott.
+
+endif # HOTT
+
+config TELEMETRY_FRSKY
+	bool "Support for FrSKY Telemetry"
+	help
+	  SXR will use SmartPort, but other receivers like "Blah"
+	  Will require this protocol.
+
+config TELEMETRY_SMARTPORT
+	bool "Support for SmartPort"
+	help
+	  SXR will use SmartPort. Blah...
+
+config TELEMETRY_MAVLINK
+	bool "Support for MAVLINK Telemetry"
+	depends on MAVLINK
+	help
+	  Blah...
+
+config TELEMETRY_LTM
+	bool "Support for LTM"
+	help
+	  LightTelemetry from KipK
+	  Minimal one way telemetry protocol for really bitrates (1200/2400 bauds).
+	  Effective for ground OSD, groundstation HUD and Antenna tracker
+	  http://www.wedontneednasa.com/2014/02/lighttelemetry-v2-en-route-to-ground-osd.html
+ 	  This implementation is for LTM v2 > 2400 baud rates.
+
+endif # TELEMETRY
