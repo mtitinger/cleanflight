@@ -84,7 +84,7 @@ static const extiConfig_t max7456HSYNCExtiConfig = {
 };
 #endif
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
 static const extiConfig_t max7456LOSExtiConfig = {
         .gpioAPB2Peripherals = MAX7456_LOS_GPIO_PERIPHERAL,
         .gpioPort = MAX7456_LOS_GPIO,

@@ -88,7 +88,7 @@ void systemInit(void)
     // Configure NVIC preempt/priority groups
     NVIC_PriorityGroupConfig(NVIC_PRIORITY_GROUPING);
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     // Turn on clocks for stuff we use
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 #endif
@@ -101,7 +101,7 @@ void systemInit(void)
 
     usartInitAllIOSignals();
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     // Turn off JTAG port 'cause we're using the GPIO for leds
 #define AFIO_MAPR_SWJ_CFG_NO_JTAG_SW            (0x2 << 24)
     AFIO->MAPR |= AFIO_MAPR_SWJ_CFG_NO_JTAG_SW;

@@ -61,7 +61,7 @@ typedef struct drv_pwm_config_s {
     bool useSerialRx;
     bool useRSSIADC;
     bool useCurrentMeterADC;
-#if defined(USE_UART2)
+#if defined(CONFIG_USE_UART2)
     bool useUART2;
 #endif
 #if defined(USE_UART3)
@@ -77,7 +77,7 @@ typedef struct drv_pwm_config_s {
     bool useOneshot;
     bool useSoftSerial;
     bool useLEDStrip;
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     bool useSonar;
 #endif
 #ifdef USE_SERVOS

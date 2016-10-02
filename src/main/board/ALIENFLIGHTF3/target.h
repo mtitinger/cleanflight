@@ -50,41 +50,41 @@
 #define USE_MPU_DATA_READY_SIGNAL
 
 // Using MPU6050 for the moment.
-#define GYRO
-#define USE_GYRO_MPU6050
-#define USE_GYRO_MPU6500
+#define CONFIG_GYRO
+#define CONFIG_GYRO_MPU6050
+#define CONFIG_GYRO_MPU6500
 #define USE_GYRO_SPI_MPU6500
 
 #define GYRO_MPU6050_ALIGN CW270_DEG
 #define GYRO_MPU6500_ALIGN CW270_DEG
 
 #define ACC
-#define USE_ACC_MPU6050
-#define USE_ACC_MPU6500
-#define USE_ACC_SPI_MPU6500
+#define CONFIG_ACC_MPU6050
+#define CONFIG_ACC_MPU6500
+#define CONFIG_ACC_SPI_MPU6500
 
 #define ACC_MPU6050_ALIGN CW270_DEG
 #define ACC_MPU6500_ALIGN CW270_DEG
 
 // No baro support.
-//#define BARO
-//#define USE_BARO_MS5611
+//#define CONFIG_BARO
+//#define CONFIG_BARO_MS5611
 
 // option to use MPU9150 or MPU9250 integrated AK89xx Mag
-#define MAG
+#define CONFIG_MAG
 #define USE_MAG_AK8963
 
 #define MAG_AK8963_ALIGN CW0_DEG_FLIP
 
-#define BEEPER
+#define CONFIG_BEEPER
 #define LED0
 #define LED1
 
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1 // Not connected - TX (PB6) RX PB7 (AF7)
-#define USE_UART2 // Receiver - RX (PA3)
+#define CONFIG_USE_UART1 // Not connected - TX (PB6) RX PB7 (AF7)
+#define CONFIG_USE_UART2 // Receiver - RX (PA3)
 #define USE_UART3 // Not connected - 10/RX (PB11) 11/TX (PB10)
 #define SERIAL_PORT_COUNT 4
 
@@ -157,23 +157,23 @@
 #define DEFAULT_RX_FEATURE FEATURE_RX_SERIAL
 #define DEFAULT FEATURES FEATURE_MOTOR_STOP
 
-//#define BLACKBOX
-#define SERIAL_RX
-//#define GPS
-#define GTUNE
+//#define CONFIG_BLACKBOX
+#define CONFIG_SERIAL_RX
+//#define CONFIG_GPS
+#define CONFIG_GTUNE
 //#define DISPLAY
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // UART2, PA3
 #define BIND_PORT  GPIOA
 #define BIND_PIN   Pin_3
 
 // alternative defaults for AlienFlight F3 target
 #define ALIENFLIGHT
-#define HARDWARE_BIND_PLUG
+#define CONFIG_HARDWARE_BIND_PLUG
 
 // Hardware bind plug at PB12 (Pin 25)
 #define BINDPLUG_PORT  GPIOB

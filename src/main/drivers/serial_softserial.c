@@ -21,7 +21,7 @@
 
 #include <platform.h>
 
-#if defined(USE_SOFTSERIAL1) || defined(USE_SOFTSERIAL2)
+#if defined(CONFIG_USE_SOFTSERIAL1) || defined(CONFIG_USE_SOFTSERIAL2)
 
 #include "build/build_config.h"
 
@@ -39,7 +39,7 @@
 #define RX_TOTAL_BITS 10
 #define TX_TOTAL_BITS 10
 
-#if defined(USE_SOFTSERIAL1) && defined(USE_SOFTSERIAL2)
+#if defined(CONFIG_USE_SOFTSERIAL1) && defined(CONFIG_USE_SOFTSERIAL2)
 #define MAX_SOFTSERIAL_PORTS 2
 #else
 #define MAX_SOFTSERIAL_PORTS 1
@@ -110,7 +110,7 @@ static void softSerialGPIOConfig(GPIO_TypeDef *gpio, uint16_t pin, GPIO_Mode mod
 
 void serialInputPortConfig(const timerHardware_t *timerHardwarePtr)
 {
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     softSerialGPIOConfig(timerHardwarePtr->gpio, timerHardwarePtr->pin, Mode_IPU);
 #else
 #ifdef STM32F303xC
@@ -190,14 +190,14 @@ serialPort_t *openSoftSerial(softSerialPortIndex_e portIndex, serialReceiveCallb
 {
     softSerial_t *softSerial = &(softSerialPorts[portIndex]);
 
-#ifdef USE_SOFTSERIAL1
+#ifdef CONFIG_USE_SOFTSERIAL1
     if (portIndex == SOFTSERIAL1) {
         softSerial->rxTimerHardware = &(timerHardware[SOFTSERIAL_1_TIMER_RX_HARDWARE]);
         softSerial->txTimerHardware = &(timerHardware[SOFTSERIAL_1_TIMER_TX_HARDWARE]);
     }
 #endif
 
-#ifdef USE_SOFTSERIAL2
+#ifdef CONFIG_USE_SOFTSERIAL2
     if (portIndex == SOFTSERIAL2) {
         softSerial->rxTimerHardware = &(timerHardware[SOFTSERIAL_2_TIMER_RX_HARDWARE]);
         softSerial->txTimerHardware = &(timerHardware[SOFTSERIAL_2_TIMER_TX_HARDWARE]);

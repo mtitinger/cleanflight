@@ -43,7 +43,7 @@ int32_t baroPressure = 0;
 int32_t baroTemperature = 0;
 int32_t BaroAlt = 0;
 
-#ifdef BARO
+#ifdef CONFIG_BARO
 
 PG_REGISTER_PROFILE_WITH_RESET_TEMPLATE(barometerConfig_t, barometerConfig, PG_BAROMETER_CONFIG, 0);
 
@@ -181,4 +181,4 @@ void performBaroCalibrationCycle(void)
     calibratingB--;
 }
 
-#endif /* BARO */
+#endif /* CONFIG_BARO */

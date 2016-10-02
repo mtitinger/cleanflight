@@ -35,18 +35,18 @@
 
 
 #define ACC
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 
-#define GYRO
-#define USE_GYRO_MPU6050
+#define CONFIG_GYRO
+#define CONFIG_GYRO_MPU6050
 
-#define MAG
-#define USE_MAG_HMC5883
+#define CONFIG_MAG
+#define CONFIG_MAG_HMC5883
 
 #define BRUSHED_MOTORS
 
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 
 #define SERIAL_PORT_COUNT 2
 
@@ -61,11 +61,11 @@
 
 #define DEFAULT_RX_FEATURE FEATURE_RX_PPM
 
-#define SERIAL_RX
+#define CONFIG_SERIAL_RX
 //#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_USE_CLI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // UART2, PA3
 #define BIND_PORT  GPIOA
 #define BIND_PIN   Pin_3
@@ -75,15 +75,15 @@
 
 
 #if (CONFIG_FLASH_SIZE > 64)
-#define BLACKBOX
+#define CONFIG_BLACKBOX
 #else
 #define SKIP_TASK_STATISTICS
 #define SKIP_CLI_COMMAND_HELP
 #endif
 
 //#undef USE_CLI
-//#define GTUNE
-//#define BLACKBOX
+//#define CONFIG_GTUNE
+//#define CONFIG_BLACKBOX
 
 // IO - assuming all IOs on 48pin package TODO
 #define TARGET_IO_PORTA 0xffff

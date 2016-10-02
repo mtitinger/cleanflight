@@ -109,7 +109,7 @@ void initSpi1(void)
 #endif
 #endif
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     gpio_config_t gpio;
 
     // MOSI + SCK as output
@@ -248,7 +248,7 @@ void initSpi2(void)
 #endif
 #endif
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     gpio_config_t gpio;
 
     // MOSI + SCK as output
@@ -459,7 +459,7 @@ uint8_t spiTransferByte(SPI_TypeDef *instance, uint8_t data)
 #ifdef STM32F303xC
     SPI_SendData8(instance, data);
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     SPI_I2S_SendData(instance, data);
 #endif
     spiTimeout = 1000;
@@ -471,7 +471,7 @@ uint8_t spiTransferByte(SPI_TypeDef *instance, uint8_t data)
 #ifdef STM32F303xC
     return ((uint8_t)SPI_ReceiveData8(instance));
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     return ((uint8_t)SPI_I2S_ReceiveData(instance));
 #endif
 }
@@ -484,7 +484,7 @@ bool spiIsBusBusy(SPI_TypeDef *instance)
 #ifdef STM32F303xC
     return SPI_GetTransmissionFIFOStatus(instance) != SPI_TransmissionFIFOStatus_Empty || SPI_I2S_GetFlagStatus(instance, SPI_I2S_FLAG_BSY) == SET;
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     return SPI_I2S_GetFlagStatus(instance, SPI_I2S_FLAG_TXE) == RESET || SPI_I2S_GetFlagStatus(instance, SPI_I2S_FLAG_BSY) == SET;
 #endif
 
@@ -506,7 +506,7 @@ void spiTransfer(SPI_TypeDef *instance, uint8_t *out, const uint8_t *in, int len
         SPI_SendData8(instance, b);
         //SPI_I2S_SendData16(instance, b);
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
         SPI_I2S_SendData(instance, b);
 #endif
         spiTimeout = 1000;
@@ -518,7 +518,7 @@ void spiTransfer(SPI_TypeDef *instance, uint8_t *out, const uint8_t *in, int len
         b = SPI_ReceiveData8(instance);
         //b = SPI_I2S_ReceiveData16(instance);
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
         b = SPI_I2S_ReceiveData(instance);
 #endif
         if (out)

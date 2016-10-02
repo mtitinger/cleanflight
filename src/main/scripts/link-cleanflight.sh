@@ -50,11 +50,12 @@ modpost_link()
 # ${2} - output file
 cleanflight_link()
 {
+	echo ${KBUILD_LDS} 
 	local lds="${objtree}/${KBUILD_LDS}"
 
 	if [ "${SRCARCH}" != "um" ]; then
 		${LD} ${LDFLAGS} ${LDFLAGS_cleanflight} -o ${2}                  \
-			-T ${lds} ${KBUILD_CLEANFLIGHT_INIT}                     \
+			-T ${lds} ${KBUILD_CLEANFLIGHT_INIT}  -L${objtree}/board               \
 			--start-group ${KBUILD_CLEANFLIGHT_MAIN} --end-group ${1}
 	else
 		${CC} ${CFLAGS_cleanflight} -o ${2}                              \
@@ -165,8 +166,6 @@ esac
 info LD cleanflight.o
 modpost_link cleanflight.o
 
-# modpost cleanflight.o to check for section mismatches
-${MAKE} -f "${srctree}/scripts/Makefile.modpost" cleanflight.o
 
 # Update version
 info GEN .version
@@ -179,7 +178,8 @@ else
 fi;
 
 # final build of init/
-${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init
+echo "TODOTODOTODOTODO finale build of bootstrap"
+#${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init
 
 kallsymso=""
 kallsyms_cleanflight=""

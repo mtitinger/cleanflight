@@ -27,7 +27,7 @@ typedef enum {
 #ifndef SKIP_TASK_STATISTICS
     PAGE_TASKS,
 #endif
-#ifdef GPS
+#ifdef CONFIG_GPS
     PAGE_GPS,
 #endif
 #ifdef ENABLE_DEBUG_OLED_PAGE

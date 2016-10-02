@@ -79,9 +79,9 @@
 //#define M25P16_CS_PIN           GPIO_Pin_12
 //#define M25P16_SPI_INSTANCE     SPI2
 
-#define GYRO
+#define CONFIG_GYRO
 #define USE_GYRO_L3GD20
-#define USE_GYRO_MPU6050
+#define CONFIG_GYRO_MPU6050
 
 #define L3GD20_SPI                      SPI1
 #define L3GD20_CS_GPIO_CLK_PERIPHERAL   RCC_AHBPeriph_GPIOE
@@ -92,28 +92,28 @@
 #define GYRO_MPU6050_ALIGN CW0_DEG
 
 #define ACC
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 #define USE_ACC_LSM303DLHC
 
 #define ACC_MPU6050_ALIGN CW0_DEG
 
-#define BARO
-#define USE_BARO_MS5611
+#define CONFIG_BARO
+#define CONFIG_BARO_MS5611
 
-#define MAG
+#define CONFIG_MAG
 #define USE_MAG_AK8975
 
 #define MAG_AK8975_ALIGN CW90_DEG_FLIP
 
-#define BEEPER
+#define CONFIG_BEEPER
 #define LED0
 #define LED1
 
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
 #define USE_UART4
 #define USE_UART5
@@ -165,8 +165,8 @@
 #define ADC_RSSI        ADC_CHANNEL2
 #define ADC_EXTERNAL    ADC_CHANNEL3
 
-#define GPS
-#define LED_STRIP
+#define CONFIG_GPS
+#define CONFIG_LED_STRIP
 #if 1
 #define LED_STRIP_TIMER TIM16
 #define WS2811_GPIO                     GPIOB
@@ -197,14 +197,14 @@
 #define WS2811_DMA_HANDLER_IDENTIFER    DMA1Channel2Descriptor
 #endif
 
-#define BLACKBOX
+#define CONFIG_BLACKBOX
 #define ENABLE_BLACKBOX_LOGGING_ON_SDCARD_BY_DEFAULT
-#define DISPLAY
-#define GTUNE
-#define TELEMETRY
-#define SERIAL_RX
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_DISPLAY
+#define CONFIG_GTUNE
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 
 // IO - assuming 303 in 64pin package, TODO
 #define TARGET_IO_PORTA 0xffff

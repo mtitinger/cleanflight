@@ -28,31 +28,31 @@ typedef enum {
 #endif
     TASK_BATTERY,
     TASK_RX,
-#ifdef GPS
+#ifdef CONFIG_GPS
     TASK_GPS,
 #endif
-#ifdef MAG
+#ifdef CONFIG_MAG
     TASK_COMPASS,
 #endif
-#ifdef BARO
+#ifdef CONFIG_BARO
     TASK_BARO,
 #endif
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     TASK_SONAR,
 #endif
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
     TASK_ALTITUDE,
 #endif
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     TASK_DISPLAY,
 #endif
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     TASK_TELEMETRY,
 #endif
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     TASK_LEDSTRIP,
 #endif
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
     TASK_TRANSPONDER,
 #endif
 

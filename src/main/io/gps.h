@@ -84,12 +84,12 @@ typedef enum {
 #define GPS_MESSAGE_STATE_ENTRY_COUNT (GPS_MESSAGE_STATE_MAX + 1)
 
 typedef struct gpsData_s {
-    uint8_t state;                  // GPS thread state. Used for detecting cable disconnects and configuring attached devices
+    uint8_t state;                  // CONFIG_GPS thread state. Used for detecting cable disconnects and configuring attached devices
     uint8_t baudrateIndex;          // index into auto-detecting or current baudrate
     uint32_t errors;                // gps error counter - crc error/lost of data/sync etc..
     uint32_t timeouts;
-    uint32_t lastMessage;           // last time valid GPS data was received (millis)
-    uint32_t lastLastMessage;       // last-last valid GPS message. Used to calculate delta.
+    uint32_t lastMessage;           // last time valid CONFIG_GPS data was received (millis)
+    uint32_t lastLastMessage;       // last-last valid CONFIG_GPS message. Used to calculate delta.
 
     uint32_t state_position;        // incremental variable for loops
     uint32_t state_ts;              // timestamp for last state_position increment
@@ -103,8 +103,8 @@ extern gpsData_t gpsData;
 extern int32_t GPS_coord[2];               // LAT/LON
 
 extern uint8_t GPS_numSat;
-extern uint16_t GPS_hdop;                  // GPS signal quality
-extern uint8_t GPS_update;                 // it's a binary toogle to distinct a GPS position update
+extern uint16_t GPS_hdop;                  // CONFIG_GPS signal quality
+extern uint8_t GPS_update;                 // it's a binary toogle to distinct a CONFIG_GPS position update
 extern uint32_t GPS_packetCount;
 extern uint32_t GPS_svInfoReceivedCount;
 extern uint16_t GPS_altitude;              // altitude in 0.1m

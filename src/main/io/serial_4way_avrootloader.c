@@ -37,7 +37,7 @@
 #include "io/serial_4way_impl.h"
 #include "io/serial_4way_avrootloader.h"
 
-#if defined(USE_SERIAL_4WAY_BLHELI_INTERFACE) && defined(USE_SERIAL_4WAY_BLHELI_BOOTLOADER)
+#if defined(CONFIG_USE_SERIAL_4WAY_BLHELI) && defined(USE_SERIAL_4WAY_BLHELI_BOOTLOADER)
 
 // Bootloader commands
 // RunCmd

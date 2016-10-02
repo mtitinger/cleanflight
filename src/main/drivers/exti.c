@@ -23,7 +23,7 @@ extiChannelRec_t extiChannelRecs[16];
 static const uint8_t extiGroups[16] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6 };
 static uint8_t extiGroupPriority[EXTI_IRQ_GROUPS];
 
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
 static const uint8_t extiGroupIRQn[EXTI_IRQ_GROUPS] = {
     EXTI0_IRQn, EXTI1_IRQn, EXTI2_IRQn, EXTI3_IRQn, EXTI4_IRQn,
     EXTI9_5_IRQn, EXTI15_10_IRQn
@@ -42,7 +42,7 @@ static const uint8_t extiGroupIRQn[EXTI_IRQ_GROUPS] = {
 
 void EXTIInit(void)
 {
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     // enable AFIO for EXTI support
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 #endif
@@ -69,7 +69,7 @@ void EXTIConfig(IO_t io, extiCallbackRec_t *cb, int irqPriority, EXTITrigger_Typ
     int group = extiGroups[chIdx];
 
     rec->handler = cb;
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
     GPIO_EXTILineConfig(IO_GPIO_PortSource(io), IO_GPIO_PinSource(io));
 #elif defined(STM32F303xC)
     SYSCFG_EXTILineConfig(IO_EXTI_PortSourceGPIO(io), IO_EXTI_PinSource(io));
@@ -114,7 +114,7 @@ void EXTIRelease(IO_t io)
 
 void EXTIEnable(IO_t io, bool enable)
 {
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
     uint32_t extiLine = IO_EXTI_Line(io);
     if(!extiLine)
         return;
@@ -159,7 +159,7 @@ void EXTI_IRQHandler(void)
 
 _EXTI_IRQ_HANDLER(EXTI0_IRQHandler);
 _EXTI_IRQ_HANDLER(EXTI1_IRQHandler);
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
 _EXTI_IRQ_HANDLER(EXTI2_IRQHandler);
 #elif defined(STM32F303xC)
 _EXTI_IRQ_HANDLER(EXTI2_TS_IRQHandler);

@@ -30,12 +30,6 @@ KBUILD_CFLAGS	+= $(call cc-option,-fno-dwarf2-cfi-asm)
 # Select a platform tht is kept up-to-date
 KBUILD_DEFCONFIG := naze_defconfig
 
-# defines filename extension depending memory management type.
-ifeq ($(CONFIG_MMU),)
-MMUEXT		:= -nommu
-KBUILD_CFLAGS	+= $(call cc-option,-mno-unaligned-access)
-endif
-
 ifeq ($(CONFIG_FRAME_POINTER),y)
 KBUILD_CFLAGS	+=-fno-omit-frame-pointer -mapcs -mno-sched-prolog
 endif
@@ -92,7 +86,7 @@ KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) $(arch-y) $(tune-y) -include asm/uni
 CHECKFLAGS	+= -D__arm__
 
 #Default value
-head-y		:= src/main/board/NAZE/kernel/head$(MMUEXT).o
+#head-y		:= src/main/board/$(BAORD)/head??
 
 # Text offset. This list is sorted numerically by address in order to
 # provide a means to avoid/resolve conflicts in multi-arch kernels.
@@ -117,8 +111,8 @@ else
 MACHINE  :=
 endif
 
-machdirs := $(patsubst %,src/main/board/NAZE/mach-%/,$(machine-y))
-platdirs := $(patsubst %,src/main/board/NAZE/plat-%/,$(sort $(plat-y)))
+machdirs := $(patsubst %,board/NAZE/mach-%/,$(machine-y))
+platdirs := $(patsubst %,board/NAZE/plat-%/,$(sort $(plat-y)))
 
 ifeq ($(KBUILD_SRC),)
 KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs) $(platdirs))
@@ -128,11 +122,10 @@ endif
 
 export	TEXT_OFFSET GZFLAGS MMUEXT
 
-#core-$(CONFIG_FPE_NWFPE)	+= src/main/board/NAZE/nwfpe/
-#core-$(CONFIG_VFP)		+= src/main/board/NAZE/vfp/
+#core-$(CONFIG_FPE_NWFPE)	+= board/NAZE/nwfpe/
+#core-$(CONFIG_VFP)		+= board/NAZE/vfp/
 
 # If we have a machine-specific directory, then include it in the build.
-core-y				+= src/main/board/NAZE/hardware_revision.o
 core-y				+= $(machdirs) $(platdirs)
 # FIXME 
 #libs-y				:= src/main/board/NAZE/lib/ $(libs-y)
@@ -146,7 +139,7 @@ boot:
 
 archprepare:
 	@echo "fake archprepare"
-	#$(Q)$(MAKE) $(build)=src/main/board/NAZE/tools include/generated/mach-types.h
+	#$(Q)$(MAKE) $(build)=board/NAZE/tools include/generated/mach-types.h
 
 BOOT_TARGETS	= cleanflight
 INSTALL_TARGETS	= install

@@ -70,7 +70,7 @@
 //#define M25P16_CS_PIN           GPIO_Pin_12
 //#define M25P16_SPI_INSTANCE     SPI2
 
-#define GYRO
+#define CONFIG_GYRO
 #define USE_GYRO_L3GD20
 
 #define L3GD20_SPI                      SPI1
@@ -102,18 +102,18 @@
 #define ACC
 #define USE_ACC_LSM303DLHC
 
-#define MAG
-#define USE_MAG_HMC5883
+#define CONFIG_MAG
+#define CONFIG_MAG_HMC5883
 
-#define BEEPER
+#define CONFIG_BEEPER
 #define LED0
 #define LED1
 
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
 #define USE_UART4
 #define USE_UART5
@@ -164,7 +164,7 @@
 #define ADC_RSSI        ADC_CHANNEL2
 #define ADC_EXTERNAL    ADC_CHANNEL3
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #define LED_STRIP_TIMER TIM16
 #define WS2811_GPIO                     GPIOB
 #define WS2811_GPIO_AHB_PERIPHERAL      RCC_AHBPeriph_GPIOB
@@ -178,15 +178,15 @@
 #define WS2811_DMA_TC_FLAG              DMA1_FLAG_TC3
 #define WS2811_DMA_HANDLER_IDENTIFER    DMA1Channel3Descriptor
 
-#define BLACKBOX
-#define GPS
-#define GTUNE
-#define TELEMETRY
-#define SERIAL_RX
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_BLACKBOX
+#define CONFIG_GPS
+#define CONFIG_GTUNE
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 // IO - 303 in 100pin package
 #define TARGET_IO_PORTA 0xffff

@@ -24,7 +24,7 @@
 
 #include <platform.h>
 
-#ifdef  USE_SERIAL_4WAY_BLHELI_INTERFACE
+#ifdef  CONFIG_USE_SERIAL_4WAY_BLHELI
 
 #include "config/parameter_group.h"
 #include "drivers/serial.h"

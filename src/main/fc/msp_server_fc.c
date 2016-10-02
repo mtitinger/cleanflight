@@ -112,7 +112,7 @@ extern uint16_t rssi; // FIXME dependency on mw.c
 extern void resetPidProfile(pidProfile_t *pidProfile);
 
 static const char * const flightControllerIdentifier = CLEANFLIGHT_IDENTIFIER; // 4 UPPER CASE alpha numeric characters that identify the flight controller.
-static const char * const boardIdentifier = CONFIG_TARGET_BOARD_IDENTIFIER;
+static const char * const boardIdentifier = TARGET_BOARD_IDENTIFIER;
 
 typedef struct box_e {
     const char *boxName;            // GUI-readable box name
@@ -266,7 +266,7 @@ static void initActiveBoxIds(void)
         ena |= 1 << BOXHORIZON;
     }
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     if (sensors(SENSOR_BARO)) {
         ena |= 1 << BOXBARO;
     }
@@ -308,7 +308,7 @@ static void initActiveBoxIds(void)
 
     ena |= 1 << BOXOSD;
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     if (feature(FEATURE_TELEMETRY) && telemetryConfig()->telemetry_switch)
         ena |= 1 << BOXTELEMETRY;
 #endif
@@ -335,7 +335,7 @@ static void initActiveBoxIds(void)
         ena |= 1 << BOXFAILSAFE;
     }
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
     ena |= 1 << BOXGTUNE;
 #endif
 
@@ -606,7 +606,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             break;
 
         case MSP_ALTITUDE:
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
             sbufWriteU32(dst, altitudeHoldGetEstimatedAltitude());
             sbufWriteU16(dst, vario);
 #else
@@ -616,7 +616,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             break;
 
         case MSP_SONAR_ALTITUDE:
-#if defined(SONAR)
+#if defined(CONFIG_SONAR)
             sbufWriteU32(dst, sonarGetLatestAltitude());
 #else
             sbufWriteU32(dst, 0);
@@ -1275,7 +1275,7 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             GPS_coord[LON] = sbufReadU32(src);
             GPS_altitude = sbufReadU16(src);
             GPS_speed = sbufReadU16(src);
-            GPS_update |= 2;        // New data signalisation to GPS functions // FIXME Magic Numbers
+            GPS_update |= 2;        // New data signalisation to CONFIG_GPS functions // FIXME Magic Numbers
             break;
 
         case MSP_SET_WP: {
@@ -1289,11 +1289,11 @@ int mspServerCommandHandler(mspPacket_t *cmd, mspPacket_t *reply)
             if (wp_no == 0) {
                 GPS_home[LAT] = lat;
                 GPS_home[LON] = lon;
-                DISABLE_FLIGHT_MODE(GPS_HOME_MODE);     // with this flag, GPS_set_next_wp will be called in the next loop -- OK with SERIAL GPS / OK with I2C GPS
+                DISABLE_FLIGHT_MODE(GPS_HOME_MODE);     // with this flag, GPS_set_next_wp will be called in the next loop -- OK with SERIAL CONFIG_GPS / OK with I2C CONFIG_GPS
                 ENABLE_STATE(GPS_FIX_HOME);
                 if (alt != 0)
                     AltHold = alt;                      // temporary implementation to test feature with apps
-            } else if (wp_no == 16) {                   // OK with SERIAL GPS  --  NOK for I2C GPS / needs more code dev in order to inject GPS coord inside I2C GPS
+            } else if (wp_no == 16) {                   // OK with SERIAL CONFIG_GPS  --  NOK for I2C CONFIG_GPS / needs more code dev in order to inject CONFIG_GPS coord inside I2C CONFIG_GPS
                 GPS_hold[LAT] = lat;
                 GPS_hold[LON] = lon;
                 if (alt != 0)

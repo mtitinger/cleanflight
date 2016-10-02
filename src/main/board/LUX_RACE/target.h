@@ -55,17 +55,17 @@
 
 #define USABLE_TIMER_CHANNEL_COUNT 11
 
-#define GYRO
-#define USE_GYRO_MPU6500
+#define CONFIG_GYRO
+#define CONFIG_GYRO_MPU6500
 #define USE_GYRO_SPI_MPU6500
 #define GYRO_MPU6500_ALIGN CW270_DEG
 
 #define ACC
-#define USE_ACC_MPU6500
-#define USE_ACC_SPI_MPU6500
+#define CONFIG_ACC_MPU6500
+#define CONFIG_ACC_SPI_MPU6500
 #define ACC_MPU6500_ALIGN CW270_DEG
 
-#define BEEPER
+#define CONFIG_BEEPER
 #define LED0
 #define LED1
 #define LED2
@@ -73,8 +73,8 @@
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
 #define SERIAL_PORT_COUNT 4
 
@@ -135,10 +135,10 @@
 
 #define DEFAULT_RX_FEATURE FEATURE_RX_PPM
 
-#define BLACKBOX
-#define GPS
-#define GTUNE
-#define LED_STRIP
+#define CONFIG_BLACKBOX
+#define CONFIG_GPS
+#define CONFIG_GTUNE
+#define CONFIG_LED_STRIP
 
 #define LED_STRIP_TIMER TIM16
 
@@ -160,18 +160,18 @@
 #define USE_MPU_DATA_READY_SIGNAL
 #define ENSURE_MPU_DATA_READY_IS_LOW
 
-#define TELEMETRY
-#define SERIAL_RX
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // USART1, PC5
 #define BIND_PORT  GPIOC
 #define BIND_PIN   Pin_5
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 // IO - assuming 303 in 64pin package, TODO
 #define TARGET_IO_PORTA 0xffff

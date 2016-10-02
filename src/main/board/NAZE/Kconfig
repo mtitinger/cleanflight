@@ -26,6 +26,15 @@ config NAZE
 	select CPU_STM32F10X
 	select CPU_STM32F10X_MD
 	select HAS_FLASH_SIZE128
+	select HAS_MPU6500  #ACC & GYRO
+	select HAS_MPU3050
+	select HAS_MPU6050
+	select HAS_ADXL345
+	select HAS_BMA280
+	select HAS_MS5611
+	select HAS_BMP085
+	select HAS_BMP280
+	select HAS_HMC5883
 	help
 	  NAZE32 blah help.
 
@@ -56,11 +65,3 @@ config	TARGET_ALIENFLIGHT
 endchoice
 
 endmenu
-
-config TARGET_BOARD_IDENTIFIER
-        string "Board Identifier String"
-        default "NAZE" if TARGET_NAZE
-	default "AFF1" if TARGET_ALIENFLIGHT
-        help
-          Maybe not a good idea to change...
-	

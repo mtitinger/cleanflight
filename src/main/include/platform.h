@@ -15,15 +15,10 @@
  * along with Cleanflight.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-/*
-typedef  unsigned int uint32_t;
-typedef  unsigned short uint16_t;
-typedef  unsigned char uint8_t;
-typedef  int int32_t;
-typedef  short int16_t;
-typedef  char int8_t;
-*/
+#ifndef __PLATFORM_H__
+#define __PLATFORM_H__
+
+#include "kconfig.h"
 
 /* FIXME */
 #ifdef STM32F303xC // CONFIG_CPU_STM32F303xC
@@ -40,7 +35,7 @@ typedef  char int8_t;
 
 #endif
 
-#ifdef STM32F10X //CONFIG_CPU_STM32F10X
+#ifdef CONFIG_CPU_STM32F10X //CONFIG_CPU_STM32F10X
 
 /* FIXME */
 #include "stm32f10x_conf.h"
@@ -56,3 +51,4 @@ typedef  char int8_t;
 
 #include "target.h"
 
+#endif /*PLATFORM*/

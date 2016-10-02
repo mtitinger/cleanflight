@@ -31,7 +31,7 @@ typedef enum {
 extern int32_t BaroAlt;
 extern int32_t baroTemperature;             // Use temperature for telemetry
 
-#ifdef BARO
+#ifdef CONFIG_BARO
 
 typedef struct barometerConfig_s {
     uint8_t baro_sample_count;              // size of baro filter array

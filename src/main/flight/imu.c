@@ -258,7 +258,7 @@ static void imuMahonyAHRSupdate(float dt, float gx, float gy, float gz,
     // Calculate general spin rate (rad/s)
     float spin_rate = sqrtf(sq(gx) + sq(gy) + sq(gz));
 
-    // Use raw heading error (from GPS or whatever else)
+    // Use raw heading error (from CONFIG_GPS or whatever else)
     if (useYaw) {
         while (yawError >  M_PIf) yawError -= (2.0f * M_PIf);
         while (yawError < -M_PIf) yawError += (2.0f * M_PIf);
@@ -398,7 +398,7 @@ static bool imuIsAccelerometerHealthy(void)
     return (81 < accMagnitude) && (accMagnitude < 121);
 }
 
-#ifdef MAG
+#ifdef CONFIG_MAG
 static bool isMagnetometerHealthy(void)
 {
     return (magADC[X] != 0) && (magADC[Y] != 0) && (magADC[Z] != 0);
@@ -432,14 +432,14 @@ static void imuCalculateEstimatedAttitude(void)
         useAcc = true;
     }
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     if (sensors(SENSOR_MAG) && isMagnetometerHealthy()) {
         useMag = true;
     }
 #endif
-#if defined(GPS)
+#if defined(CONFIG_GPS)
     else if (STATE(FIXED_WING) && sensors(SENSOR_GPS) && STATE(GPS_FIX) && GPS_numSat >= 5 && GPS_speed >= 300) {
-        // In case of a fixed-wing aircraft we can use GPS course over ground to correct heading
+        // In case of a fixed-wing aircraft we can use CONFIG_GPS course over ground to correct heading
         rawYawError = DECIDEGREES_TO_RADIANS(attitude.values.yaw - GPS_ground_course);
         useYaw = true;
     }

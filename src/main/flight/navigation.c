@@ -67,14 +67,14 @@
 
 extern int16_t magHold;
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 
 bool areSticksInApModePosition(uint16_t ap_mode);
 
 // **********************
-// GPS
+// CONFIG_GPS
 // **********************
-int16_t GPS_angle[ANGLE_INDEX_COUNT] = { 0, 0 };    // it's the angles that must be applied for GPS correction
+int16_t GPS_angle[ANGLE_INDEX_COUNT] = { 0, 0 };    // it's the angles that must be applied for CONFIG_GPS correction
 int32_t GPS_home[2];
 int32_t GPS_hold[2];
 
@@ -98,7 +98,7 @@ PG_RESET_TEMPLATE(gpsProfile_t, gpsProfile,
 );
 
 
-// When using PWM input GPS usage reduces number of available channels by 2 - see pwm_common.c/pwmInit()
+// When using PWM input CONFIG_GPS usage reduces number of available channels by 2 - see pwm_common.c/pwmInit()
 void navigationInit(pidProfile_t *pidProfile)
 {
     gpsUsePIDs(pidProfile);
@@ -108,18 +108,18 @@ void navigationInit(pidProfile_t *pidProfile)
 
 /*-----------------------------------------------------------
  *
- * Multiwii GPS code - revision: 1097
+ * Multiwii CONFIG_GPS code - revision: 1097
  *
  *-----------------------------------------------------------*/
 #define POSHOLD_IMAX           20       // degrees
 #define POSHOLD_RATE_IMAX      20       // degrees
 #define NAV_IMAX               20       // degrees
 
-/* GPS navigation can control the heading */
+/* CONFIG_GPS navigation can control the heading */
 #define NAV_TAIL_FIRST             0    // true - copter comes in with tail first
 #define NAV_SET_TAKEOFF_HEADING    1    // true - when copter arrives to home position it rotates it's head to takeoff direction
 
-#define GPS_FILTERING              1    // add a 5 element moving average filter to GPS coordinates, helps eliminate gps noise but adds latency
+#define GPS_FILTERING              1    // add a 5 element moving average filter to CONFIG_GPS coordinates, helps eliminate gps noise but adds latency
 #define GPS_LOW_SPEED_D_FILTER     1    // below .5m/s speed ignore D term for POSHOLD_RATE, theoretically this also removed D term induced noise
 
 static bool check_missed_wp(void);
@@ -202,19 +202,19 @@ static void reset_PID(PID *pid)
 #define GPS_X 1
 #define GPS_Y 0
 
-/****************** PI and PID controllers for GPS ********************///32938 -> 33160
+/****************** PI and PID controllers for CONFIG_GPS ********************///32938 -> 33160
 
 #define RADX100                    0.000174532925f
 #define CROSSTRACK_GAIN            1
 #define NAV_SLOW_NAV               true
 #define NAV_BANK_MAX               3000 // 30deg max banking when navigating (just for security and testing)
 
-static float dTnav;             // Delta Time in milliseconds for navigation computations, updated with every good GPS read
+static float dTnav;             // Delta Time in milliseconds for navigation computations, updated with every good CONFIG_GPS read
 static int16_t actual_speed[2] = { 0, 0 };
 static float GPS_scaleLonDown = 1.0f;  // this is used to offset the shrinking longitude as we go towards the poles
 
 // The difference between the desired rate of travel and the actual rate of travel
-// updated after GPS read - 5-10hz
+// updated after CONFIG_GPS read - 5-10hz
 static int16_t rate_error[2];
 static int32_t error[2];
 
@@ -235,7 +235,7 @@ static int32_t original_target_bearing;
 // The amount of angle correction applied to target_bearing to bring the copter back on its optimum path
 static int16_t crosstrack_error;
 ////////////////////////////////////////////////////////////////////////////////
-// The location of the copter in relation to home, updated every GPS read (1deg - 100)
+// The location of the copter in relation to home, updated every CONFIG_GPS read (1deg - 100)
 //static int32_t home_to_copter_bearing;
 // distance between plane and home in cm
 //static int32_t home_distance;
@@ -295,7 +295,7 @@ void onGpsNewData(void)
     if (!STATE(GPS_FIX_HOME) && ARMING_FLAG(ARMED))
         GPS_reset_home_position();
 
-    // Apply moving average filter to GPS data
+    // Apply moving average filter to CONFIG_GPS data
 #if defined(GPS_FILTERING)
     GPS_filter_index = (GPS_filter_index + 1) % GPS_FILTER_VECTOR_LENGTH;
     for (axis = 0; axis < 2; axis++) {
@@ -323,7 +323,7 @@ void onGpsNewData(void)
     // Time for calculating x,y speed and navigation pids
     dTnav = (float)(millis() - nav_loopTimer) / 1000.0f;
     nav_loopTimer = millis();
-    // prevent runup from bad GPS
+    // prevent runup from bad CONFIG_GPS
     dTnav = MIN(dTnav, 1.0f);
 
     GPS_calculateDistanceAndDirectionToHome();
@@ -417,10 +417,10 @@ void gpsUsePIDs(pidProfile_t *pidProfile)
     navPID_PARAM.Imax = POSHOLD_RATE_IMAX * 100;
 }
 
-// OK here is the onboard GPS code
+// OK here is the onboard CONFIG_GPS code
 
 ////////////////////////////////////////////////////////////////////////////////////
-// PID based GPS navigation functions
+// PID based CONFIG_GPS navigation functions
 // Author : EOSBandi
 // Based on code and ideas from the Arducopter team: Jason Short,Randy Mackay, Pat Hickey, Jose Julio, Jani Hirvinen
 // Andrew Tridgell, Justin Beech, Adam Rivera, Jean-Louis Naudin, Roberto Navoni

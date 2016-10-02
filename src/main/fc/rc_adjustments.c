@@ -58,7 +58,7 @@ uint8_t adjustmentStateMask = 0;
 
 void blackboxLogInflightAdjustmentEvent(adjustmentFunction_e adjustmentFunction, int32_t newValue)
 {
-#ifndef BLACKBOX
+#ifndef CONFIG_BLACKBOX
     UNUSED(adjustmentFunction);
     UNUSED(newValue);
 #else
@@ -74,7 +74,7 @@ void blackboxLogInflightAdjustmentEvent(adjustmentFunction_e adjustmentFunction,
 
 void blackboxLogInflightAdjustmentEventFloat(adjustmentFunction_e adjustmentFunction, float newFloatValue)
 {
-#ifndef BLACKBOX
+#ifndef CONFIG_BLACKBOX
     UNUSED(adjustmentFunction);
     UNUSED(newFloatValue);
 #else

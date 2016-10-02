@@ -37,33 +37,33 @@
 #define LED1
 #endif
 
-#define GYRO
+#define CONFIG_GYRO
 #define USE_FAKE_GYRO
 //#define USE_GYRO_L3G4200D
 //#define USE_GYRO_L3GD20
-//#define USE_GYRO_MPU3050
-#define USE_GYRO_MPU6050
+//#define CONFIG_GYRO_MPU3050
+#define CONFIG_GYRO_MPU6050
 //#define USE_GYRO_SPI_MPU6000
 //#define USE_GYRO_SPI_MPU6500
 
 #define ACC
 #define USE_FAKE_ACC
-//#define USE_ACC_ADXL345
-//#define USE_ACC_BMA280
-//#define USE_ACC_MMA8452
+//#define CONFIG_ACC_ADXL345
+//#define CONFIG_ACC_BMA280
+//#define CONFIG_ACC_MMA8452
 //#define USE_ACC_LSM303DLHC
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 //#define USE_ACC_SPI_MPU6000
-//#define USE_ACC_SPI_MPU6500
+//#define CONFIG_ACC_SPI_MPU6500
 
-#define BARO
-//#define USE_BARO_MS5611
-#define USE_BARO_BMP085
+#define CONFIG_BARO
+//#define CONFIG_BARO_MS5611
+#define CONFIG_BARO_BMP085
 
-#define MAG
-#define USE_MAG_HMC5883
+#define CONFIG_MAG
+#define CONFIG_MAG_HMC5883
 
-#define SONAR
+#define CONFIG_SONAR
 #define SONAR_TRIGGER_PIN           Pin_0   // RX7 (PB0) - only 3.3v ( add a 1K Ohms resistor )
 #define SONAR_TRIGGER_GPIO          GPIOB
 #define SONAR_ECHO_PIN              Pin_1   // RX8 (PB1) - only 3.3v ( add a 1K Ohms resistor )
@@ -72,10 +72,10 @@
 #define SONAR_ECHO_IO               PB1
 
 
-#define USE_UART1
-#define USE_UART2
-#define USE_SOFTSERIAL1
-#define USE_SOFTSERIAL2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
+#define CONFIG_USE_SOFTSERIAL1
+#define CONFIG_USE_SOFTSERIAL2
 #define SERIAL_PORT_COUNT 4
 
 #define SOFTSERIAL_1_TIMER TIM3
@@ -124,18 +124,18 @@
 #define ADC_RSSI        ADC_CHANNEL2
 #define ADC_EXTERNAL    ADC_CHANNEL3
 
-#define GPS
+#define CONFIG_GPS
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #define LED_STRIP_TIMER TIM3
 #define WS2811_DMA_TC_FLAG           DMA1_FLAG_TC6
 #define WS2811_DMA_HANDLER_IDENTIFER DMA1Channel6Descriptor
 
-#define TELEMETRY
-#define SERIAL_RX
-#define BLACKBOX
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
+#define CONFIG_BLACKBOX
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
 // IO - assuming all IOs on smt32f103rb LQFP64 package

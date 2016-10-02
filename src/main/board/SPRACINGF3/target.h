@@ -37,29 +37,29 @@
 #define ENSURE_MAG_DATA_READY_IS_HIGH
 
 
-#define GYRO
-#define USE_GYRO_MPU6050
+#define CONFIG_GYRO
+#define CONFIG_GYRO_MPU6050
 #define GYRO_MPU6050_ALIGN CW270_DEG
 
 #define ACC
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 #define ACC_MPU6050_ALIGN CW270_DEG
 
-#define BARO
-#define USE_BARO_MS5611
+#define CONFIG_BARO
+#define CONFIG_BARO_MS5611
 
-#define MAG
+#define CONFIG_MAG
 #define USE_MAG_AK8975
-#define USE_MAG_HMC5883
+#define CONFIG_MAG_HMC5883
 #define MAG_HMC5883_ALIGN CW270_DEG
 
 #define USE_FLASHFS
 #define USE_FLASH_M25P16
 
-#define BEEPER
+#define CONFIG_BEEPER
 #define LED0
 
-#define SONAR
+#define CONFIG_SONAR
 #define SONAR_TRIGGER_PIN           Pin_0   // RC_CH7 (PB0) - only 3.3v ( add a 1K Ohms resistor )
 #define SONAR_TRIGGER_GPIO          GPIOB
 #define SONAR_ECHO_PIN              Pin_1   // RC_CH8 (PB1) - only 3.3v ( add a 1K Ohms resistor )
@@ -68,11 +68,11 @@
 #define SONAR_ECHO_IO               PB1
 
 
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
-#define USE_SOFTSERIAL1
-#define USE_SOFTSERIAL2
+#define CONFIG_USE_SOFTSERIAL1
+#define CONFIG_USE_SOFTSERIAL2
 #define SERIAL_PORT_COUNT 5
 
 #define USE_UART1_TX_DMA
@@ -139,7 +139,7 @@
 #define ADC_CURRENT     ADC_CHANNEL1
 #define ADC_RSSI        ADC_CHANNEL2
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #define LED_STRIP_TIMER TIM1
 
 #define WS2811_GPIO                     GPIOA
@@ -157,24 +157,24 @@
 
 #define DEFAULT_RX_FEATURE FEATURE_RX_PPM
 
-#define BLACKBOX
+#define CONFIG_BLACKBOX
 #define ENABLE_BLACKBOX_LOGGING_ON_SPIFLASH_BY_DEFAULT
 
-#define DISPLAY
-#define GPS
-#define GTUNE
-#define SERIAL_RX
-#define TELEMETRY
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_DISPLAY
+#define CONFIG_GPS
+#define CONFIG_GTUNE
+#define CONFIG_SERIAL_RX
+#define CONFIG_TELEMETRY
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // UART3,
 #define BIND_PORT  GPIOB
 #define BIND_PIN   Pin_11
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 // IO - stm32f303cc in 48pin package
 #define TARGET_IO_PORTA 0xffff

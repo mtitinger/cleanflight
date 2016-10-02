@@ -18,6 +18,13 @@
 
 #pragma once
 
+#ifdef ALIENFLIGHT
+#define TARGET_BOARD_IDENTIFIER "AFF1" // AlienFlight F1.
+#else
+// AFroNAze - NAZE might be considered misleading on Naze clones like the flip32.
+#define TARGET_BOARD_IDENTIFIER "AFNA"
+#endif
+
 #define USE_HARDWARE_REVISION_DETECTION
 
 #define LED0_GPIO   GPIOB
@@ -67,7 +74,6 @@
 #define MPU6500_CS_PIN                   NAZE_SPI_CS_PIN
 #define MPU6500_SPI_INSTANCE             NAZE_SPI_INSTANCE
 
-
 #define USE_FLASHFS
 
 #define USE_FLASH_M25P16
@@ -80,64 +86,39 @@
 //#define DEBUG_MAG_DATA_READY_INTERRUPT
 #define USE_MAG_DATA_READY_SIGNAL
 
-/*FIXME, remove after migration */
-#ifdef CONFIG_GYRO
-#define GYRO
-#endif
-#define USE_GYRO_MPU3050
-#define USE_GYRO_MPU6050
-#define USE_GYRO_MPU6500
+// #define CONFIG_GYRO_MPU3050 => HAS
+// #define CONFIG_GYRO_MPU6050 => HAS
+//#define CONFIG_GYRO_MPU6500 => HAS
 #define USE_GYRO_SPI_MPU6500
 #define GYRO_MPU3050_ALIGN CW0_DEG
 #define GYRO_MPU6050_ALIGN CW0_DEG
 #define GYRO_MPU6500_ALIGN CW0_DEG
 
-/*FIXME, remove after migration */
-#ifdef CONFIG_ACC
-#define ACC
-#endif
-#define USE_ACC_ADXL345
-#define USE_ACC_BMA280
-#define USE_ACC_MMA8452
-#define USE_ACC_MPU6050
-#define USE_ACC_MPU6500
-#define USE_ACC_SPI_MPU6500
+//#define CONFIG_ACC_ADXL345 => HAS
+//#define CONFIG_ACC_BMA280 => HA
+//#define CONFIG_ACC_MMA8452 => HAS
+//#define CONFIG_ACC_MPU6050 => HAS
+// #define CONFIG_ACC_MPU6500 => HAS
+#define CONFIG_ACC_SPI_MPU6500 // FIXME
 #define ACC_ADXL345_ALIGN CW270_DEG
 #define ACC_MPU6050_ALIGN CW0_DEG
 #define ACC_MMA8452_ALIGN CW90_DEG
 #define ACC_BMA280_ALIGN CW0_DEG
 #define ACC_MPU6500_ALIGN CW0_DEG
 
-/*FIXME, remove after migration */
-#ifdef CONFIG_BARO
-#define BARO
-#endif
-
-#define USE_BARO_MS5611
-#define USE_BARO_BMP085
-#define USE_BARO_BMP280
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_MAG
-#define MAG
-#endif
-#define USE_MAG_HMC5883
+// FIXME check for HAS => CONFIG in Kconfig
+//#define CONFIG_BARO_MS5611 => HAS
+//#define CONFIG_BARO_BMP085 => HAS
+//#define CONFIG_BARO_BMP280 =>
+// #define CONFIG_MAG_HMC5883
 
 #define MAG_HMC5883_ALIGN CW180_DEG
 
-/*FIXME, remove after migration */
-#ifdef CONFIG_BEEPER
-#define BEEPER
-#endif
 
 #define LED0
 #define LED1
 #define INVERTER
 
-/*FIXME, remove after migration */
-#ifdef CONFIG_SONAR
-#define SONAR
-#endif
 #define SONAR_PWM_TRIGGER_PIN       Pin_8   // PWM5 (PB8) - 5v tolerant
 #define SONAR_PWM_TRIGGER_GPIO      GPIOB
 #define SONAR_PWM_ECHO_PIN          Pin_9   // PWM6 (PB9) - 5v tolerant
@@ -152,25 +133,17 @@
 #define SONAR_TRIGGER_IO            PB0
 #define SONAR_ECHO_IO               PB1
 
-//#define USE_UART1
-//#define USE_UART2
+//#define CONFIG_USE_UART1
+//#define CONFIG_USE_UART2
 //#define USE_UART3
-//#define USE_SOFTSERIAL1
-//#define USE_SOFTSERIAL2
-/*FIXME, remove after migration */
-#ifdef CONFIG_USE_UART1
-#define USE_UART1
-#endif
-#ifdef CONFIG_USE_UART2
-#define USE_UART2
-#endif
-#ifdef CONFIG_USE_UART3
-#define USE_UART3
-#endif
-#ifdef CONFIG_USE_SOFTSERIAL1
-#define USE_SOFTSERIAL1
-#define USE_SOFTSERIAL2
-#endif
+//#define CONFIG_USE_SOFTSERIAL1
+//#define CONFIG_USE_SOFTSERIAL2
+
+
+// FIXME #define CONFIG_USE_UART1/2/3
+
+// FIXME#ifdef CONFIG_USE_SOFTSERIAL1
+
 /* FIXME check what happens if not all are builtin*/
 #define SERIAL_PORT_COUNT 5
 
@@ -229,71 +202,16 @@
 #define ADC_RSSI        ADC_CHANNEL2
 #define ADC_EXTERNAL    ADC_CHANNEL3
 
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_LED_STRIP
-#define LED_STRIP
-#endif
 #define LED_STRIP_TIMER TIM3
 #define WS2811_DMA_TC_FLAG           DMA1_FLAG_TC6
 #define WS2811_DMA_HANDLER_IDENTIFER DMA1Channel6Descriptor
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_GPS
-#define GPS
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_GTUNE
-#define GTUNE
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_BLACKBOX
-#define BLACKBOX
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_TELEMETRY
-#define TELEMETRY
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_SERIAL_RX
-#define SERIAL_RX
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_USE_SERVOS
-#define USE_SERVOS
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_USE_CLI
-#define USE_CLI
-#endif
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_SPEKTRUM_BIND
-#define SPEKTRUM_BIND
-#endif
 
 // UART2, PA3
 #define BIND_PORT  GPIOA
 #define BIND_PIN   Pin_3
 
-/*FIXME, remove after migration */
-#ifdef CONFIG_USE_SERIAL_4WAY_BLHELI_INTERFACE
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
-#endif
-
 #define DEFAULT_RX_FEATURE FEATURE_RX_SERIAL
 #define DEFAULT FEATURES FEATURE_MOTOR_STOP
-
-/*FIXME, remove after migration */
-#ifdef CONFIG_HARDWARE_BIND_PLUG
-#define HARDWARE_BIND_PLUG
-#endif
 
 // Hardware bind plug at PB5 (Pin 41)
 #define BINDPLUG_PORT  GPIOB

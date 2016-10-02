@@ -238,7 +238,7 @@ void mpuIntExtiInit(void)
             RCC_AHBPeriphClockCmd(mpuIntExtiConfig->gpioAHBPeripherals, ENABLE);
         }
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
         if (mpuIntExtiConfig->gpioAPB2Peripherals) {
             RCC_APB2PeriphClockCmd(mpuIntExtiConfig->gpioAPB2Peripherals, ENABLE);
         }

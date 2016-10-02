@@ -22,7 +22,7 @@
 
 #include <platform.h>
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
 
 #include "build/build_config.h"
 
@@ -198,7 +198,7 @@ void calculate_Gtune(uint8_t axis)
                 }
                 int16_t newP = constrain((result_P64[axis] >> 6), (int16_t)gtuneConfig()->gtune_lolimP[axis], (int16_t)gtuneConfig()->gtune_hilimP[axis]);
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
                 if (feature(FEATURE_BLACKBOX)) {
                     flightLogEvent_gtuneCycleResult_t eventData;
 

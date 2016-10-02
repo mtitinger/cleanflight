@@ -64,7 +64,7 @@ extern pt1Filter_t yawFilter;
 
 extern uint8_t motorCount;
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
 extern int32_t axisPID_P[3], axisPID_I[3], axisPID_D[3];
 #endif
 
@@ -133,7 +133,7 @@ STATIC_UNIT_TESTED int16_t pidLuxFloatCore(int axis, const pidProfile_t *pidProf
         DTerm = constrainf(DTerm, -PID_MAX_D, PID_MAX_D);
     }
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     axisPID_P[axis] = PTerm;
     axisPID_I[axis] = ITerm;
     axisPID_D[axis] = DTerm;
@@ -169,7 +169,7 @@ void pidLuxFloat(const pidProfile_t *pidProfile, const controlRateConfig_t *cont
         // -----Get the desired angle rate depending on flight mode
         float angleRate;
         if (axis == FD_YAW) {
-            // YAW is always gyro-controlled (MAG correction is applied to rcCommand) 100dps to 1100dps max yaw rate
+            // YAW is always gyro-controlled (CONFIG_MAG correction is applied to rcCommand) 100dps to 1100dps max yaw rate
             angleRate = (float)((rate + 27) * rcCommand[YAW]) / 32.0f;
         } else {
             // control is GYRO based for ACRO and HORIZON - direct sticks control is applied to rate PID
@@ -177,7 +177,7 @@ void pidLuxFloat(const pidProfile_t *pidProfile, const controlRateConfig_t *cont
             if (FLIGHT_MODE(ANGLE_MODE) || FLIGHT_MODE(HORIZON_MODE)) {
                 // calculate error angle and limit the angle to the max inclination
                 // multiplication of rcCommand corresponds to changing the sticks scaling here
-#ifdef GPS
+#ifdef CONFIG_GPS
                 const float errorAngle = constrain(2 * rcCommand[axis] + GPS_angle[axis], -((int)max_angle_inclination), max_angle_inclination)
                         - attitude.raw[axis] + angleTrim->raw[axis];
 #else
@@ -200,7 +200,7 @@ void pidLuxFloat(const pidProfile_t *pidProfile, const controlRateConfig_t *cont
         const float gyroRate = luxGyroScale * gyroADC[axis] * gyro.scale;
         axisPID[axis] = pidLuxFloatCore(axis, pidProfile, gyroRate, angleRate);
         //axisPID[axis] = constrain(axisPID[axis], -PID_LUX_FLOAT_MAX_PID, PID_LUX_FLOAT_MAX_PID);
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
         if (FLIGHT_MODE(GTUNE_MODE) && ARMING_FLAG(ARMED)) {
             calculate_Gtune(axis);
         }

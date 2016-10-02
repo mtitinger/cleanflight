@@ -2,6 +2,36 @@ menu "Device Drivers"
 
 comment "Drivers for the sensors and orther features"
 
+config HAS_MPU6500
+	bool
+	help
+		ACC & GYRO.
+
+config HAS_MPU3050
+	bool
+	
+config HAS_MPU6050
+	bool
+	
+config HAS_ADXL345
+	bool
+	
+config HAS_BMA280
+	bool
+
+config HAS_MS5611
+	bool
+	
+config HAS_BMP085
+	bool
+	
+config HAS_BMP280
+	bool
+
+config HAS_HMC5883
+	bool
+
+
 if HAS_ACC
 
 menuconfig	ACC
@@ -12,38 +42,40 @@ menuconfig	ACC
 
 if ACC
 
-config 	ACC_ADXL345
-	bool "ADXL345"
-	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY
+config	ACC_ADXL345
+	bool "Use accelerometer feature of ADXL345"
+	default y
+	depends on HAS_ADXL345
 	help
-	  Use MPU65000.
+	  Use accelerometer feature of ADXL345.
 
-config 	ACC_BMA280
-	bool "BMA280"
-	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY
+config	ACC_BMA280
+	bool "Use accelerometer feature of BMA280"
+	default y
+	depends on HAS_BMA280
 	help
-	  Use MPU65000.
+	  Use accelerometer feature of BMA280.
 
 config	ACC_MMA8452
-	bool "SPI_MMA8452"
-	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY
+	bool "Use accelerometer feature of MMA8452"
+	default y
+	depends on HAS_MMA8452
 	help
-	  Use MPU65000.
+	  Use accelerometer feature of MMA8452.  
 
 config	ACC_MPU6050
-	bool "SPI_MPU6050"
+	bool "Use accelerometer feature of MPU6050"
+	default y
+	depends on HAS_MPU6050
 	help
-	  Use MPU65000.
+	  Use accelerometer feature of MPU6050.
 
 config	ACC_MPU6500
-	bool "MPU6500"
+	bool "Use  accelerometer feature of MPU6500"
+	default y
+	depends on HAS_MPU6500
 	help
-	  Use MPU65000.
-
-config	ACC_SPI_MPU6500
-	bool "SPI_MPU6500"
-	help
-	  Use MPU65000.
+	  Use MPU65000 accelerometers
 
 endif
 
@@ -59,28 +91,26 @@ menuconfig	BARO
 
 if BARO
 
-#choice
-#	prompt "Magnetometers Compass"
-#	default BRUSHLESS_MOTORS
-
 config	BARO_BMP085
-	bool "BMP085"
-	depends on NAZE || EUSTM32F103RC || STM32F3DISCOVERY || OLIMEXINO || IRCFUSIONF3 || CC3D
+	bool "Use baro feature of BMP085"
+	default y if (NAZE || EUSTM32F103RC || STM32F3DISCOVERY || OLIMEXINO || IRCFUSIONF3 || CC3D)
+	depends on HAS_BMP085
 	help
-	help
-	  Blah.
+	  Use baro feature of BMP085.
 
 config	BARO_BMP280
-	bool "BMP280"
-	depends on NAZE || RMDO || SPRACINGF3EVO || SPRACINGF3MINI
+	bool "Use baro feature of BMP280"
+	default y if (NAZE || RMDO || SPRACINGF3EVO || SPRACINGF3MINI)
+	depends on HAS_BMP280
 	help
-	  Blah.
-
+	  Use baro feature of BMP280.
+	  
 config	BARO_MS5611
-	bool "MS5611"
+	bool "Use baro feature of MS5611"
+	default y
+	depends on HAS_MS5611
 	help
-	  Blah.
-#endchoice
+	  Use baro feature of MS5611.
 
 endif
 endif # has baro
@@ -94,6 +124,27 @@ menuconfig	GYRO
 	   Enable support for Gyroscopes.
 
 if GYRO
+
+config	GYRO_MPU6050
+	bool "Use gyro feature of MPU6050"
+	default y
+	depends on HAS_MPU6050
+	help
+	  Use gyro feature of MPU6050.
+	  
+config	GYRO_MPU6500
+	bool "Use gyro feature of MPU6500"
+	default y
+	depends on HAS_MPU6000
+	help
+	  Use gyro feature of MPU6000.
+	  
+config	GYRO_MPU3050
+	bool "Use gyro feature of MPU3050"
+	default y
+	depends on HAS_MPU3050
+	help
+	  Use gyro feature of MPU3050.
 
 config	GYRO_BMP085
 	bool "BMP085"

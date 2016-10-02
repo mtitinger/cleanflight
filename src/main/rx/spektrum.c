@@ -163,7 +163,7 @@ static uint16_t spektrumReadRawRC(rxRuntimeConfig_t *rxRuntimeConfig, uint8_t ch
 
 bool spekShouldBind(uint8_t spektrum_sat_bind)
 {
-#ifdef HARDWARE_BIND_PLUG
+#ifdef CONFIG_HARDWARE_BIND_PLUG
     gpio_config_t cfg = {
         BINDPLUG_PIN,
         Mode_IPU,
@@ -229,7 +229,7 @@ void spektrumBind(rxConfig_t *rxConfig)
 
     }
 
-#ifndef HARDWARE_BIND_PLUG
+#ifndef CONFIG_HARDWARE_BIND_PLUG
     // If we came here as a result of hard  reset (power up, with spektrum_sat_bind set), then reset it back to zero and write config
     // Don't reset if hardware bind plug is present
     if (!isMPUSoftReset()) {

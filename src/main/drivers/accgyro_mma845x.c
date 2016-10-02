@@ -97,7 +97,7 @@ bool mma8452Detect(acc_t *acc)
 
 static inline void mma8451ConfigureInterrupt(void)
 {
-#ifdef NAZE
+#ifdef CONFIG_NAZE
     // PA5 - ACC_INT2 output on NAZE rev3/4 hardware
     // NAZE rev.5 hardware has PA5 (ADC1_IN5) on breakout pad on bottom of board
     // OLIMEXINO - The PA5 pin is wired up to LED1, if you need to use an mma8452 on an Olimexino use a different pin and provide support in code.

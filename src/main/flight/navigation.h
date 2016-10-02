@@ -33,12 +33,12 @@ typedef struct gpsProfile_s {
     uint8_t nav_controls_heading;           // copter faces toward the navigation point, maghold must be enabled for it
     uint16_t nav_speed_min;                 // cm/sec
     uint16_t nav_speed_max;                 // cm/sec
-    uint16_t ap_mode;                       // Temporarily Disables GPS_HOLD_MODE to be able to make it possible to adjust the Hold-position when moving the sticks, creating a deadspan for GPS
+    uint16_t ap_mode;                       // Temporarily Disables GPS_HOLD_MODE to be able to make it possible to adjust the Hold-position when moving the sticks, creating a deadspan for CONFIG_GPS
 } gpsProfile_t;
 
 PG_DECLARE_PROFILE(gpsProfile_t, gpsProfile);
 
-extern int16_t GPS_angle[ANGLE_INDEX_COUNT];                // it's the angles that must be applied for GPS correction
+extern int16_t GPS_angle[ANGLE_INDEX_COUNT];                // it's the angles that must be applied for CONFIG_GPS correction
 
 extern int32_t GPS_home[2];
 extern int32_t GPS_hold[2];

@@ -17,7 +17,7 @@
 
 #pragma once
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
 typedef struct gtuneConfig_s {
     uint8_t  gtune_lolimP[FD_INDEX_COUNT];  // [0..200] Lower limit of P during G tune
     uint8_t  gtune_hilimP[FD_INDEX_COUNT];  // [0..200] Higher limit of P during G tune. 0 Disables tuning for that axis.

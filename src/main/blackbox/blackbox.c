@@ -21,7 +21,7 @@
 #include <platform.h>
 #include "build/version.h"
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
 
 #include "common/maths.h"
 #include "common/axis.h"
@@ -192,15 +192,15 @@ static const blackboxDeltaFieldDefinition_t blackboxMainFields[] = {
     {"vbatLatest",    -1, UNSIGNED, .Ipredict = PREDICT(VBATREF),  .Iencode = ENCODING(NEG_14BIT),   .Ppredict = PREDICT(PREVIOUS),  .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_VBAT},
     {"amperageLatest",-1, UNSIGNED, .Ipredict = PREDICT(0),        .Iencode = ENCODING(UNSIGNED_VB), .Ppredict = PREDICT(PREVIOUS),  .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_AMPERAGE_ADC},
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     {"magADC",      0, SIGNED,   .Ipredict = PREDICT(0),       .Iencode = ENCODING(SIGNED_VB),   .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_MAG},
     {"magADC",      1, SIGNED,   .Ipredict = PREDICT(0),       .Iencode = ENCODING(SIGNED_VB),   .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_MAG},
     {"magADC",      2, SIGNED,   .Ipredict = PREDICT(0),       .Iencode = ENCODING(SIGNED_VB),   .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_MAG},
 #endif
-#ifdef BARO
+#ifdef CONFIG_BARO
     {"BaroAlt",    -1, SIGNED,   .Ipredict = PREDICT(0),       .Iencode = ENCODING(SIGNED_VB),   .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_BARO},
 #endif
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     {"sonarRaw",   -1, SIGNED,   .Ipredict = PREDICT(0),       .Iencode = ENCODING(SIGNED_VB),   .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_SONAR},
 #endif
     {"rssi",       -1, UNSIGNED, .Ipredict = PREDICT(0),       .Iencode = ENCODING(UNSIGNED_VB), .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(TAG8_8SVB), FLIGHT_LOG_FIELD_CONDITION_RSSI},
@@ -227,8 +227,8 @@ static const blackboxDeltaFieldDefinition_t blackboxMainFields[] = {
     {"servo",      5, UNSIGNED, .Ipredict = PREDICT(1500),    .Iencode = ENCODING(SIGNED_VB),   .Ppredict = PREDICT(PREVIOUS),      .Pencode = ENCODING(SIGNED_VB), CONDITION(TRICOPTER)}
 };
 
-#ifdef GPS
-// GPS position/vel frame
+#ifdef CONFIG_GPS
+// CONFIG_GPS position/vel frame
 static const blackboxConditionalFieldDefinition_t blackboxGpsGFields[] = {
     {"time",              -1, UNSIGNED, PREDICT(LAST_MAIN_FRAME_TIME), ENCODING(UNSIGNED_VB), CONDITION(NOT_LOGGING_EVERY_FRAME)},
     {"GPS_numSat",        -1, UNSIGNED, PREDICT(0),          ENCODING(UNSIGNED_VB), CONDITION(ALWAYS)},
@@ -239,7 +239,7 @@ static const blackboxConditionalFieldDefinition_t blackboxGpsGFields[] = {
     {"GPS_ground_course", -1, UNSIGNED, PREDICT(0),          ENCODING(UNSIGNED_VB), CONDITION(ALWAYS)}
 };
 
-// GPS home frame
+// CONFIG_GPS home frame
 static const blackboxSimpleFieldDefinition_t blackboxGpsHFields[] = {
     {"GPS_home",           0, SIGNED,   PREDICT(0),          ENCODING(SIGNED_VB)},
     {"GPS_home",           1, SIGNED,   PREDICT(0),          ENCODING(SIGNED_VB)}
@@ -288,13 +288,13 @@ typedef struct blackboxMainState_s {
     uint16_t vbatLatest;
     uint16_t amperageLatest;
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     int32_t BaroAlt;
 #endif
-#ifdef MAG
+#ifdef CONFIG_MAG
     int16_t magADC[XYZ_AXIS_COUNT];
 #endif
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     int32_t sonarRaw;
 #endif
     uint16_t rssi;
@@ -405,14 +405,14 @@ static bool testBlackboxConditionUncached(FlightLogFieldCondition condition)
             return pidProfile()->D8[condition - FLIGHT_LOG_FIELD_CONDITION_NONZERO_PID_D_0] != 0;
 
         case FLIGHT_LOG_FIELD_CONDITION_MAG:
-#ifdef MAG
+#ifdef CONFIG_MAG
             return sensors(SENSOR_MAG);
 #else
             return false;
 #endif
 
         case FLIGHT_LOG_FIELD_CONDITION_BARO:
-#ifdef BARO
+#ifdef CONFIG_BARO
             return sensors(SENSOR_BARO);
 #else
             return false;
@@ -425,7 +425,7 @@ static bool testBlackboxConditionUncached(FlightLogFieldCondition condition)
             return feature(FEATURE_CURRENT_METER) && batteryConfig()->currentMeterType == CURRENT_SENSOR_ADC;
 
         case FLIGHT_LOG_FIELD_CONDITION_SONAR:
-#ifdef SONAR
+#ifdef CONFIG_SONAR
             return feature(FEATURE_SONAR);
 #else
             return false;
@@ -540,19 +540,19 @@ static void writeIntraframe(void)
         blackboxWriteUnsignedVB(blackboxCurrent->amperageLatest);
     }
 
-#ifdef MAG
+#ifdef CONFIG_MAG
         if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_MAG)) {
             blackboxWriteSigned16VBArray(blackboxCurrent->magADC, XYZ_AXIS_COUNT);
         }
 #endif
 
-#ifdef BARO
+#ifdef CONFIG_BARO
         if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_BARO)) {
             blackboxWriteSignedVB(blackboxCurrent->BaroAlt);
         }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
         if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_SONAR)) {
             blackboxWriteSignedVB(blackboxCurrent->sonarRaw);
         }
@@ -663,7 +663,7 @@ static void writeInterframe(void)
         deltas[optionalFieldCount++] = (int32_t) blackboxCurrent->amperageLatest - blackboxLast->amperageLatest;
     }
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_MAG)) {
         for (x = 0; x < XYZ_AXIS_COUNT; x++) {
             deltas[optionalFieldCount++] = blackboxCurrent->magADC[x] - blackboxLast->magADC[x];
@@ -671,13 +671,13 @@ static void writeInterframe(void)
     }
 #endif
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_BARO)) {
         deltas[optionalFieldCount++] = blackboxCurrent->BaroAlt - blackboxLast->BaroAlt;
     }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_SONAR)) {
         deltas[optionalFieldCount++] = blackboxCurrent->sonarRaw - blackboxLast->sonarRaw;
     }
@@ -883,14 +883,14 @@ void finishBlackbox(void)
     }
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void writeGPSHomeFrame()
 {
     blackboxWrite('H');
 
     blackboxWriteSignedVB(GPS_home[0]);
     blackboxWriteSignedVB(GPS_home[1]);
-    //TODO it'd be great if we could grab the GPS current time and write that too
+    //TODO it'd be great if we could grab the CONFIG_GPS current time and write that too
 
     gpsHistory.GPS_home[0] = GPS_home[0];
     gpsHistory.GPS_home[1] = GPS_home[1];
@@ -901,10 +901,10 @@ static void writeGPSFrame()
     blackboxWrite('G');
 
     /*
-     * If we're logging every frame, then a GPS frame always appears just after a frame with the
-     * currentTime timestamp in the log, so the reader can just use that timestamp for the GPS frame.
+     * If we're logging every frame, then a CONFIG_GPS frame always appears just after a frame with the
+     * currentTime timestamp in the log, so the reader can just use that timestamp for the CONFIG_GPS frame.
      *
-     * If we're not logging every frame, we need to store the time of this GPS frame.
+     * If we're not logging every frame, we need to store the time of this CONFIG_GPS frame.
      */
     if (testBlackboxCondition(FLIGHT_LOG_FIELD_CONDITION_NOT_LOGGING_EVERY_FRAME)) {
         // Predict the time of the last frame in the main log
@@ -963,17 +963,17 @@ static void loadMainState(void)
     blackboxCurrent->vbatLatest = vbatLatestADC;
     blackboxCurrent->amperageLatest = amperageLatestADC;
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     for (i = 0; i < XYZ_AXIS_COUNT; i++) {
         blackboxCurrent->magADC[i] = magADC[i];
     }
 #endif
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     blackboxCurrent->BaroAlt = BaroAlt;
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     // Store the raw sonar value without applying tilt correction
     blackboxCurrent->sonarRaw = sonarRead();
 #endif
@@ -1286,13 +1286,13 @@ static void blackboxLogIteration()
             loadMainState();
             writeInterframe();
         }
-#ifdef GPS
+#ifdef CONFIG_GPS
         if (feature(FEATURE_GPS)) {
             /*
-             * If the GPS home point has been updated, or every 128 intraframes (~10 seconds), write the
-             * GPS home position.
+             * If the CONFIG_GPS home point has been updated, or every 128 intraframes (~10 seconds), write the
+             * CONFIG_GPS home position.
              *
-             * We write it periodically so that if one Home Frame goes missing, the GPS coordinates can
+             * We write it periodically so that if one Home Frame goes missing, the CONFIG_GPS coordinates can
              * still be interpreted correctly.
              */
             if (GPS_home[0] != gpsHistory.GPS_home[0] || GPS_home[1] != gpsHistory.GPS_home[1]
@@ -1354,7 +1354,7 @@ void handleBlackbox(void)
             //On entry of this state, xmitState.headerIndex is 0 and xmitState.u.fieldIndex is -1
             if (!sendFieldDefinition('I', 'P', blackboxMainFields, blackboxMainFields + 1, ARRAY_LENGTH(blackboxMainFields),
                     &blackboxMainFields[0].condition, &blackboxMainFields[1].condition)) {
-#ifdef GPS
+#ifdef CONFIG_GPS
                 if (feature(FEATURE_GPS)) {
                     blackboxSetState(BLACKBOX_STATE_SEND_GPS_H_HEADER);
                 } else
@@ -1362,7 +1362,7 @@ void handleBlackbox(void)
                     blackboxSetState(BLACKBOX_STATE_SEND_SLOW_HEADER);
             }
         break;
-#ifdef GPS
+#ifdef CONFIG_GPS
         case BLACKBOX_STATE_SEND_GPS_H_HEADER:
             //On entry of this state, xmitState.headerIndex is 0 and xmitState.u.fieldIndex is -1
             if (!sendFieldDefinition('H', 0, blackboxGpsHFields, blackboxGpsHFields + 1, ARRAY_LENGTH(blackboxGpsHFields),

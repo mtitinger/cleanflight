@@ -134,7 +134,7 @@ void applyAndSaveAccelerometerTrimsDelta(rollAndPitchTrims_t *rollAndPitchTrimsD
     saveConfigAndNotify();
 }
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
 
 void updateGtuneState(void)
 {
@@ -160,7 +160,7 @@ void updateGtuneState(void)
 
 bool isCalibrating(void)
 {
-#ifdef BARO
+#ifdef CONFIG_BARO
     if (sensors(SENSOR_BARO) && !isBaroCalibrationComplete()) {
         return true;
     }
@@ -303,7 +303,7 @@ void mwDisarm(void)
     if (ARMING_FLAG(ARMED)) {
         DISABLE_ARMING_FLAG(ARMED);
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
         if (feature(FEATURE_BLACKBOX)) {
             finishBlackbox();
         }
@@ -336,7 +336,7 @@ void mwArm(void)
             ENABLE_ARMING_FLAG(ARMED);
             headFreeModeHold = DECIDEGREES_TO_DEGREES(attitude.values.yaw);
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
             if (feature(FEATURE_BLACKBOX)) {
                 serialPort_t *sharedBlackboxAndMspPort = findSharedSerialPort(FUNCTION_BLACKBOX, FUNCTION_MSP_SERVER);
                 if (sharedBlackboxAndMspPort) {
@@ -348,7 +348,7 @@ void mwArm(void)
             disarmAt = millis() + armingConfig()->auto_disarm_delay * 1000;   // start disarm timeout, will be extended when throttle is nonzero
 
             //beep to indicate arming
-#ifdef GPS
+#ifdef CONFIG_GPS
             if (feature(FEATURE_GPS) && STATE(GPS_FIX) && GPS_numSat >= 5)
                 beeper(BEEPER_ARMING_GPS_FIX);
             else
@@ -559,7 +559,7 @@ void processRx(void)
         LED1_OFF;
     }
 
-#ifdef  MAG
+#ifdef  CONFIG_MAG
     if (sensors(SENSOR_ACC) || sensors(SENSOR_MAG)) {
         if (rcModeIsActive(BOXMAG)) {
             if (!FLIGHT_MODE(MAG_MODE)) {
@@ -582,7 +582,7 @@ void processRx(void)
     }
 #endif
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     if (sensors(SENSOR_GPS)) {
         updateGpsWaypointsAndMode();
     }
@@ -598,7 +598,7 @@ void processRx(void)
         DISABLE_FLIGHT_MODE(HEADFREE_MODE);
     }
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     if (feature(FEATURE_TELEMETRY)) {
         if ((!telemetryConfig()->telemetry_switch && ARMING_FLAG(ARMED))
             || (telemetryConfig()->telemetry_switch && rcModeIsActive(BOXTELEMETRY))) {
@@ -649,7 +649,7 @@ void filterRc(void){
     }
 }
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
 static bool haveUpdatedRcCommandsOnce = false;
 #endif
 
@@ -674,7 +674,7 @@ void taskMainPidLoop(void)
         filterRc();
     }
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
     haveUpdatedRcCommandsOnce = true;
 #endif
 
@@ -683,17 +683,17 @@ void taskMainPidLoop(void)
         gyro.temperature(&telemTemperature1);
     }
 
-#ifdef MAG
+#ifdef CONFIG_MAG
         if (sensors(SENSOR_MAG)) {
             updateMagHold();
         }
 #endif
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
         updateGtuneState();
 #endif
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
         if (sensors(SENSOR_BARO) || sensors(SENSOR_SONAR)) {
             if (FLIGHT_MODE(BARO_MODE) || FLIGHT_MODE(SONAR_MODE)) {
                 applyAltHold();
@@ -721,7 +721,7 @@ void taskMainPidLoop(void)
         rcCommand[THROTTLE] += calculateThrottleAngleCorrection(throttleCorrectionConfig()->throttle_correction_value);
     }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     if (sensors(SENSOR_GPS)) {
         if ((FLIGHT_MODE(GPS_HOME_MODE) || FLIGHT_MODE(GPS_HOLD_MODE)) && STATE(GPS_FIX_HOME)) {
             updateGpsStateForHomeAndHoldMode();
@@ -753,7 +753,7 @@ void taskMainPidLoop(void)
         afatfs_poll();
 #endif
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     if (!cliMode && feature(FEATURE_BLACKBOX)) {
         handleBlackbox();
     }
@@ -850,7 +850,7 @@ void taskUpdateRxMain(void)
 
     isRXDataNew = true;
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     // updateRcCommands() sets rcCommand[], updateAltHoldState depends on valid rcCommand[] data.
     if (haveUpdatedRcCommandsOnce) {
         if (sensors(SENSOR_BARO)) {
@@ -859,7 +859,7 @@ void taskUpdateRxMain(void)
     }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     // updateRcCommands() sets rcCommand[], updateAltHoldState depends on valid rcCommand[] data.
     if (haveUpdatedRcCommandsOnce) {
         if (sensors(SENSOR_SONAR)) {
@@ -869,11 +869,11 @@ void taskUpdateRxMain(void)
 #endif
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 void taskProcessGPS(void)
 {
-    // if GPS feature is enabled, gpsThread() will be called at some intervals to check for stuck
-    // hardware, wrong baud rates, init GPS if needed, etc. Don't use SENSOR_GPS here as gpsThread() can and will
+    // if CONFIG_GPS feature is enabled, gpsThread() will be called at some intervals to check for stuck
+    // hardware, wrong baud rates, init CONFIG_GPS if needed, etc. Don't use SENSOR_GPS here as gpsThread() can and will
     // change this based on available hardware
     if (feature(FEATURE_GPS)) {
         gpsThread();
@@ -885,7 +885,7 @@ void taskProcessGPS(void)
 }
 #endif
 
-#ifdef MAG
+#ifdef CONFIG_MAG
 void taskUpdateCompass(void)
 {
     if (sensors(SENSOR_MAG)) {
@@ -894,7 +894,7 @@ void taskUpdateCompass(void)
 }
 #endif
 
-#ifdef BARO
+#ifdef CONFIG_BARO
 void taskUpdateBaro(void)
 {
     if (sensors(SENSOR_BARO)) {
@@ -904,7 +904,7 @@ void taskUpdateBaro(void)
 }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
 void taskUpdateSonar(void)
 {
     if (sensors(SENSOR_SONAR)) {
@@ -913,14 +913,14 @@ void taskUpdateSonar(void)
 }
 #endif
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
 void taskCalculateAltitude(void)
 {
     if (false
-#if defined(BARO)
+#if defined(CONFIG_BARO)
         || (sensors(SENSOR_BARO) && isBaroReady())
 #endif
-#if defined(SONAR)
+#if defined(CONFIG_SONAR)
         || sensors(SENSOR_SONAR)
 #endif
         ) {
@@ -928,7 +928,7 @@ void taskCalculateAltitude(void)
     }}
 #endif
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
 void taskUpdateDisplay(void)
 {
     if (feature(FEATURE_DISPLAY)) {
@@ -937,7 +937,7 @@ void taskUpdateDisplay(void)
 }
 #endif
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
 void taskTelemetry(void)
 {
     telemetryCheckState();
@@ -948,7 +948,7 @@ void taskTelemetry(void)
 }
 #endif
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
 void taskLedStrip(void)
 {
     if (feature(FEATURE_LED_STRIP)) {
@@ -957,7 +957,7 @@ void taskLedStrip(void)
 }
 #endif
 
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
 void taskTransponder(void)
 {
     if (feature(FEATURE_TRANSPONDER)) {

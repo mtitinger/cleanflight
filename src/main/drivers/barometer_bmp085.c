@@ -33,7 +33,7 @@
 
 #include "barometer_bmp085.h"
 
-#ifdef BARO
+#ifdef CONFIG_BARO
 
 #if defined(BARO_EOC_GPIO)
 static bool isConversionComplete = false;
@@ -381,4 +381,4 @@ bool bmp085TestEOCConnected(const bmp085Config_t *config)
 }
 #endif
 
-#endif /* BARO */
+#endif /* CONFIG_BARO */

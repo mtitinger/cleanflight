@@ -49,7 +49,7 @@
 #include "blackbox.h"
 #include "blackbox_io.h"
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
 
 #define BLACKBOX_SERIAL_PORT_MODE MODE_TX
 

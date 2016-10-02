@@ -106,7 +106,7 @@ void Set_System(void)
     GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF_14);
 
 #endif /* STM32F37X  && STM32F303xC)*/
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;

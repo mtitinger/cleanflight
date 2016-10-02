@@ -39,7 +39,7 @@
 #include "io/serial_4way_impl.h"
 #include "io/serial_4way_stk500v2.h"
 
-#if defined(USE_SERIAL_4WAY_BLHELI_INTERFACE) && defined(USE_SERIAL_4WAY_SK_BOOTLOADER)
+#if defined(CONFIG_USE_SERIAL_4WAY_BLHELI) && defined(USE_SERIAL_4WAY_SK_BOOTLOADER)
 
 
 #define BIT_LO_US 32                               //32uS

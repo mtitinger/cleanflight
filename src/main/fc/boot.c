@@ -133,7 +133,7 @@ void sonarInit(const sonarHardware_t *sonarHardware);
 // from system_stm32f30x.c
 void SetSysClock(void);
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
 // from system_stm32f10x.c
 void SetSysClock(bool overclock);
 #endif
@@ -260,7 +260,7 @@ void init(void)
 #ifdef STM32F303xC
     SetSysClock();
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     // Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers
     // Configure the Flash Latency cycles and enable prefetch buffer
     SetSysClock(systemConfig()->emf_avoidance);
@@ -306,7 +306,7 @@ void init(void)
         .isInverted = false
 #endif
     };
-#ifdef NAZE
+#ifdef CONFIG_NAZE
     if (hardwareRevision >= NAZE32_REV5) {
         // naze rev4 and below used opendrain to PNP for buzzer. Rev5 and above use PP to NPN.
         beeperConfig.gpioMode = Mode_Out_PP;
@@ -355,7 +355,7 @@ void init(void)
 
     memset(&pwm_params, 0, sizeof(pwm_params));
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     const sonarHardware_t *sonarHardware = NULL;
     sonarGPIOConfig_t sonarGPIOConfig;
     if (feature(FEATURE_SONAR)) {
@@ -373,7 +373,7 @@ void init(void)
         pwm_params.airplane = true;
     else
         pwm_params.airplane = false;
-#if defined(USE_UART2) && defined(STM32F10X)
+#if defined(CONFIG_USE_UART2) && defined(CONFIG_CPU_STM32F10X)
     pwm_params.useUART2 = doesConfigurationUsePort(SERIAL_PORT_UART2);
 #endif
 #if defined(USE_UART3)
@@ -396,7 +396,7 @@ void init(void)
     pwm_params.useLEDStrip = feature(FEATURE_LED_STRIP);
     pwm_params.usePPM = feature(FEATURE_RX_PPM);
     pwm_params.useSerialRx = feature(FEATURE_RX_SERIAL);
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     pwm_params.useSonar = feature(FEATURE_SONAR);
 #endif
 
@@ -455,7 +455,7 @@ void init(void)
     updateHardwareRevision();
 #endif
 
-#if defined(NAZE)
+#if defined(CONFIG_NAZE)
     if (hardwareRevision == NAZE32_SP) {
         serialRemovePort(SERIAL_PORT_SOFTSERIAL2);
     } else  {
@@ -463,13 +463,13 @@ void init(void)
     }
 #endif
 
-#if defined(SPRACINGF3) && defined(SONAR) && defined(USE_SOFTSERIAL2)
+#if defined(SPRACINGF3) && defined(CONFIG_SONAR) && defined(CONFIG_USE_SOFTSERIAL2)
     if (feature(FEATURE_SONAR) && feature(FEATURE_SOFTSERIAL)) {
         serialRemovePort(SERIAL_PORT_SOFTSERIAL2);
     }
 #endif
 
-#if defined(SPRACINGF3MINI) && defined(SONAR) && defined(USE_SOFTSERIAL1)
+#if defined(SPRACINGF3MINI) && defined(CONFIG_SONAR) && defined(CONFIG_USE_SOFTSERIAL1)
     if (feature(FEATURE_SONAR) && feature(FEATURE_SOFTSERIAL)) {
         serialRemovePort(SERIAL_PORT_SOFTSERIAL1);
     }
@@ -477,7 +477,7 @@ void init(void)
 
 
 #ifdef USE_I2C
-#if defined(NAZE)
+#if defined(CONFIG_NAZE)
     if (hardwareRevision != NAZE32_SP) {
         i2cInit(I2C_DEVICE);
     } else {
@@ -522,7 +522,7 @@ void init(void)
 #ifdef OLIMEXINO
     adc_params.channelMask |= ADC_CHANNEL_MASK(ADC_EXTERNAL);
 #endif
-#ifdef NAZE
+#ifdef CONFIG_NAZE
     // optional ADC5 input on rev.5 hardware
     adc_params.channelMask |= (hardwareRevision >= NAZE32_REV5) ? ADC_CHANNEL_MASK(ADC_EXTERNAL) : 0;
 #endif
@@ -532,7 +532,7 @@ void init(void)
 
     initBoardAlignment();
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     if (feature(FEATURE_DISPLAY)) {
         displayInit();
     }
@@ -566,20 +566,20 @@ void init(void)
 
     rxInit(modeActivationProfile()->modeActivationConditions);
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     if (feature(FEATURE_GPS)) {
         gpsInit();
         navigationInit(pidProfile());
     }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     if (feature(FEATURE_SONAR)) {
         sonarInit(sonarHardware);
     }
 #endif
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     ledStripInit();
 
     if (feature(FEATURE_LED_STRIP)) {
@@ -587,7 +587,7 @@ void init(void)
     }
 #endif
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     if (feature(FEATURE_TELEMETRY)) {
         telemetryInit();
     }
@@ -597,7 +597,7 @@ void init(void)
     usbCableDetectInit();
 #endif
 
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
     if (feature(FEATURE_TRANSPONDER)) {
         transponderInit(transponderConfig()->data);
         transponderEnable();
@@ -607,7 +607,7 @@ void init(void)
 #endif
 
 #ifdef USE_FLASHFS
-#ifdef NAZE
+#ifdef CONFIG_NAZE
     if (hardwareRevision == NAZE32_REV5) {
         m25p16_init();
     }
@@ -625,7 +625,7 @@ void init(void)
 
 #ifdef SDCARD_DMA_CHANNEL_TX
 
-#if defined(LED_STRIP) && defined(WS2811_DMA_CHANNEL)
+#if defined(CONFIG_LED_STRIP) && defined(WS2811_DMA_CHANNEL)
     // Ensure the SPI Tx DMA doesn't overlap with the led strip
     sdcardUseDMA = !feature(FEATURE_LED_STRIP) || SDCARD_DMA_CHANNEL_TX != WS2811_DMA_CHANNEL;
 #else
@@ -639,7 +639,7 @@ void init(void)
     afatfs_init();
 #endif
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     initBlackbox();
 #endif
 
@@ -647,7 +647,7 @@ void init(void)
         accSetCalibrationCycles(CALIBRATING_ACC_CYCLES);
     }
     gyroSetCalibrationCycles(CALIBRATING_GYRO_CYCLES);
-#ifdef BARO
+#ifdef CONFIG_BARO
     baroSetCalibrationCycles(CALIBRATING_BARO_CYCLES);
 #endif
 
@@ -672,7 +672,7 @@ void init(void)
     if (feature(FEATURE_VBAT | FEATURE_CURRENT_METER))
         batteryInit();
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     if (feature(FEATURE_DISPLAY)) {
 #ifdef USE_OLED_GPS_DEBUG_PAGE_ONLY
         displayShowFixedPage(PAGE_GPS);
@@ -721,35 +721,35 @@ void configureScheduler(void)
 #endif
     setTaskEnabled(TASK_BATTERY, feature(FEATURE_VBAT) || feature(FEATURE_CURRENT_METER));
     setTaskEnabled(TASK_RX, true);
-#ifdef GPS
+#ifdef CONFIG_GPS
     setTaskEnabled(TASK_GPS, feature(FEATURE_GPS));
 #endif
-#ifdef MAG
+#ifdef CONFIG_MAG
     setTaskEnabled(TASK_COMPASS, sensors(SENSOR_MAG));
 #if defined(MPU6500_SPI_INSTANCE) && defined(USE_MAG_AK8963)
     // fixme temporary solution for AK6983 via slave I2C on MPU9250
     rescheduleTask(TASK_COMPASS, 1000000 / 40);
 #endif
 #endif
-#ifdef BARO
+#ifdef CONFIG_BARO
     setTaskEnabled(TASK_BARO, sensors(SENSOR_BARO));
 #endif
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     setTaskEnabled(TASK_SONAR, sensors(SENSOR_SONAR));
 #endif
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
     setTaskEnabled(TASK_ALTITUDE, sensors(SENSOR_BARO) || sensors(SENSOR_SONAR));
 #endif
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     setTaskEnabled(TASK_DISPLAY, feature(FEATURE_DISPLAY));
 #endif
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     setTaskEnabled(TASK_TELEMETRY, feature(FEATURE_TELEMETRY));
 #endif
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     setTaskEnabled(TASK_LEDSTRIP, feature(FEATURE_LED_STRIP));
 #endif
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
     setTaskEnabled(TASK_TRANSPONDER, feature(FEATURE_TRANSPONDER));
 #endif
 }
@@ -772,7 +772,7 @@ void HardFault_Handler(void)
     if ((systemState & requiredStateForMotors) == requiredStateForMotors) {
         stopMotors();
     }
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
     // prevent IR LEDs from burning out.
     uint8_t requiredStateForTransponder = SYSTEM_STATE_CONFIG_LOADED | SYSTEM_STATE_TRANSPONDER_ENABLED;
     if ((systemState & requiredStateForTransponder) == requiredStateForTransponder) {

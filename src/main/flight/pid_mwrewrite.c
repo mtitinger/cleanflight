@@ -63,7 +63,7 @@ extern pt1Filter_t yawFilter;
 
 extern uint8_t motorCount;
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
 extern int32_t axisPID_P[3], axisPID_I[3], axisPID_D[3];
 #endif
 
@@ -132,7 +132,7 @@ STATIC_UNIT_TESTED int16_t pidMultiWiiRewriteCore(int axis, const pidProfile_t *
         DTerm = constrain(DTerm, -PID_MAX_D, PID_MAX_D);
     }
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     axisPID_P[axis] = PTerm;
     axisPID_I[axis] = ITerm;
     axisPID_D[axis] = DTerm;
@@ -168,7 +168,7 @@ void pidMultiWiiRewrite(const pidProfile_t *pidProfile, const controlRateConfig_
         // -----Get the desired angle rate depending on flight mode
         int32_t angleRate;
         if (axis == FD_YAW) {
-            // YAW is always gyro-controlled (MAG correction is applied to rcCommand)
+            // YAW is always gyro-controlled (CONFIG_MAG correction is applied to rcCommand)
             angleRate = (((int32_t)(rate + 27) * rcCommand[YAW]) >> 5);
         } else {
             // control is GYRO based for ACRO and HORIZON - direct sticks control is applied to rate PID
@@ -176,7 +176,7 @@ void pidMultiWiiRewrite(const pidProfile_t *pidProfile, const controlRateConfig_
             if (FLIGHT_MODE(ANGLE_MODE) || FLIGHT_MODE(HORIZON_MODE)) {
                 // calculate error angle and limit the angle to the max inclination
                 // multiplication of rcCommand corresponds to changing the sticks scaling here
-#ifdef GPS
+#ifdef CONFIG_GPS
                 const int32_t errorAngle = constrain(2 * rcCommand[axis] + GPS_angle[axis], -((int)max_angle_inclination), max_angle_inclination)
                         - attitude.raw[axis] + angleTrim->raw[axis];
 #else
@@ -199,7 +199,7 @@ void pidMultiWiiRewrite(const pidProfile_t *pidProfile, const controlRateConfig_
         const int32_t gyroRate = gyroADC[axis] / 4;
         axisPID[axis] = pidMultiWiiRewriteCore(axis, pidProfile, gyroRate, angleRate);
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
         if (FLIGHT_MODE(GTUNE_MODE) && ARMING_FLAG(ARMED)) {
              calculate_Gtune(axis);
         }

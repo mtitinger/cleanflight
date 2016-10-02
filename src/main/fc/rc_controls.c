@@ -204,13 +204,13 @@ void processRcStickPositions(rxConfig_t *rxConfig, throttleStatus_e throttleStat
         // GYRO calibration
         gyroSetCalibrationCycles(CALIBRATING_GYRO_CYCLES);
 
-#ifdef GPS
+#ifdef CONFIG_GPS
         if (feature(FEATURE_GPS)) {
             GPS_reset_home_position();
         }
 #endif
 
-#ifdef BARO
+#ifdef CONFIG_BARO
         if (sensors(SENSOR_BARO))
             baroSetCalibrationCycles(10); // calibrate baro to new ground level (10 * 25 ms = ~250 ms non blocking)
 #endif
@@ -295,7 +295,7 @@ void processRcStickPositions(rxConfig_t *rxConfig, throttleStatus_e throttleStat
         return;
     }
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     if (rcSticks == THR_LO + YAW_CE + PIT_HI + ROL_LO) {
         displayDisablePageCycling();
     }

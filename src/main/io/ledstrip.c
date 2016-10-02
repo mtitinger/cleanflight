@@ -25,7 +25,7 @@
 
 #include "build/build_config.h"
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
 
 #include <common/color.h>
 #include <common/maths.h>
@@ -486,10 +486,10 @@ static const struct {
     uint8_t ledMode;
 } flightModeToLed[] = {
     {HEADFREE_MODE, LED_MODE_HEADFREE},
-#ifdef MAG
+#ifdef CONFIG_MAG
     {MAG_MODE,      LED_MODE_MAG},
 #endif
-#ifdef BARO
+#ifdef CONFIG_BARO
     {BARO_MODE,     LED_MODE_BARO},
 #endif
     {HORIZON_MODE,  LED_MODE_HORIZON},
@@ -676,7 +676,7 @@ static void applyLedRssiLayer(bool updateNow, uint32_t *timer)
     }
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void applyLedGpsLayer(bool updateNow, uint32_t *timer)
 {
     static uint8_t gpsFlashCounter = 0;
@@ -941,7 +941,7 @@ typedef enum {
     timLarson,
     timBattery,
     timRssi,
-#ifdef GPS
+#ifdef CONFIG_GPS
     timGps,
 #endif
     timWarning,
@@ -969,7 +969,7 @@ static applyLayerFn_timed* layerTable[] = {
     [timLarson] = &applyLarsonScannerLayer,
     [timBattery] = &applyLedBatteryLayer,
     [timRssi] = &applyLedRssiLayer,
-#ifdef GPS
+#ifdef CONFIG_GPS
     [timGps] = &applyLedGpsLayer,
 #endif
     [timWarning] = &applyLedWarningLayer,

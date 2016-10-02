@@ -37,39 +37,39 @@
 #define ENSURE_MAG_DATA_READY_IS_HIGH
 
 
-#define GYRO
+#define CONFIG_GYRO
 //#define USE_FAKE_GYRO
 #define USE_GYRO_SPI_MPU6500
 
 #define ACC
 //#define USE_FAKE_ACC
-#define USE_ACC_SPI_MPU6500
+#define CONFIG_ACC_SPI_MPU6500
 
 #define ACC_MPU6500_ALIGN CW180_DEG
 #define GYRO_MPU6500_ALIGN CW180_DEG
 
-#define BARO
-#define USE_BARO_BMP280
+#define CONFIG_BARO
+#define CONFIG_BARO_BMP280
 
-#define MAG
+#define CONFIG_MAG
 #define USE_MPU9250_MAG // Enables bypass configuration
 #define USE_MAG_AK8963
-//#define USE_MAG_HMC5883 // External
+//#define CONFIG_MAG_HMC5883 // External
 
 #define MAG_AK8963_ALIGN CW90_DEG_FLIP
 
-//#define SONAR
-#define BEEPER
+//#define CONFIG_SONAR
+#define CONFIG_BEEPER
 #define LED0
 
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
-#define USE_SOFTSERIAL1
-#define USE_SOFTSERIAL2
+#define CONFIG_USE_SOFTSERIAL1
+#define CONFIG_USE_SOFTSERIAL2
 #define SERIAL_PORT_COUNT 6
 
 #define USE_UART1_TX_DMA
@@ -185,7 +185,7 @@
 #define ADC_RSSI        ADC_CHANNEL2
 
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #define LED_STRIP_TIMER TIM1
 
 #define USE_LED_STRIP_ON_DMA1_CHANNEL2
@@ -201,7 +201,7 @@
 #define WS2811_DMA_TC_FLAG              DMA1_FLAG_TC2
 #define WS2811_DMA_HANDLER_IDENTIFER    DMA1Channel2Descriptor
 
-#define TRANSPONDER
+#define CONFIG_TRANSPONDER
 #define TRANSPONDER_GPIO                     GPIOA
 #define TRANSPONDER_GPIO_AHB_PERIPHERAL      RCC_AHBPeriph_GPIOA
 #define TRANSPONDER_GPIO_AF                  GPIO_AF_6
@@ -217,23 +217,23 @@
 #define DEFAULT_RX_FEATURE FEATURE_RX_PPM
 #define DEFAULT_FEATURES (FEATURE_TRANSPONDER | FEATURE_RSSI_ADC | FEATURE_CURRENT_METER | FEATURE_TELEMETRY)
 
-#define GPS
-#define BLACKBOX
+#define CONFIG_GPS
+#define CONFIG_BLACKBOX
 #define ENABLE_BLACKBOX_LOGGING_ON_SDCARD_BY_DEFAULT
-#define TELEMETRY
-#define SERIAL_RX
-#define GTUNE
-#define DISPLAY
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
+#define CONFIG_GTUNE
+#define CONFIG_DISPLAY
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // USART3,
 #define BIND_PORT  GPIOB
 #define BIND_PIN   Pin_11
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 // IO - stm32f303cc in 48pin package
 #define TARGET_IO_PORTA 0xffff

@@ -29,20 +29,20 @@
 #define USABLE_TIMER_CHANNEL_COUNT 11
 
 // MPU 9150 INT connected to PA15, pulled up to VCC by 10K Resistor, contains MPU6050 and AK8975 in single component.
-#define GYRO
-#define USE_GYRO_MPU6050
+#define CONFIG_GYRO
+#define CONFIG_GYRO_MPU6050
 
 #define GYRO_MPU6050_ALIGN CW270_DEG
 
 #define ACC
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 
 #define ACC_MPU6050_ALIGN CW270_DEG
 
-#define BARO
-#define USE_BARO_MS5611
+#define CONFIG_BARO
+#define CONFIG_BARO_MS5611
 
-#define MAG
+#define CONFIG_MAG
 #define USE_MAG_AK8975
 
 #define MAG_AK8975_ALIGN CW180_DEG_FLIP
@@ -53,8 +53,8 @@
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1 // Conn 1 - TX (PB6) RX PB7 (AF7)
-#define USE_UART2 // Input - RX (PA3)
+#define CONFIG_USE_UART1 // Conn 1 - TX (PB6) RX PB7 (AF7)
+#define CONFIG_USE_UART2 // Input - RX (PA3)
 #define USE_UART3 // Servo out - 10/RX (PB11) 11/TX (PB10)
 #define SERIAL_PORT_COUNT 4
 
@@ -121,17 +121,17 @@
 
 #define DEFAULT_RX_FEATURE FEATURE_RX_PPM
 
-#define BLACKBOX
-#define GPS
-#define GTUNE
-#define DISPLAY
-#define SERIAL_RX
-#define TELEMETRY
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_BLACKBOX
+#define CONFIG_GPS
+#define CONFIG_GTUNE
+#define CONFIG_DISPLAY
+#define CONFIG_SERIAL_RX
+#define CONFIG_TELEMETRY
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SONAR
+#define CONFIG_SONAR
 #define SONAR_TRIGGER_PIN           Pin_2   // PWM6 (PA2) - only 3.3v ( add a 1K Ohms resistor )
 #define SONAR_TRIGGER_GPIO          GPIOA
 #define SONAR_ECHO_PIN              Pin_1   // PWM7 (PB1) - only 3.3v ( add a 1K Ohms resistor )
@@ -139,7 +139,7 @@
 #define SONAR_TRIGGER_IO            PA2
 #define SONAR_ECHO_IO               PA1
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #if 1
 // LED strip configuration using PWM motor output pin 5.
 #define LED_STRIP_TIMER TIM16
@@ -178,9 +178,9 @@
 
 #endif
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // UART2, PA3
 #define BIND_PORT GPIOA
 #define BIND_PIN Pin_3

@@ -47,7 +47,7 @@
 //#define DEBUG_MPU_DATA_READY_INTERRUPT
 #define USE_MPU_DATA_READY_SIGNAL
 
-#define GYRO
+#define CONFIG_GYRO
 #define USE_GYRO_SPI_MPU6000
 
 #define GYRO_MPU6000_ALIGN CW270_DEG
@@ -57,25 +57,25 @@
 
 #define ACC_MPU6000_ALIGN CW270_DEG
 
-// External I2C BARO
-#define BARO
-#define USE_BARO_MS5611
-#define USE_BARO_BMP085
+// External I2C CONFIG_BARO
+#define CONFIG_BARO
+#define CONFIG_BARO_MS5611
+#define CONFIG_BARO_BMP085
 
-// External I2C MAG
-#define MAG
-#define USE_MAG_HMC5883
+// External I2C CONFIG_MAG
+#define CONFIG_MAG
+#define CONFIG_MAG_HMC5883
 
 #define INVERTER
-#define BEEPER
-#define DISPLAY
+#define CONFIG_BEEPER
+#define CONFIG_DISPLAY
 
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
+#define CONFIG_USE_UART1
 #define USE_UART3
-//#define USE_SOFTSERIAL1
+//#define CONFIG_USE_SOFTSERIAL1
 #define SERIAL_PORT_COUNT 4
 
 #define USE_UART1_TX_DMA
@@ -116,19 +116,19 @@
 #define ADC_BATTERY     ADC_CHANNEL1
 #define ADC_RSSI        ADC_CHANNEL2
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #define LED_STRIP_TIMER TIM3
 #define WS2811_DMA_TC_FLAG           DMA1_FLAG_TC6
 #define WS2811_DMA_HANDLER_IDENTIFER DMA1Channel6Descriptor
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // UART3, PB11 (Flexport)
 #define BIND_PORT  GPIOB
 #define BIND_PIN   Pin_11
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
-#define SONAR
+#define CONFIG_SONAR
 #define SONAR_TRIGGER_PIN           Pin_5   // (PB5)
 #define SONAR_TRIGGER_GPIO          GPIOB
 #define SONAR_ECHO_PIN              Pin_0   // (PB0) - only 3.3v ( add a 1K Ohms resistor )
@@ -136,14 +136,14 @@
 #define SONAR_TRIGGER_IO            PB5
 #define SONAR_ECHO_IO               PB1
 
-#define GPS
-#define BLACKBOX
+#define CONFIG_GPS
+#define CONFIG_BLACKBOX
 #define ENABLE_BLACKBOX_LOGGING_ON_SPIFLASH_BY_DEFAULT
 
-#define TELEMETRY
-#define SERIAL_RX
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 #define TARGET_MOTOR_COUNT 6
 

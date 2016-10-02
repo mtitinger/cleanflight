@@ -1,5 +1,6 @@
 #pragma once
 
+#include "platform.h"
 #include <stdbool.h>
 
 #include "drivers/resource.h"
@@ -32,7 +33,8 @@ typedef void* IO_t;               // type specifying IO pin. Currently ioRec_t p
 //  helps masking CPU differences
 
 typedef uint8_t ioConfig_t;  // packed IO configuration
-#if defined(STM32F10X)
+
+#ifdef CONFIG_CPU_STM32F10X
 
 // mode is using only bits 6-2
 # define IO_CONFIG(mode, speed) ((mode) | (speed))

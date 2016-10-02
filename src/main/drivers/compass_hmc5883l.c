@@ -23,7 +23,7 @@
 
 #include <platform.h>
 
-#ifdef USE_MAG_HMC5883
+#ifdef CONFIG_MAG_HMC5883
 
 #include "build/debug.h"
 
@@ -202,7 +202,7 @@ bool hmc5883lInit(void)
             RCC_AHBPeriphClockCmd(hmc5883Config->gpioAHBPeripherals, ENABLE);
         }
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
         if (hmc5883Config->gpioAPB2Peripherals) {
             RCC_APB2PeriphClockCmd(hmc5883Config->gpioAPB2Peripherals, ENABLE);
         }

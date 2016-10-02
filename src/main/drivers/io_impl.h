@@ -19,7 +19,7 @@ extern ioRec_t ioRecs[DEFIO_IO_USED_COUNT];
 
 int IO_GPIOPortIdx(IO_t io);
 int IO_GPIOPinIdx(IO_t io);
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
 int IO_GPIO_PinSource(IO_t io);
 int IO_GPIO_PortSource(IO_t io);
 #elif defined(STM32F303xC)

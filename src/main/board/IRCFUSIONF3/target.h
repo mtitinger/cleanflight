@@ -29,22 +29,22 @@
 #define USE_MPU_DATA_READY_SIGNAL
 #define ENSURE_MPU_DATA_READY_IS_LOW
 
-#define GYRO
-#define USE_GYRO_MPU6050
+#define CONFIG_GYRO
+#define CONFIG_GYRO_MPU6050
 #define GYRO_MPU6050_ALIGN CW270_DEG
 
 #define ACC
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 #define ACC_MPU6050_ALIGN CW270_DEG
 
-#define BARO
-#define USE_BARO_BMP085
+#define CONFIG_BARO
+#define CONFIG_BARO_BMP085
 
 #define USE_FLASHFS
 #define USE_FLASH_M25P16
 
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
 #define SERIAL_PORT_COUNT 3
 
@@ -105,21 +105,21 @@
 #define ADC_CURRENT     ADC_CHANNEL1
 #define ADC_RSSI        ADC_CHANNEL2
 
-#define BLACKBOX
-#define GPS
-#define GTUNE
-#define SERIAL_RX
-#define USE_SERVOS
-#define TELEMETRY
-#define USE_CLI
+#define CONFIG_BLACKBOX
+#define CONFIG_GPS
+#define CONFIG_GTUNE
+#define CONFIG_SERIAL_RX
+#define CONFIG_USE_SERVOS
+#define CONFIG_TELEMETRY
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // USART3,
 #define BIND_PORT  GPIOB
 #define BIND_PIN   Pin_11
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 // IO - stm32f303cc in 48pin package ?
 #define TARGET_IO_PORTA 0xffff

@@ -1,6 +1,0 @@
-config NAZE
-        bool
-        default y
-	help
-	  NAZE32 blah help.
-

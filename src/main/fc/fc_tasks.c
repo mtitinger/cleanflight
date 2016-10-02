@@ -88,7 +88,7 @@ cfTask_t cfTasks[] = {
         .staticPriority = TASK_PRIORITY_HIGH,
     },
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     [TASK_GPS] = {
         .taskName = "GPS",
         .taskFunc = taskProcessGPS,
@@ -97,7 +97,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     [TASK_COMPASS] = {
         .taskName = "COMPASS",
         .taskFunc = taskUpdateCompass,
@@ -106,7 +106,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     [TASK_BARO] = {
         .taskName = "BARO",
         .taskFunc = taskUpdateBaro,
@@ -115,7 +115,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     [TASK_SONAR] = {
         .taskName = "SONAR",
         .taskFunc = taskUpdateSonar,
@@ -124,7 +124,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
     [TASK_ALTITUDE] = {
         .taskName = "ALTITUDE",
         .taskFunc = taskCalculateAltitude,
@@ -133,7 +133,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef TRANSPONDER
+#ifdef CONFIG_TRANSPONDER
     [TASK_TRANSPONDER] = {
         .taskName = "TRANSPONDER",
         .taskFunc = taskTransponder,
@@ -142,7 +142,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     [TASK_DISPLAY] = {
         .taskName = "DISPLAY",
         .taskFunc = taskUpdateDisplay,
@@ -151,7 +151,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     [TASK_TELEMETRY] = {
         .taskName = "TELEMETRY",
         .taskFunc = taskTelemetry,
@@ -160,7 +160,7 @@ cfTask_t cfTasks[] = {
     },
 #endif
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     [TASK_LEDSTRIP] = {
         .taskName = "LEDSTRIP",
         .taskFunc = taskLedStrip,

@@ -41,7 +41,7 @@
 #include "sensors/sensors.h"
 #include "sensors/compass.h"
 
-#ifdef NAZE
+#ifdef CONFIG_NAZE
 #include "hardware_revision.h"
 #endif
 
@@ -61,7 +61,7 @@ int16_t magADCRaw[XYZ_AXIS_COUNT];
 int32_t magADC[XYZ_AXIS_COUNT];
 sensor_align_e magAlign = 0;
 
-#ifdef MAG
+#ifdef CONFIG_MAG
 
 static uint8_t magInit = 0;
 

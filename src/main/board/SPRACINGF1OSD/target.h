@@ -78,8 +78,8 @@
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define SERIAL_PORT_COUNT 3
 
 #define USE_MSP_CLIENT

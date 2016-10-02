@@ -32,7 +32,7 @@
 #include "pwm_rx.h"
 #include "pwm_mapping.h"
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
 #include "serial_uart_stm32f10x.h"
 #endif
 #ifdef STM32F303xC
@@ -85,7 +85,7 @@ enum {
     MAP_TO_SERVO_OUTPUT,
 };
 
-#if defined(NAZE) || defined(OLIMEXINO) || defined(NAZE32PRO) || defined(STM32F3DISCOVERY) || defined(EUSTM32F103RC) || defined(PORT103R) || defined(PORT103V)
+#if defined(CONFIG_NAZE) || defined(CONFIG_OLIMEXINO) || defined(NAZE32PRO) || defined(STM32F3DISCOVERY) || defined(EUSTM32F103RC) || defined(PORT103R) || defined(PORT103V)
 static const uint16_t multiPPM[] = {
     PWM1  | (MAP_TO_PPM_INPUT << 8),     // PPM input
     PWM9  | (MAP_TO_MOTOR_OUTPUT << 8),      // Swap to servo if needed
@@ -714,7 +714,7 @@ pwmIOConfiguration_t *pwmInit(drv_pwm_config_t *init)
 #endif
 
         // skip UART ports
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
         if (init->useUART2 && timerHardwarePtr->gpio == UART2_GPIO && (timerHardwarePtr->pin == UART2_TX_PIN || timerHardwarePtr->pin == UART2_RX_PIN))
             continue;
 #endif
@@ -739,7 +739,7 @@ pwmIOConfiguration_t *pwmInit(drv_pwm_config_t *init)
             continue;
 #endif
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
         // skip I2C ports if device 1 is selected
         if (I2C_DEVICE == I2CDEV_1 && timerHardwarePtr->gpio == GPIOB && (timerHardwarePtr->pin == Pin_6 || timerHardwarePtr->pin == Pin_7))
             continue;
@@ -785,7 +785,7 @@ pwmIOConfiguration_t *pwmInit(drv_pwm_config_t *init)
         }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
         if (init->sonarGPIOConfig &&
           (
             (timerHardwarePtr->gpio == init->sonarGPIOConfig->triggerGPIO
@@ -815,7 +815,7 @@ pwmIOConfiguration_t *pwmInit(drv_pwm_config_t *init)
 
 #ifdef USE_SERVOS
         if (init->useServos && !init->airplane) {
-#if defined(NAZE)
+#if defined(CONFIG_NAZE)
             // remap PWM9+10 as servos
             if ((timerIndex == PWM9 || timerIndex == PWM10) && timerHardwarePtr->tim == TIM1)
                 type = MAP_TO_SERVO_OUTPUT;
@@ -883,7 +883,7 @@ pwmIOConfiguration_t *pwmInit(drv_pwm_config_t *init)
         }
 
         if (init->useChannelForwarding && !init->airplane) {
-#if defined(NAZE) && defined(LED_STRIP_TIMER)
+#if defined(CONFIG_NAZE) && defined(LED_STRIP_TIMER)
             // if LED strip is active, PWM5-8 are unavailable, so map AUX1+AUX2 to PWM13+PWM14
             if (init->useLEDStrip) { 
                 if (timerIndex >= PWM13 && timerIndex <= PWM14) {
@@ -892,7 +892,7 @@ pwmIOConfiguration_t *pwmInit(drv_pwm_config_t *init)
             } else
 #endif
 
-#if defined(SPRACINGF3) || defined(NAZE)
+#if defined(SPRACINGF3) || defined(CONFIG_NAZE)
                 // remap PWM5..8 as servos when used in extended servo mode
                 if (timerIndex >= PWM5 && timerIndex <= PWM8)
                     type = MAP_TO_SERVO_OUTPUT;

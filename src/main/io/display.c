@@ -23,7 +23,7 @@
 #include <platform.h>
 #include "build/build_config.h"
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
 
 #include "build/version.h"
 #include "build/debug.h"
@@ -94,7 +94,7 @@ static const char* const pageTitles[] = {
 #ifndef SKIP_TASK_STATISTICS
     "TASKS",
 #endif
-#ifdef GPS
+#ifdef CONFIG_GPS
     "GPS",
 #endif
 #ifdef ENABLE_DEBUG_OLED_PAGE
@@ -105,7 +105,7 @@ static const char* const pageTitles[] = {
 
 static const pageId_e cyclePageIds[] = {
     PAGE_PROFILE,
-#ifdef GPS
+#ifdef CONFIG_GPS
     PAGE_GPS,
 #endif
     PAGE_RX,
@@ -163,7 +163,7 @@ static void padLineBuffer(void)
     lineBuffer[length] = 0;
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void padHalfLineBuffer(void)
 {
     uint8_t halfLineIndex = sizeof(lineBuffer) / 2;
@@ -362,7 +362,7 @@ void showProfilePage(void)
 #define SATELLITE_COUNT (sizeof(GPS_svinfo_cno) / sizeof(GPS_svinfo_cno[0]))
 #define SATELLITE_GRAPH_LEFT_OFFSET ((SCREEN_CHARACTER_COLUMN_COUNT - SATELLITE_COUNT) / 2)
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void showGpsPage(uint32_t now)
 {
     uint8_t rowIndex = PAGE_TITLE_LINE_COUNT;
@@ -518,7 +518,7 @@ static void showSensorsPage(void)
         i2c_OLED_send_string(lineBuffer);
     }
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     if (sensors(SENSOR_MAG)) {
         tfp_sprintf(lineBuffer, format, "MAG", magADC[X], magADC[Y], magADC[Z]);
         padLineBuffer();
@@ -532,7 +532,7 @@ static void showSensorsPage(void)
     i2c_OLED_set_line(rowIndex++);
     i2c_OLED_send_string(lineBuffer);
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     if (sensors(SENSOR_SONAR)) {
         static const char *sonarFormat = "%s             %5d";
         tfp_sprintf(lineBuffer, sonarFormat, "SNR", sonarGetLatestAltitude());
@@ -621,7 +621,7 @@ void updateDisplay(void)
             if (cyclePageIds[pageState.cycleIndex] == PAGE_BATTERY && !(feature(FEATURE_VBAT) || feature(FEATURE_CURRENT_METER))) {
                 pageState.cycleIndex++;
             }
-#ifdef GPS
+#ifdef CONFIG_GPS
             if (cyclePageIds[pageState.cycleIndex] == PAGE_GPS && !feature(FEATURE_GPS)) {
                 pageState.cycleIndex++;
             }
@@ -681,7 +681,7 @@ void updateDisplay(void)
             showTasksPage();
             break;
 #endif
-#ifdef GPS
+#ifdef CONFIG_GPS
         case PAGE_GPS:
             showGpsPage(now);
             break;

@@ -62,7 +62,7 @@ int32_t AltHold;
 int32_t vario = 0;                      // variometer in cm/s
 
 
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
 
 static int16_t initialRawThrottleHold;
 static int16_t initialThrottleHold;
@@ -221,7 +221,7 @@ void calculateEstimatedAltitude(uint32_t currentTime)
     static float accAlt = 0.0f;
     static int32_t lastBaroAlt;
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     int32_t sonarAlt = SONAR_OUT_OF_RANGE;
     static int32_t baroAlt_offset = 0;
     float sonarTransition;
@@ -233,7 +233,7 @@ void calculateEstimatedAltitude(uint32_t currentTime)
 
     previousTime = currentTime;
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     if (!isBaroCalibrationComplete()) {
         performBaroCalibrationCycle();
         vel = 0;
@@ -245,18 +245,18 @@ void calculateEstimatedAltitude(uint32_t currentTime)
     BaroAlt = 0;
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     sonarAlt = sonarRead();
     sonarAlt = sonarCalculateAltitude(sonarAlt, getCosTiltAngle());
 
     if (sonarAlt > 0 && sonarAlt < sonarCfAltCm) {
-        // just use the SONAR
+        // just use the CONFIG_SONAR
         baroAlt_offset = BaroAlt - sonarAlt;
         BaroAlt = sonarAlt;
     } else {
         BaroAlt -= baroAlt_offset;
         if (sonarAlt > 0  && sonarAlt <= sonarMaxAltWithTiltCm) {
-            // SONAR in range, so use complementary filter
+            // CONFIG_SONAR in range, so use complementary filter
             sonarTransition = (float)(sonarMaxAltWithTiltCm - sonarAlt) / (sonarMaxAltWithTiltCm - sonarCfAltCm);
             BaroAlt = sonarAlt * sonarTransition + BaroAlt * (1.0f - sonarTransition);
         }
@@ -286,13 +286,13 @@ void calculateEstimatedAltitude(uint32_t currentTime)
 
     imuResetAccelerationSum();
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     if (!isBaroCalibrationComplete()) {
         return;
     }
 #endif
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
     if (sonarAlt > 0 && sonarAlt < sonarCfAltCm) {
         // the sonar has the best range
         EstAlt = BaroAlt;

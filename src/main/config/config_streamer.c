@@ -52,7 +52,7 @@ void config_streamer_start(config_streamer_t *c, uintptr_t base, int size)
 
 #if defined(STM32F303)
     FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR);
-#elif defined(STM32F10X)
+#elif defined(CONFIG_CPU_STM32F10X)
     FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);
 #elif defined(UNIT_TEST)
     // NOP

@@ -29,7 +29,7 @@
 
 #include "barometer_bmp280.h"
 
-#ifdef BARO
+#ifdef CONFIG_BARO
 
 // BMP280, address 0x76
 

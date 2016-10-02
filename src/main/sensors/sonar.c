@@ -44,7 +44,7 @@
     float baro_cf_vel;                      // apply Complimentary Filter to keep the calculated velocity based on baro velocity (i.e. near real velocity)
     float baro_cf_alt;                      // apply CF to use ACC for height estimation
 
-#ifdef SONAR
+#ifdef CONFIG_SONAR
 int16_t sonarMaxRangeCm;
 int16_t sonarMaxAltWithTiltCm;
 int16_t sonarCfAltCm; // Complimentary Filter altitude

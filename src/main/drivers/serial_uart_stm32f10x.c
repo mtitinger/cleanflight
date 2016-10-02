@@ -40,11 +40,11 @@
 #include "serial_uart_impl.h"
 #include "serial_uart_stm32f10x.h"
 
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
 static uartPort_t uartPort1;
 #endif
 
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
 static uartPort_t uartPort2;
 #endif
 
@@ -94,7 +94,7 @@ void usartIrqHandler(uartPort_t *s)
     }
 }
 
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
 
 // UART1 Tx DMA Handler
 void UART_TX_DMA_IRQHandler(dmaChannel_t* descriptor, dmaCallbackHandler_t* handler)
@@ -193,8 +193,8 @@ void USART1_IRQHandler(void)
 
 #endif
 
-#ifdef USE_UART2
-// UART2 - GPS or Spektrum or ?? (RX + TX by IRQ)
+#ifdef CONFIG_USE_UART2
+// UART2 - CONFIG_GPS or Spektrum or ?? (RX + TX by IRQ)
 uartPort_t *serialUART2(uint32_t baudRate, portMode_t mode, portOptions_t options)
 {
     uartPort_t *s;

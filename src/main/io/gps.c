@@ -56,7 +56,7 @@
 #include "flight/navigation.h"
 
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 
 PG_REGISTER_WITH_RESET_FN(gpsConfig_t, gpsConfig, PG_GPS_CONFIG, 0);
 
@@ -81,15 +81,15 @@ void pgResetFn_gpsConfig(gpsConfig_t *instance)
 char gpsPacketLog[GPS_PACKET_LOG_ENTRY_COUNT];
 static char *gpsPacketLogChar = gpsPacketLog;
 // **********************
-// GPS
+// CONFIG_GPS
 // **********************
 int32_t GPS_coord[2];               // LAT/LON
 
 uint8_t GPS_numSat;
-uint16_t GPS_hdop = 9999;           // Compute GPS quality signal
+uint16_t GPS_hdop = 9999;           // Compute CONFIG_GPS quality signal
 uint32_t GPS_packetCount = 0;
 uint32_t GPS_svInfoReceivedCount = 0; // SV = Space Vehicle, counter increments each time SV info is received.
-uint8_t GPS_update = 0;             // it's a binary toggle to distinct a GPS position update
+uint8_t GPS_update = 0;             // it's a binary toggle to distinct a CONFIG_GPS position update
 
 uint16_t GPS_altitude;              // altitude in 0.1m
 uint16_t GPS_speed;                 // speed in 0.1m/s
@@ -103,7 +103,7 @@ uint8_t GPS_svinfo_cno[GPS_SV_MAXSATS];     // Carrier to Noise Ratio (Signal St
 
 uint32_t GPS_garbageByteCount = 0;
 
-// GPS timeout for wrong baud rate/disconnection/etc in milliseconds (default 2.5second)
+// CONFIG_GPS timeout for wrong baud rate/disconnection/etc in milliseconds (default 2.5second)
 #define GPS_TIMEOUT (2500)
 // How many entries in gpsInitData array below
 #define GPS_INIT_ENTRIES (GPS_BAUDRATE_MAX + 1)
@@ -136,7 +136,7 @@ static const gpsInitData_t gpsInitData[] = {
 static const uint8_t ubloxInit[] = {
 
     0xB5, 0x62, 0x06, 0x24, 0x24, 0x00, 0xFF, 0xFF, 0x03, 0x03, 0x00,           // CFG-NAV5 - Set engine settings
-    0x00, 0x00, 0x00, 0x10, 0x27, 0x00, 0x00, 0x05, 0x00, 0xFA, 0x00,           // Collected by resetting a GPS unit to defaults. Changing mode to Pedistrian and
+    0x00, 0x00, 0x00, 0x10, 0x27, 0x00, 0x00, 0x05, 0x00, 0xFA, 0x00,           // Collected by resetting a CONFIG_GPS unit to defaults. Changing mode to Pedistrian and
     0xFA, 0x00, 0x64, 0x00, 0x2C, 0x01, 0x00, 0x3C, 0x00, 0x00, 0x00,           // capturing the data from the U-Center binary console.
     0x00, 0xC8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x17, 0xC2,
 
@@ -159,10 +159,10 @@ static const uint8_t ubloxInit[] = {
     0xB5, 0x62, 0x06, 0x08, 0x06, 0x00, 0xC8, 0x00, 0x01, 0x00, 0x01, 0x00, 0xDE, 0x6A,             // set rate to 5Hz (measurement period: 200ms, navigation rate: 1 cycle)
 };
 
-// UBlox 6 Protocol documentation - GPS.G6-SW-10018-F
+// UBlox 6 Protocol documentation - CONFIG_GPS.G6-SW-10018-F
 // SBAS Configuration Settings Desciption, Page 4/210
 // 31.21 CFG-SBAS (0x06 0x16), Page 142/210
-// A.10 SBAS Configuration (UBX-CFG-SBAS), Page 198/210 - GPS.G6-SW-10018-F
+// A.10 SBAS Configuration (UBX-CFG-SBAS), Page 198/210 - CONFIG_GPS.G6-SW-10018-F
 
 #define UBLOX_SBAS_MESSAGE_LENGTH 16
 typedef struct ubloxSbas_s {
@@ -244,7 +244,7 @@ void gpsInit(void)
     }
 
     portMode_t mode = MODE_RXTX;
-    // only RX is needed for NMEA-style GPS
+    // only RX is needed for NMEA-style CONFIG_GPS
     if (gpsConfig()->provider == GPS_NMEA)
 	    mode &= ~MODE_TX;
 
@@ -255,7 +255,7 @@ void gpsInit(void)
         return;
     }
 
-    // signal GPS "thread" to initialize when it gets to it
+    // signal CONFIG_GPS "thread" to initialize when it gets to it
     gpsSetState(GPS_INITIALIZING);
 }
 
@@ -275,7 +275,7 @@ void gpsInitUblox(void)
     uint32_t now;
     // UBX will run at the serial port's baudrate, it shouldn't be "autodetected". So here we force it to that rate
 
-    // Wait until GPS transmit buffer is empty
+    // Wait until CONFIG_GPS transmit buffer is empty
     if (!isSerialTransmitBufferEmpty(gpsPort))
         return;
 
@@ -313,7 +313,7 @@ void gpsInitUblox(void)
             break;
         case GPS_CONFIGURE:
 
-            // Either use specific config file for GPS or let dynamically upload config
+            // Either use specific config file for CONFIG_GPS or let dynamically upload config
             if( gpsConfig()->autoConfig == GPS_AUTOCONFIG_OFF ) {
                 gpsSetState(GPS_RECEIVING_DATA);
                 break;
@@ -366,13 +366,13 @@ void gpsInitHardware(void)
 
 void gpsThread(void)
 {
-    // Extra delay for at least 2 seconds after booting to give GPS time to initialise
+    // Extra delay for at least 2 seconds after booting to give CONFIG_GPS time to initialise
     if (!isMPUSoftReset() && (millis() < GPS_BOOT_DELAY)) {
         sensorsClear(SENSOR_GPS);
         DISABLE_STATE(GPS_FIX);
         return;
     }
-    // read out available GPS bytes
+    // read out available CONFIG_GPS bytes
     if (gpsPort) {
         while (serialRxBytesWaiting(gpsPort))
             gpsNewData(serialRead(gpsPort));
@@ -405,7 +405,7 @@ void gpsThread(void)
         case GPS_RECEIVING_DATA:
             // check for no data/gps timeout/cable disconnection etc
             if (millis() - gpsData.lastMessage > GPS_TIMEOUT) {
-                // remove GPS from capability
+                // remove CONFIG_GPS from capability
                 sensorsClear(SENSOR_GPS);
                 gpsSetState(GPS_LOST_COMMUNICATION);
             }
@@ -449,19 +449,19 @@ bool gpsNewFrame(uint8_t c)
 }
 
 
-/* This is a light implementation of a GPS frame decoding
-   This should work with most of modern GPS devices configured to output 5 frames.
+/* This is a light implementation of a CONFIG_GPS frame decoding
+   This should work with most of modern CONFIG_GPS devices configured to output 5 frames.
    It assumes there are some NMEA GGA frames to decode on the serial bus
    Now verifies checksum correctly before applying data
 
    Here we use only the following data :
      - latitude
      - longitude
-     - GPS fix is/is not ok
-     - GPS num sat (4 is enough to be +/- reliable)
+     - CONFIG_GPS fix is/is not ok
+     - CONFIG_GPS num sat (4 is enough to be +/- reliable)
      // added by Mis
-     - GPS altitude (for OSD displaying)
-     - GPS speed (for OSD displaying)
+     - CONFIG_GPS altitude (for OSD displaying)
+     - CONFIG_GPS speed (for OSD displaying)
 */
 
 #define NO_FRAME   0
@@ -720,7 +720,7 @@ typedef struct {
 } ubx_header;
 
 typedef struct {
-    uint32_t time;              // GPS msToW
+    uint32_t time;              // CONFIG_GPS msToW
     int32_t longitude;
     int32_t latitude;
     int32_t altitude_ellipsoid;
@@ -730,7 +730,7 @@ typedef struct {
 } ubx_nav_posllh;
 
 typedef struct {
-    uint32_t time;              // GPS msToW
+    uint32_t time;              // CONFIG_GPS msToW
     uint8_t fix_type;
     uint8_t fix_status;
     uint8_t differential_status;
@@ -760,7 +760,7 @@ typedef struct {
 } ubx_nav_solution;
 
 typedef struct {
-    uint32_t time;              // GPS msToW
+    uint32_t time;              // CONFIG_GPS msToW
     int32_t ned_north;
     int32_t ned_east;
     int32_t ned_down;
@@ -783,7 +783,7 @@ typedef struct {
 } ubx_nav_svinfo_channel;
 
 typedef struct {
-    uint32_t time;              // GPS Millisecond time of week
+    uint32_t time;              // CONFIG_GPS Millisecond time of week
     uint8_t numCh;              // Number of channels
     uint8_t globalFlags;        // Bitmask, Chip hardware generation 0:Antaris, 1:u-blox 5, 2:u-blox 6
     uint16_t reserved2;         // Reserved
@@ -842,7 +842,7 @@ static bool _new_position;
 // do we have new speed information?
 static bool _new_speed;
 
-// Example packet sizes from UBlox u-center from a Glonass capable GPS receiver.
+// Example packet sizes from UBlox u-center from a Glonass capable CONFIG_GPS receiver.
 //15:17:55  R -> UBX NAV-STATUS,  Size  24,  'Navigation Status'
 //15:17:55  R -> UBX NAV-POSLLH,  Size  36,  'Geodetic Position'
 //15:17:55  R -> UBX NAV-VELNED,  Size  44,  'Velocity in WGS 84'
@@ -1061,7 +1061,7 @@ void gpsEnablePassthrough(serialPort_t *gpsPassthroughPort)
     LED0_OFF;
     LED1_OFF;
 
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
     if (feature(FEATURE_DISPLAY)) {
         displayShowFixedPage(PAGE_GPS);
     }
@@ -1081,7 +1081,7 @@ void gpsEnablePassthrough(serialPort_t *gpsPassthroughPort)
             serialWrite(gpsPort, c);
             LED1_OFF;
         }
-#ifdef DISPLAY
+#ifdef CONFIG_DISPLAY
         if (feature(FEATURE_DISPLAY)) {
             updateDisplay();
         }

@@ -37,7 +37,7 @@
 
 #define USE_MPU_DATA_READY_SIGNAL
 
-#define GYRO
+#define CONFIG_GYRO
 #define USE_GYRO_SPI_MPU6000
 #define USE_ACC_SPI_MPU6000
 
@@ -51,22 +51,22 @@
 #define ACC_MPU6000_ALIGN CW180_DEG
 #define GYRO_MPU6000_ALIGN CW180_DEG
 
-#define BARO
-#define USE_BARO_MS5611
+#define CONFIG_BARO
+#define CONFIG_BARO_MS5611
 
-#define MAG
+#define CONFIG_MAG
 #define USE_MPU9250_MAG // Enables bypass configuration
 #define USE_MAG_AK8975
-#define USE_MAG_HMC5883 // External
+#define CONFIG_MAG_HMC5883 // External
 
 #define MAG_AK8975_ALIGN CW180_DEG
 
-#define SONAR
-#define BEEPER
+#define CONFIG_SONAR
+#define CONFIG_BEEPER
 #define LED0
 #define LED1
 
-#define SONAR
+#define CONFIG_SONAR
 #define SONAR_TRIGGER_PIN           Pin_6   // RC_CH7 (PB0) - only 3.3v ( add a 1K Ohms resistor )
 #define SONAR_TRIGGER_GPIO          GPIOA
 #define SONAR_TRIGGER_IO            PA6
@@ -77,8 +77,8 @@
 #define USB_IO
 
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
 #define SERIAL_PORT_COUNT 4
 
@@ -158,7 +158,7 @@
 #define ADC_RSSI        ADC_CHANNEL2
 
 
-#define LED_STRIP // LED strip configuration using PWM motor output pin 5.
+#define CONFIG_LED_STRIP // LED strip configuration using PWM motor output pin 5.
 #define LED_STRIP_TIMER TIM16
 
 #define WS2811_GPIO                     GPIOB
@@ -175,22 +175,22 @@
 
 #define DEFAULT_RX_FEATURE FEATURE_RX_SERIAL
 
-#define GPS
-#define BLACKBOX
-#define TELEMETRY
-#define SERIAL_RX
+#define CONFIG_GPS
+#define CONFIG_BLACKBOX
+#define CONFIG_TELEMETRY
+#define CONFIG_SERIAL_RX
 #define AUTOTUNE
-#define DISPLAY
-#define USE_SERVOS
-#define USE_CLI
+#define CONFIG_DISPLAY
+#define CONFIG_USE_SERVOS
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // USART3,
 #define BIND_PORT  GPIOA
 #define BIND_PIN   Pin_3
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 #define USE_SERIAL_1WIRE
 

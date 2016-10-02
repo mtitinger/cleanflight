@@ -158,7 +158,7 @@ static void activateConfig(void)
 
     pidSetController(pidProfile()->pidController);
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     gpsUsePIDs(pidProfile());
 #endif
 
@@ -215,22 +215,22 @@ static void validateAndFixConfig(void)
     }
 
 
-#ifdef STM32F10X
-    // avoid overloading the CPU on F1 targets when using gyro sync and GPS.
+#ifdef CONFIG_CPU_STM32F10X
+    // avoid overloading the CPU on F1 targets when using gyro sync and CONFIG_GPS.
     if (imuConfig()->gyroSync && imuConfig()->gyroSyncDenominator < 2 && featureConfigured(FEATURE_GPS)) {
         imuConfig()->gyroSyncDenominator = 2;
     }
 #endif
 
 
-#if defined(LED_STRIP)
-#if (defined(USE_SOFTSERIAL1) || defined(USE_SOFTSERIAL2))
+#if defined(CONFIG_LED_STRIP)
+#if (defined(CONFIG_USE_SOFTSERIAL1) || defined(CONFIG_USE_SOFTSERIAL2))
     if (featureConfigured(FEATURE_SOFTSERIAL) && (
             0
-#ifdef USE_SOFTSERIAL1
+#ifdef CONFIG_USE_SOFTSERIAL1
             || (LED_STRIP_TIMER == SOFTSERIAL_1_TIMER)
 #endif
-#ifdef USE_SOFTSERIAL2
+#ifdef CONFIG_USE_SOFTSERIAL2
             || (LED_STRIP_TIMER == SOFTSERIAL_2_TIMER)
 #endif
     )) {
@@ -239,7 +239,7 @@ static void validateAndFixConfig(void)
     }
 #endif
 
-#if defined(TRANSPONDER) && !defined(UNIT_TEST)
+#if defined(CONFIG_TRANSPONDER) && !defined(UNIT_TEST)
     if ((WS2811_DMA_TC_FLAG == TRANSPONDER_DMA_TC_FLAG) && featureConfigured(FEATURE_TRANSPONDER) && featureConfigured(FEATURE_LED_STRIP)) {
         featureClear(FEATURE_LED_STRIP);
     }
@@ -247,19 +247,19 @@ static void validateAndFixConfig(void)
 #endif // LED_STRIP
 
 #if defined(CC3D)
-#if defined(DISPLAY) && defined(USE_UART3)
+#if defined(CONFIG_DISPLAY) && defined(USE_UART3)
     if (featureConfigured(FEATURE_DISPLAY) && doesConfigurationUsePort(SERIAL_PORT_UART3)) {
         featureClear(FEATURE_DISPLAY);
     }
 #endif
 
-#if defined(SONAR) && defined(USE_SOFTSERIAL1)
+#if defined(CONFIG_SONAR) && defined(CONFIG_USE_SOFTSERIAL1)
     if (featureConfigured(FEATURE_SONAR) && featureConfigured(FEATURE_SOFTSERIAL)) {
         featureClear(FEATURE_SONAR);
     }
 #endif
 
-#if defined(SONAR) && defined(USE_SOFTSERIAL1) && defined(RSSI_ADC_GPIO)
+#if defined(CONFIG_SONAR) && defined(CONFIG_USE_SOFTSERIAL1) && defined(RSSI_ADC_GPIO)
     // shared pin
     if ((featureConfigured(FEATURE_SONAR) + featureConfigured(FEATURE_SOFTSERIAL) + featureConfigured(FEATURE_RSSI_ADC)) > 1) {
         featureClear(FEATURE_SONAR);

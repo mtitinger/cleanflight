@@ -79,7 +79,7 @@
 // from system_stm32f30x.c
 void SetSysClock(void);
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
 // from system_stm32f10x.c
 void SetSysClock(bool overclock);
 #endif
@@ -138,7 +138,7 @@ void init(void)
 #ifdef STM32F303xC
     SetSysClock();
 #endif
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     // Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers
     // Configure the Flash Latency cycles and enable prefetch buffer
     SetSysClock(systemConfig()->emf_avoidance);

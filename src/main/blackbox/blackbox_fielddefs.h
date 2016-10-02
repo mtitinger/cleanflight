@@ -72,7 +72,7 @@ typedef enum FlightLogFieldPredictor {
     //This field always increments
     FLIGHT_LOG_FIELD_PREDICTOR_INC            = 6,
 
-    //Predict this GPS co-ordinate is the GPS home co-ordinate (or no prediction if that coordinate is not set)
+    //Predict this CONFIG_GPS co-ordinate is the CONFIG_GPS home co-ordinate (or no prediction if that coordinate is not set)
     FLIGHT_LOG_FIELD_PREDICTOR_HOME_COORD     = 7,
 
     //Predict 1500

@@ -14,8 +14,8 @@
 # Things that the user might override on the commandline
 #
 
-# The target to build, see VALID_TARGETS below
-TARGET		?= NAZE
+# The target to build, see VALID_BOARDS below
+BOARD		?= NAZE
 
 # Compile-time options
 OPTIONS		?=
@@ -36,27 +36,27 @@ FLASH_SIZE ?=
 
 FORKNAME			 = cleanflight
 
-64K_TARGETS  = CJMCU
-128K_TARGETS = ALIENFLIGHTF1 CC3D NAZE OLIMEXINO RMDO SPRACINGF1OSD
-256K_TARGETS = ALIENFLIGHTF3 CHEBUZZF3 COLIBRI_RACE EUSTM32F103RC IRCFUSIONF3 LUX_RACE MOTOLAB PORT103R RCEXPLORERF3 SPARKY SPRACINGF3 SPRACINGF3EVO SPRACINGF3MINI STM32F3DISCOVERY SPRACINGF3OSD
+64K_BOARDS  = CJMCU
+128K_BOARDS = ALIENFLIGHTF1 CC3D NAZE OLIMEXINO RMDO SPRACINGF1OSD
+256K_BOARDS = ALIENFLIGHTF3 CHEBUZZF3 COLIBRI_RACE EUSTM32F103RC IRCFUSIONF3 LUX_RACE MOTOLAB PORT103R RCEXPLORERF3 SPARKY SPRACINGF3 SPRACINGF3EVO SPRACINGF3MINI STM32F3DISCOVERY SPRACINGF3OSD
 
-F3_TARGETS = ALIENFLIGHTF3 CHEBUZZF3 COLIBRI_RACE IRCFUSIONF3 LUX_RACE MOTOLAB RCEXPLORERF3 RMDO SPARKY SPRACINGF3 SPRACINGF3EVO SPRACINGF3MINI STM32F3DISCOVERY SPRACINGF3OSD
+F3_BOARDS = ALIENFLIGHTF3 CHEBUZZF3 COLIBRI_RACE IRCFUSIONF3 LUX_RACE MOTOLAB RCEXPLORERF3 RMDO SPARKY SPRACINGF3 SPRACINGF3EVO SPRACINGF3MINI STM32F3DISCOVERY SPRACINGF3OSD
 
-VALID_TARGETS = $(64K_TARGETS) $(128K_TARGETS) $(256K_TARGETS)
+VALID_BOARDS = $(64K_BOARDS) $(128K_BOARDS) $(256K_BOARDS)
 
-VCP_TARGETS = CC3D ALIENFLIGHTF3 CHEBUZZF3 COLIBRI_RACE LUX_RACE MOTOLAB RCEXPLORERF3 SPARKY SPRACINGF3EVO SPRACINGF3MINI STM32F3DISCOVERY SPRACINGF1OSD SPRACINGF3OSD
-OSD_TARGETS = SPRACINGF1OSD SPRACINGF3OSD
+VCP_BOARDS = CC3D ALIENFLIGHTF3 CHEBUZZF3 COLIBRI_RACE LUX_RACE MOTOLAB RCEXPLORERF3 SPARKY SPRACINGF3EVO SPRACINGF3MINI STM32F3DISCOVERY SPRACINGF1OSD SPRACINGF3OSD
+OSD_BOARDS = SPRACINGF1OSD SPRACINGF3OSD
 
 # Configure default flash sizes for the targets
 ifeq ($(FLASH_SIZE),)
-ifeq ($(TARGET),$(filter $(TARGET),$(64K_TARGETS)))
+ifeq ($(BOARD),$(filter $(BOARD),$(64K_BOARDS)))
 FLASH_SIZE = 64
-else ifeq ($(TARGET),$(filter $(TARGET),$(128K_TARGETS)))
+else ifeq ($(BOARD),$(filter $(BOARD),$(128K_BOARDS)))
 FLASH_SIZE = 128
-else ifeq ($(TARGET),$(filter $(TARGET),$(256K_TARGETS)))
+else ifeq ($(BOARD),$(filter $(BOARD),$(256K_BOARDS)))
 FLASH_SIZE = 256
 else
-$(error FLASH_SIZE not configured for target $(TARGET))
+$(error FLASH_SIZE not configured for target $(BOARD))
 endif
 endif
 
@@ -68,9 +68,8 @@ SRC_DIR		 = $(ROOT)/src/main
 OBJECT_DIR	 = $(ROOT)/obj/main
 BIN_DIR		 = $(ROOT)/obj
 CMSIS_DIR	 = $(ROOT)/lib/main/CMSIS
-INCLUDE_DIRS	 = $(SRC_DIR) \
-				$(ROOT)/src/main/target
-LINKER_DIR	 = $(ROOT)/src/main/target
+INCLUDE_DIRS	 = $(SRC_DIR) $(SRC_DIR)/include $(ROOT)/src/main/board
+LINKER_DIR	 = $(ROOT)/src/main/board
 
 # Search path for sources
 VPATH		:= $(SRC_DIR):$(SRC_DIR)/startup
@@ -79,8 +78,8 @@ USBPERIPH_SRC = $(notdir $(wildcard $(USBFS_DIR)/src/*.c))
 
 CSOURCES        := $(shell find $(SRC_DIR) -name '*.c')
 
-ifeq ($(TARGET),$(filter $(TARGET),$(F3_TARGETS)))
-# F3 TARGETS
+ifeq ($(BOARD),$(filter $(BOARD),$(F3_BOARDS)))
+# F3 BOARDS
 
 STDPERIPH_DIR	= $(ROOT)/lib/main/STM32F30x_StdPeriph_Driver
 
@@ -104,7 +103,7 @@ INCLUDE_DIRS := $(INCLUDE_DIRS) \
 		   $(CMSIS_DIR)/CM1/CoreSupport \
 		   $(CMSIS_DIR)/CM1/DeviceSupport/ST/STM32F30x
 
-ifeq ($(TARGET),$(filter $(TARGET),$(VCP_TARGETS)))
+ifeq ($(BOARD),$(filter $(BOARD),$(VCP_BOARDS)))
 INCLUDE_DIRS := $(INCLUDE_DIRS) \
 		   $(USBFS_DIR)/inc \
 		   $(ROOT)/src/main/vcp
@@ -120,10 +119,10 @@ LD_SCRIPT	 = $(LINKER_DIR)/stm32_flash_f303_$(FLASH_SIZE)k.ld
 
 ARCH_FLAGS	 = -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant -Wdouble-promotion
 DEVICE_FLAGS = -DSTM32F303xC -DSTM32F303
-TARGET_FLAGS = -D$(TARGET)
+BOARD_FLAGS = -D$(BOARD)
 
-else ifeq ($(TARGET),$(filter $(TARGET),EUSTM32F103RC PORT103R))
-# TARGETS: EUSTM32F103RC PORT103R
+else ifeq ($(BOARD),$(filter $(BOARD),EUSTM32F103RC PORT103R))
+# BOARDS: EUSTM32F103RC PORT103R
 
 
 STDPERIPH_DIR	 = $(ROOT)/lib/main/STM32F10x_StdPeriph_Driver
@@ -149,13 +148,13 @@ INCLUDE_DIRS := $(INCLUDE_DIRS) \
 LD_SCRIPT	 = $(LINKER_DIR)/stm32_flash_f103_$(FLASH_SIZE)k.ld
 
 ARCH_FLAGS	 = -mthumb -mcpu=cortex-m3
-TARGET_FLAGS = -D$(TARGET)
+BOARD_FLAGS = -D$(BOARD)
 DEVICE_FLAGS = -DSTM32F10X_HD -DSTM32F10X
 
 DEVICE_STDPERIPH_SRC = $(STDPERIPH_SRC)
 
 else
-# F1 TARGETS
+# F1 BOARDS
 
 STDPERIPH_DIR	 = $(ROOT)/lib/main/STM32F10x_StdPeriph_Driver
 
@@ -179,7 +178,7 @@ INCLUDE_DIRS := $(INCLUDE_DIRS) \
 
 DEVICE_STDPERIPH_SRC = $(STDPERIPH_SRC)
 
-ifeq ($(TARGET),$(filter $(TARGET),$(VCP_TARGETS)))
+ifeq ($(BOARD),$(filter $(BOARD),$(VCP_BOARDS)))
 INCLUDE_DIRS := $(INCLUDE_DIRS) \
 		   $(USBFS_DIR)/inc \
 		   $(ROOT)/src/main/vcp
@@ -194,44 +193,43 @@ endif
 LD_SCRIPT	 = $(LINKER_DIR)/stm32_flash_f103_$(FLASH_SIZE)k.ld
 
 ARCH_FLAGS	 = -mthumb -mcpu=cortex-m3
-TARGET_FLAGS = -D$(TARGET)
+BOARD_FLAGS = -D$(BOARD)
 DEVICE_FLAGS = -DSTM32F10X_MD -DSTM32F10X
 
-endif #TARGETS
+endif #BOARDS
 
 ifneq ($(FLASH_SIZE),)
 DEVICE_FLAGS := $(DEVICE_FLAGS) -DFLASH_SIZE=$(FLASH_SIZE)
 endif
 
-TARGET_DIR = $(ROOT)/src/main/target/$(TARGET)
-TARGET_SRC = $(notdir $(wildcard $(TARGET_DIR)/*.c))
+BOARD_DIR = $(ROOT)/src/main/board/$(BOARD)
+BOARD_SRC = $(notdir $(wildcard $(BOARD_DIR)/*.c))
 
 # VARIANTS
-ifeq ($(TARGET),ALIENFLIGHTF1)
+ifeq ($(BOARD),ALIENFLIGHTF1)
 # ALIENFLIGHTF1 is a VARIANT of NAZE
-TARGET_FLAGS := $(TARGET_FLAGS) -DNAZE -DALIENFLIGHT
-TARGET_DIR = $(ROOT)/src/main/target/NAZE
+BOARD_FLAGS := $(BOARD_FLAGS) -DNAZE -DALIENFLIGHT
+BOARD_DIR = $(ROOT)/src/main/board/NAZE
 endif
-ifeq ($(TARGET),CHEBUZZF3)
+ifeq ($(BOARD),CHEBUZZF3)
 # CHEBUZZ is a VARIANT of STM32F3DISCOVERY
-TARGET_FLAGS := $(TARGET_FLAGS) -DSTM32F3DISCOVERY
+BOARD_FLAGS := $(BOARD_FLAGS) -DSTM32F3DISCOVERY
 endif
-ifeq ($(TARGET),$(filter $(TARGET),RMDO IRCFUSIONF3))
+ifeq ($(BOARD),$(filter $(BOARD),RMDO IRCFUSIONF3))
 # RMDO and IRCFUSIONF3 are a VARIANT of SPRACINGF3
-TARGET_FLAGS := $(TARGET_FLAGS) -DSPRACINGF3
+BOARD_FLAGS := $(BOARD_FLAGS) -DSPRACINGF3
 endif
 
 # OSDs
-ifeq ($(TARGET),$(filter $(TARGET),$(OSD_TARGETS)))
-TARGET_FLAGS := $(TARGET_FLAGS) -DOSD
+ifeq ($(BOARD),$(filter $(BOARD),$(OSD_BOARDS)))
+BOARD_FLAGS := $(BOARD_FLAGS) -DOSD
 endif
 
 
 
-INCLUDE_DIRS := $(INCLUDE_DIRS) \
-		    $(TARGET_DIR)
+INCLUDE_DIRS := $(INCLUDE_DIRS) $(BOARD_DIR)/include
 
-VPATH		:= $(VPATH):$(TARGET_DIR)
+VPATH		:= $(VPATH):$(BOARD_DIR)
 
 SYSTEM_SRC = \
 		   build/build_config.c \
@@ -257,7 +255,7 @@ SYSTEM_SRC = \
 		   io/statusindicator.c \
 		   msp/msp.c \
 		   msp/msp_serial.c \
-		   $(TARGET_SRC) \
+		   $(BOARD_SRC) \
 		   $(CMSIS_SRC) \
 		   $(DEVICE_STDPERIPH_SRC)
 
@@ -859,9 +857,9 @@ CFLAGS		 = $(ARCH_FLAGS) \
 		   -fdata-sections \
 		   $(DEVICE_FLAGS) \
 		   -DUSE_STDPERIPH_DRIVER \
-		   $(TARGET_FLAGS) \
+		   $(BOARD_FLAGS) \
 		   -D'__FORKNAME__="$(FORKNAME)"' \
-		   -D'__TARGET__="$(TARGET)"' \
+		   -D'__BOARD__="$(BOARD)"' \
 		   -D'__REVISION__="$(REVISION)"' \
 		   -fverbose-asm -ffat-lto-objects \
 		   -save-temps=obj \
@@ -883,7 +881,7 @@ LDFLAGS		 = -lm \
 		   $(WARN_FLAGS) \
 		   $(DEBUG_FLAGS) \
 		   -static \
-		   -Wl,-gc-sections,-Map,$(TARGET_MAP) \
+		   -Wl,-gc-sections,-Map,$(BOARD_MAP) \
 		   -Wl,-L$(LINKER_DIR) \
 		   -Wl,--cref \
 		   -T$(LD_SCRIPT)
@@ -900,16 +898,16 @@ CPPCHECK         = cppcheck $(CSOURCES) --enable=all --platform=unix64 \
 #
 # Things we will build
 #
-ifeq ($(filter $(TARGET),$(VALID_TARGETS)),)
-$(error Target '$(TARGET)' is not valid, must be one of $(VALID_TARGETS))
+ifeq ($(filter $(BOARD),$(VALID_BOARDS)),)
+$(error Target '$(BOARD)' is not valid, must be one of $(VALID_BOARDS))
 endif
 
-TARGET_BIN	 = $(BIN_DIR)/$(FORKNAME)_$(TARGET).bin
-TARGET_HEX	 = $(BIN_DIR)/$(FORKNAME)_$(TARGET).hex
-TARGET_ELF	 = $(OBJECT_DIR)/$(FORKNAME)_$(TARGET).elf
-TARGET_OBJS	 = $(addsuffix .o,$(addprefix $(OBJECT_DIR)/$(TARGET)/,$(basename $($(TARGET)_SRC))))
-TARGET_DEPS	 = $(addsuffix .d,$(addprefix $(OBJECT_DIR)/$(TARGET)/,$(basename $($(TARGET)_SRC))))
-TARGET_MAP	 = $(OBJECT_DIR)/$(FORKNAME)_$(TARGET).map
+BOARD_BIN	 = $(BIN_DIR)/$(FORKNAME)_$(BOARD).bin
+BOARD_HEX	 = $(BIN_DIR)/$(FORKNAME)_$(BOARD).hex
+BOARD_ELF	 = $(OBJECT_DIR)/$(FORKNAME)_$(BOARD).elf
+BOARD_OBJS	 = $(addsuffix .o,$(addprefix $(OBJECT_DIR)/$(BOARD)/,$(basename $($(BOARD)_SRC))))
+BOARD_DEPS	 = $(addsuffix .d,$(addprefix $(OBJECT_DIR)/$(BOARD)/,$(basename $($(BOARD)_SRC))))
+BOARD_MAP	 = $(OBJECT_DIR)/$(FORKNAME)_$(BOARD).map
 
 
 ## Default make goal:
@@ -923,48 +921,48 @@ all: hex bin
 ## binary      : Make binary filetype
 ## bin         : Alias of 'binary'
 ## hex         : Make hex filetype
-bin:    $(TARGET_BIN)
-binary: $(TARGET_BIN)
-hex:    $(TARGET_HEX)
+bin:    $(BOARD_BIN)
+binary: $(BOARD_BIN)
+hex:    $(BOARD_HEX)
 
-# rule to reinvoke make with TARGET= parameter
-# rules that should be handled in toplevel Makefile, not dependent on TARGET
+# rule to reinvoke make with BOARD= parameter
+# rules that should be handled in toplevel Makefile, not dependent on BOARD
 GLOBAL_GOALS	= all_targets cppcheck test
 
-.PHONY: $(VALID_TARGETS)
-$(VALID_TARGETS):
-	$(MAKE) TARGET=$@ $(filter-out $(VALID_TARGETS) $(GLOBAL_GOALS), $(MAKECMDGOALS))
+.PHONY: $(VALID_BOARDS)
+$(VALID_BOARDS):
+	$(MAKE) BOARD=$@ $(filter-out $(VALID_BOARDS) $(GLOBAL_GOALS), $(MAKECMDGOALS))
 
-## all_targets : Make all TARGETs
+## all_targets : Make all BOARDs
 .PHONY: all_targets
-all_targets : $(VALID_TARGETS)
+all_targets : $(VALID_BOARDS)
 
 ## clean       : clean up all temporary / machine-generated files
 clean:
-	rm -f $(TARGET_BIN) $(TARGET_HEX) $(TARGET_ELF) $(TARGET_OBJS) $(TARGET_MAP)
-	rm -rf $(OBJECT_DIR)/$(TARGET)
+	rm -f $(BOARD_BIN) $(BOARD_HEX) $(BOARD_ELF) $(BOARD_OBJS) $(BOARD_MAP)
+	rm -rf $(OBJECT_DIR)/$(BOARD)
 	cd src/test && $(MAKE) clean || true
 
-flash_$(TARGET): $(TARGET_HEX)
+flash_$(BOARD): $(BOARD_HEX)
 	stty -F $(SERIAL_DEVICE) raw speed 115200 -crtscts cs8 -parenb -cstopb -ixon
 	echo -n 'R' >$(SERIAL_DEVICE)
-	stm32flash -w $(TARGET_HEX) -v -g 0x0 -b 115200 $(SERIAL_DEVICE)
+	stm32flash -w $(BOARD_HEX) -v -g 0x0 -b 115200 $(SERIAL_DEVICE)
 
 ## flash       : flash firmware (.hex) onto flight controller
-flash: flash_$(TARGET)
+flash: flash_$(BOARD)
 
-st-flash_$(TARGET): $(TARGET_BIN)
+st-flash_$(BOARD): $(BOARD_BIN)
 	st-flash --reset write $< 0x08000000
 
 ## st-flash    : flash firmware (.bin) onto flight controller
-st-flash: st-flash_$(TARGET)
+st-flash: st-flash_$(BOARD)
 
-unbrick_$(TARGET): $(TARGET_HEX)
+unbrick_$(BOARD): $(BOARD_HEX)
 	stty -F $(SERIAL_DEVICE) raw speed 115200 -crtscts cs8 -parenb -cstopb -ixon
-	stm32flash -w $(TARGET_HEX) -v -g 0x0 -b 115200 $(SERIAL_DEVICE)
+	stm32flash -w $(BOARD_HEX) -v -g 0x0 -b 115200 $(SERIAL_DEVICE)
 
 ## unbrick     : unbrick flight controller
-unbrick: unbrick_$(TARGET)
+unbrick: unbrick_$(BOARD)
 
 ## cppcheck    : run static analysis on C source code
 cppcheck: $(CSOURCES)
@@ -979,9 +977,9 @@ help: Makefile
 	@echo "Makefile for the $(FORKNAME) firmware"
 	@echo ""
 	@echo "Usage:"
-	@echo "        make [goal] [TARGET=<target>] [OPTIONS=\"<options>\"]"
+	@echo "        make [goal] [BOARD=<target>] [OPTIONS=\"<options>\"]"
 	@echo ""
-	@echo "Valid TARGET values are: $(VALID_TARGETS)"
+	@echo "Valid BOARD values are: $(VALID_BOARDS)"
 	@echo ""
 	@sed -n 's/^## //p' $<
 
@@ -991,34 +989,34 @@ test junittest:
 	cd src/test && $(MAKE) $@
 
 # rebuild everything when makefile changes
-$(TARGET_OBJS) : Makefile
+$(BOARD_OBJS) : Makefile
 
 # List of buildable ELF files and their object dependencies.
 # It would be nice to compute these lists, but that seems to be just beyond make.
 
-$(TARGET_HEX): $(TARGET_ELF)
+$(BOARD_HEX): $(BOARD_ELF)
 	$(OBJCOPY) -O ihex --set-start 0x8000000 $< $@
 
-$(TARGET_BIN): $(TARGET_ELF)
+$(BOARD_BIN): $(BOARD_ELF)
 	$(OBJCOPY) -O binary $< $@
 
-$(TARGET_ELF):  $(TARGET_OBJS)
+$(BOARD_ELF):  $(BOARD_OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
-	$(SIZE) $(TARGET_ELF)
+	$(SIZE) $(BOARD_ELF)
 
 # Compile
-$(OBJECT_DIR)/$(TARGET)/%.o: %.c
+$(OBJECT_DIR)/$(BOARD)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@echo %% $(notdir $<)
 	@$(CC) -c -o $@ $(CFLAGS) $<
 
 # Assemble
-$(OBJECT_DIR)/$(TARGET)/%.o: %.s
+$(OBJECT_DIR)/$(BOARD)/%.o: %.s
 	@mkdir -p $(dir $@)
 	@echo %% $(notdir $<)
 	@$(CC) -c -o $@ $(ASFLAGS) $<
 
-$(OBJECT_DIR)/$(TARGET)/%.o: %.S
+$(OBJECT_DIR)/$(BOARD)/%.o: %.S
 	@mkdir -p $(dir $@)
 	@echo %% $(notdir $<)
 	@$(CC) -c -o $@ $(ASFLAGS) $<
@@ -1026,4 +1024,4 @@ $(OBJECT_DIR)/$(TARGET)/%.o: %.S
 
 
 # include auto-generated dependencies
--include $(TARGET_DEPS)
+-include $(BOARD_DEPS)

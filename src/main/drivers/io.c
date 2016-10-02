@@ -12,7 +12,7 @@ struct ioPortDef_s {
     rccPeriphTag_t rcc;
 };
 
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
 const struct ioPortDef_s ioPortDefs[] = {
     {RCC_APB2(IOPA)},
     {RCC_APB2(IOPB)},
@@ -103,7 +103,7 @@ uint32_t IO_EXTI_Line(IO_t io)
 {
     if(!io)
         return 0;
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
     return 1 << IO_GPIOPinIdx(io);
 #elif defined(STM32F303xC)
     return IO_GPIOPinIdx(io);
@@ -178,7 +178,7 @@ resourceType_t IOGetResources(IO_t io)
     return ioRec->resourcesUsed;
 }
 
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
 
 void IOConfigGPIO(IO_t io, ioConfig_t cfg)
 {

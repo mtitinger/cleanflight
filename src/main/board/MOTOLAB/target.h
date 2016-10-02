@@ -18,7 +18,7 @@
 #pragma once
 
 #define TARGET_BOARD_IDENTIFIER "MOTO" // MotoLab
-#define USE_CLI
+#define CONFIG_USE_CLI
 #define USE_EXTI
 
 #define LED0_GPIO   GPIOB
@@ -32,7 +32,7 @@
 #define BEEP_PIN    Pin_0
 #define BEEP_PERIPHERAL RCC_AHBPeriph_GPIOA
 #define BEEPER_INVERTED
-#define BEEPER
+#define CONFIG_BEEPER
 
 #define USABLE_TIMER_CHANNEL_COUNT 9
 
@@ -40,12 +40,12 @@
 #define USE_MPU_DATA_READY_SIGNAL
 //#define ENSURE_MPU_DATA_READY_IS_LOW
 
-#define GYRO
+#define CONFIG_GYRO
 #define ACC
 
-#define USE_GYRO_MPU6050
+#define CONFIG_GYRO_MPU6050
 #define GYRO_MPU6050_ALIGN CW180_DEG
-#define USE_ACC_MPU6050
+#define CONFIG_ACC_MPU6050
 #define ACC_MPU6050_ALIGN CW180_DEG
 
 #define USE_GYRO_SPI_MPU6000
@@ -57,18 +57,18 @@
 #define MPU6000_CS_PIN GPIO_Pin_12
 #define MPU6000_SPI_INSTANCE SPI2
 
-//#define BARO
-//#define USE_BARO_MS5611
+//#define CONFIG_BARO
+//#define CONFIG_BARO_MS5611
 
-//#define MAG
-//#define USE_MAG_HMC5883
+//#define CONFIG_MAG
+//#define CONFIG_MAG_HMC5883
 
 #define LED0
 
 #define USB_IO
 #define USE_VCP
-#define USE_UART1
-#define USE_UART2
+#define CONFIG_USE_UART1
+#define CONFIG_USE_UART2
 #define USE_UART3
 #define SERIAL_PORT_COUNT 4
 
@@ -120,13 +120,13 @@
 
 #define DEFAULT_RX_FEATURE FEATURE_RX_PPM
 
-#define TELEMETRY
-#define BLACKBOX
-#define SERIAL_RX
-//#define GPS
-#define GTUNE
-#define DISPLAY
-#define USE_SERVOS
+#define CONFIG_TELEMETRY
+#define CONFIG_BLACKBOX
+#define CONFIG_SERIAL_RX
+//#define CONFIG_GPS
+#define CONFIG_GTUNE
+#define CONFIG_DISPLAY
+#define CONFIG_USE_SERVOS
 #define USE_FLASHFS
 #define USE_FLASH_M25P16
 
@@ -150,7 +150,7 @@
 #define ADC_BATTERY     ADC_CHANNEL0
 #define ADC_RSSI        ADC_CHANNEL1
 
-#define LED_STRIP
+#define CONFIG_LED_STRIP
 #define LED_STRIP_TIMER TIM16
 
 #define USE_LED_STRIP_ON_DMA1_CHANNEL3
@@ -166,12 +166,12 @@
 #define WS2811_DMA_TC_FLAG              DMA1_FLAG_TC3
 #define WS2811_DMA_HANDLER_IDENTIFER    DMA1Channel3Descriptor
 
-#define SPEKTRUM_BIND
+#define CONFIG_SPEKTRUM_BIND
 // UART2, PB4
 #define BIND_PORT GPIOB
 #define BIND_PIN Pin_4
 
-#define USE_SERIAL_4WAY_BLHELI_INTERFACE
+#define CONFIG_USE_SERIAL_4WAY_BLHELI
 
 #define S1W_TX_GPIO         GPIOB
 #define S1W_TX_PIN          GPIO_Pin_6

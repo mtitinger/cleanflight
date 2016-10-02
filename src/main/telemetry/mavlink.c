@@ -198,7 +198,7 @@ void mavlinkSendSystemStatus(void)
     1000110000000011    For all   = 35843
     0001000000000100    With Mag  = 4100
     0010000000001000    With Baro = 8200
-    0100000000100000    With GPS  = 16416
+    0100000000100000    With CONFIG_GPS  = 16416
     0000001111111111
     */
     
@@ -209,7 +209,7 @@ void mavlinkSendSystemStatus(void)
     mavlink_msg_sys_status_pack(0, 200, &mavMsg,
         // onboard_control_sensors_present Bitmask showing which onboard controllers and sensors are present. 
         //Value of 0: not present. Value of 1: present. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 
-        // 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 
+        // 4: differential pressure, 5: CONFIG_GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 
         // 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 
         // 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
         onboardControlAndSensors,
@@ -271,7 +271,7 @@ void mavlinkSendRCChannelsAndRSSI(void)
     mavlinkSerialWrite(mavBuffer, msgLength);
 }
 
-#if defined(GPS)
+#if defined(CONFIG_GPS)
 void mavlinkSendPosition(void)
 {
     uint16_t msgLength;
@@ -303,11 +303,11 @@ void mavlinkSendPosition(void)
         GPS_coord[LON],
         // alt Altitude in 1E3 meters (millimeters) above MSL
         GPS_altitude * 1000,
-        // eph GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+        // eph CONFIG_GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
         65535,
-        // epv GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+        // epv CONFIG_GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
         65535,
-        // vel GPS ground speed (m/s * 100). If unknown, set to: 65535
+        // vel CONFIG_GPS ground speed (m/s * 100). If unknown, set to: 65535
         GPS_speed,
         // cog Course over ground (NOT heading, but direction of movement) in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
         GPS_ground_course * 10,
@@ -327,7 +327,7 @@ void mavlinkSendPosition(void)
         // alt Altitude in 1E3 meters (millimeters) above MSL
         GPS_altitude * 1000,
         // relative_alt Altitude above ground in meters, expressed as * 1000 (millimeters)
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
         (sensors(SENSOR_SONAR) || sensors(SENSOR_BARO)) ? altitudeHoldGetEstimatedAltitude() * 10 : GPS_altitude * 1000,
 #else
         GPS_altitude * 1000,
@@ -385,7 +385,7 @@ void mavlinkSendHUDAndHeartbeat(void)
     float mavGroundSpeed = 0;
     float mavAirSpeed = 0;
 
-#if defined(GPS)
+#if defined(CONFIG_GPS)
     // use ground speed if source available
     if (sensors(SENSOR_GPS)) {
         mavGroundSpeed = GPS_speed / 100.0;
@@ -393,18 +393,18 @@ void mavlinkSendHUDAndHeartbeat(void)
 #endif
     
     // select best source for altitude
-#if defined(BARO) || defined(SONAR)
+#if defined(CONFIG_BARO) || defined(CONFIG_SONAR)
     if (sensors(SENSOR_SONAR) || sensors(SENSOR_BARO)) {
-        // Baro or sonar generally is a better estimate of altitude than GPS MSL altitude
+        // Baro or sonar generally is a better estimate of altitude than CONFIG_GPS MSL altitude
         mavAltitude = altitudeHoldGetEstimatedAltitude() / 100.0;
     }
-#if defined(GPS)
+#if defined(CONFIG_GPS)
     else if (sensors(SENSOR_GPS)) {
         // No sonar or baro, just display altitude above MLS
         mavAltitude = GPS_altitude;
     }
 #endif
-#elif defined(GPS)
+#elif defined(CONFIG_GPS)
     if (sensors(SENSOR_GPS)) {
         // No sonar or baro, just display altitude above MLS
         mavAltitude = GPS_altitude;
@@ -420,7 +420,7 @@ void mavlinkSendHUDAndHeartbeat(void)
         DECIDEGREES_TO_DEGREES(attitude.values.yaw),
         // throttle Current throttle setting in integer percent, 0 to 100
         scaleRange(constrain(rcData[THROTTLE], PWM_RANGE_MIN, PWM_RANGE_MAX), PWM_RANGE_MIN, PWM_RANGE_MAX, 0, 100),
-        // alt Current altitude (MSL), in meters, if we have sonar or baro use them, otherwise use GPS (less accurate)
+        // alt Current altitude (MSL), in meters, if we have sonar or baro use them, otherwise use CONFIG_GPS (less accurate)
         mavAltitude,
         // climb Current climb rate in meters/second
         0);

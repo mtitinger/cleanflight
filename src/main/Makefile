@@ -139,7 +139,7 @@ INCLUDE_DIRS := $(INCLUDE_DIRS) \
 
 DEVICE_STDPERIPH_SRC = $(STDPERIPH_SRC)
 
-LD_SCRIPT        = $(LINKER_DIR)/stm32_flash_f103_$(FLASH_SIZE)k.ld
+export KBUILD_LDS := board/stm32_flash_f103_128k.ld
 
 ARCH_FLAGS       = -mthumb -mcpu=cortex-m3
 BOARD_FLAGS = -D$(BOARD)
@@ -149,7 +149,8 @@ DEVICE_FLAGS = -DSTM32F10X_MD -DSTM32F10X
 ## =================================================================
 
 
-SYSTEM_OBJS = $(subst %.c,%.o,$(STDPERIPH_SRC) $(CMSIS_SRC))
+export STDPERIPH_DIR CMSIS_DIR
+
 
 # kbuild supports saving output files in a separate directory.
 # To locate output files in a separate directory two syntaxes are supported.
@@ -382,12 +383,11 @@ export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION
 export BOARD SRCBOARD CONFIG_SHELL HOSTCC HOSTCFLAGS CROSS_COMPILE AS LD CC
 export CPP AR NM STRIP OBJCOPY OBJDUMP
 export MAKE AWK PERL PYTHON UTS_MACHINE
-export HOSTCXX HOSTCXXFLAGS LDFLAGS_MODULE CHECK CHECKFLAGS
+export HOSTCXX HOSTCXXFLAGS CHECK CHECKFLAGS
 
 export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS LDFLAGS
-export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE CFLAGS_GCOV CFLAGS_KASAN
-export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
-export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_GCOV
+export KBUILD_AFLAGS AFLAGS_KERNEL
 export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
 export KBUILD_ARFLAGS
 
@@ -423,12 +423,10 @@ ifneq ($(KBUILD_SRC),)
 endif
 
 # Support for using generic headers in asm-generic
-PHONY += asm-generic
-asm-generic:
-	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.asm-generic \
+#PHONY += asm-generic
+#asm-generic:
+#	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.asm-generic \
 	            src=asm obj=board/$(SRCBOARD)/include/generated/asm
-	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.asm-generic \
-	            src=uapi/asm obj=board/$(SRCBOARD)/include/generated/uapi/asm
 
 # To make sure we do not include .config for any of the *config targets
 # catch them early, and hand them over to scripts/kconfig/Makefile
@@ -503,12 +501,11 @@ else
 # Carefully list dependencies so we do not try to build scripts twice
 # in parallel
 PHONY += scripts
-scripts: scripts_basic include/config/auto.conf include/config/tristate.conf \
-	 asm-generic
+scripts: scripts_basic include/config/auto.conf
 	$(Q)$(MAKE) $(build)=$(@)
 
 # Objects we will link into cleanflight / subdirs we need to visit
-init-y		:= startup/ board/ build/ $(SYSTEM_OBJS) 
+init-y		:= startup/ board/ build/  
 drivers-y	:= drivers/ sensors/ flight/ fc/ io/
 core-y		:= common/ msp/ scheduler/ blackbox/
 net-y		:= telemetry/ osd/ config/ rx/ vcp/
@@ -759,9 +756,6 @@ export KBUILD_CLEANFLIGHT_INIT := $(head-y) $(init-y)
 export KBUILD_CLEANFLIGHT_MAIN := $(core-y) $(libs-y) $(drivers-y) $(net-y)
 
 
-export KBUILD_LDS          := board/$(CONFIG_LDSCRIPT)
-
-
 export LDFLAGS_cleanflight
 # used by scripts/pacmage/Makefile
 export KBUILD_ALLDIRS := $(sort $(filter-out board/%,$(cleanflight-alldirs)) board Documentation include scripts tools)
@@ -775,6 +769,8 @@ quiet_cmd_link-cleanflight = LINK    $@
 # Include targets which we want to
 # execute if the rest of the kernel build went well.
 cleanflight: scripts/link-cleanflight.sh $(cleanflight-deps) FORCE
+	$(call if_changed,link-cleanflight)
+
 
 # The actual objects are generated when descending,
 # make sure no implicit rule kicks in
@@ -809,7 +805,7 @@ include/config/kernel.release: include/config/auto.conf FORCE
 PHONY += prepare archprepare prepare0 prepare1 prepare2 
 
 # prepare2 creates a makefile if using a separate output directory
-prepare2:  outputmakefile asm-generic
+prepare2:  outputmakefile
 
 prepare1: prepare2 include/config/auto.conf
 
@@ -830,16 +826,6 @@ headerdep:
 	$(srctree)/scripts/headerdep.pl -I$(srctree)/include
 
 # ---------------------------------------------------------------------------
-# Firmware install
-INSTALL_FW_PATH=$(INSTALL_MOD_PATH)/lib/firmware
-export INSTALL_FW_PATH
-
-PHONY += firmware_install
-firmware_install: FORCE
-	@mkdir -p $(objtree)/firmware
-	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.fwinst obj=firmware __fw_install
-
-# ---------------------------------------------------------------------------
 # Kernel headers
 
 #Default location for installed headers
@@ -855,7 +841,7 @@ PHONY += archscripts
 archscripts:
 
 PHONY += __headers
-__headers: scripts_basic asm-generic archheaders archscripts FORCE
+__headers: scripts_basic archheaders archscripts FORCE
 	$(Q)$(MAKE) $(build)=scripts build_unifdef
 
 

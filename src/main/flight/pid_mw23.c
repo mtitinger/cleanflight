@@ -60,7 +60,7 @@ uint8_t dynP8[3], dynI8[3], dynD8[3];
 extern float dT;
 extern uint8_t motorCount;
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
 extern int32_t axisPID_P[3], axisPID_I[3], axisPID_D[3];
 #endif
 extern int32_t lastITerm[3], ITermLimit[3];
@@ -118,7 +118,7 @@ void pidMultiWii23(const pidProfile_t *pidProfile, const controlRateConfig_t *co
 
         if (FLIGHT_MODE(ANGLE_MODE) || FLIGHT_MODE(HORIZON_MODE)) {   // axis relying on ACC
             // 50 degrees max inclination
-#ifdef GPS
+#ifdef CONFIG_GPS
             errorAngle = constrain(2 * rcCommand[axis] + GPS_angle[axis], -((int) max_angle_inclination),
                 +max_angle_inclination) - attitude.raw[axis] + angleTrim->raw[axis];
 #else
@@ -159,13 +159,13 @@ void pidMultiWii23(const pidProfile_t *pidProfile, const controlRateConfig_t *co
 
         axisPID[axis] = PTerm + ITerm + DTerm;
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
         if (FLIGHT_MODE(GTUNE_MODE) && ARMING_FLAG(ARMED)) {
             calculate_Gtune(axis);
         }
 #endif
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
         axisPID_P[axis] = PTerm;
         axisPID_I[axis] = ITerm;
         axisPID_D[axis] = DTerm;
@@ -194,13 +194,13 @@ void pidMultiWii23(const pidProfile_t *pidProfile, const controlRateConfig_t *co
 
     axisPID[FD_YAW] =  PTerm + ITerm;
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
     if (FLIGHT_MODE(GTUNE_MODE) && ARMING_FLAG(ARMED)) {
         calculate_Gtune(FD_YAW);
     }
 #endif
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     axisPID_P[FD_YAW] = PTerm;
     axisPID_I[FD_YAW] = ITerm;
     axisPID_D[FD_YAW] = 0;

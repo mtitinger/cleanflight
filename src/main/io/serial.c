@@ -34,11 +34,11 @@
 #include "drivers/serial.h"
 #include "drivers/system.h"
 
-#if defined(USE_SOFTSERIAL1) || defined(USE_SOFTSERIAL2)
+#if defined(CONFIG_USE_SOFTSERIAL1) || defined(CONFIG_USE_SOFTSERIAL2)
 #include "drivers/serial_softserial.h"
 #endif
 
-#if defined(USE_UART1) || defined(USE_UART2) || defined(USE_UART3) || defined(USE_UART4) || defined(USE_UART5)
+#if defined(CONFIG_USE_UART1) || defined(CONFIG_USE_UART2) || defined(USE_UART3) || defined(USE_UART4) || defined(USE_UART5)
 #include "drivers/serial_uart.h"
 #endif
 
@@ -54,7 +54,7 @@
 #include "fc/config.h"
 
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
 #include "telemetry/telemetry.h"
 #endif
 
@@ -64,10 +64,10 @@ const serialPortIdentifier_e serialPortIdentifiers[SERIAL_PORT_COUNT] = {
 #ifdef USE_VCP
     SERIAL_PORT_USB_VCP,
 #endif
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
     SERIAL_PORT_UART1,
 #endif
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
     SERIAL_PORT_UART2,
 #endif
 #ifdef USE_UART3
@@ -79,10 +79,10 @@ const serialPortIdentifier_e serialPortIdentifiers[SERIAL_PORT_COUNT] = {
 #ifdef USE_UART5
     SERIAL_PORT_UART5,
 #endif
-#ifdef USE_SOFTSERIAL1
+#ifdef CONFIG_USE_SOFTSERIAL1
     SERIAL_PORT_SOFTSERIAL1,
 #endif
-#ifdef USE_SOFTSERIAL2
+#ifdef CONFIG_USE_SOFTSERIAL2
     SERIAL_PORT_SOFTSERIAL2,
 #endif
 };
@@ -275,7 +275,7 @@ serialPort_t *openSerialPort(
     portMode_t mode,
     portOptions_t options)
 {
-#if (!defined(USE_VCP) && !defined(USE_UART1) && !defined(USE_UART2) && !defined(USE_UART3) && !defined(USE_UART4) && !defined(USE_UART5) && !defined(USE_SOFTSERIAL1) && !defined(USE_SOFTSERIAL2))
+#if (!defined(USE_VCP) && !defined(CONFIG_USE_UART1) && !defined(CONFIG_USE_UART2) && !defined(USE_UART3) && !defined(USE_UART4) && !defined(USE_UART5) && !defined(CONFIG_USE_SOFTSERIAL1) && !defined(CONFIG_USE_SOFTSERIAL2))
     UNUSED(callback);
     UNUSED(baudRate);
     UNUSED(mode);
@@ -296,12 +296,12 @@ serialPort_t *openSerialPort(
             serialPort = usbVcpOpen();
             break;
 #endif
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
         case SERIAL_PORT_UART1:
             serialPort = uartOpen(USART1, callback, baudRate, mode, options);
             break;
 #endif
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
         case SERIAL_PORT_UART2:
             serialPort = uartOpen(USART2, callback, baudRate, mode, options);
             break;
@@ -321,13 +321,13 @@ serialPort_t *openSerialPort(
             serialPort = uartOpen(UART5, callback, baudRate, mode, options);
             break;
 #endif
-#ifdef USE_SOFTSERIAL1
+#ifdef CONFIG_USE_SOFTSERIAL1
         case SERIAL_PORT_SOFTSERIAL1:
             serialPort = openSoftSerial(SOFTSERIAL1, callback, baudRate, options);
             serialSetMode(serialPort, mode);
             break;
 #endif
-#ifdef USE_SOFTSERIAL2
+#ifdef CONFIG_USE_SOFTSERIAL2
         case SERIAL_PORT_SOFTSERIAL2:
             serialPort = openSoftSerial(SOFTSERIAL2, callback, baudRate, options);
             serialSetMode(serialPort, mode);
@@ -377,10 +377,10 @@ void serialInit(bool softserialEnabled)
 
         if (!softserialEnabled) {
             if (0
-#ifdef USE_SOFTSERIAL1
+#ifdef CONFIG_USE_SOFTSERIAL1
                 || serialPortUsageList[index].identifier == SERIAL_PORT_SOFTSERIAL1
 #endif
-#ifdef USE_SOFTSERIAL2
+#ifdef CONFIG_USE_SOFTSERIAL2
                 || serialPortUsageList[index].identifier == SERIAL_PORT_SOFTSERIAL2
 #endif
             ) {

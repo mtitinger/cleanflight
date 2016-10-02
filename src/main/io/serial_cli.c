@@ -149,14 +149,14 @@ static void cliTasks(char *cmdline);
 static void cliVersion(char *cmdline);
 static void cliRxRange(char *cmdline);
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void cliGpsPassthrough(char *cmdline);
 #endif
 
 static void cliHelp(char *cmdline);
 static void cliMap(char *cmdline);
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
 static void cliLed(char *cmdline);
 static void cliColor(char *cmdline);
 static void cliModeColor(char *cmdline);
@@ -257,7 +257,7 @@ typedef struct {
 const clicmd_t cmdTable[] = {
     CLI_COMMAND_DEF("adjrange", "configure adjustment ranges", NULL, cliAdjustmentRange),
     CLI_COMMAND_DEF("aux", "configure modes", NULL, cliAux),
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     CLI_COMMAND_DEF("color", "configure colors", NULL, cliColor),
     CLI_COMMAND_DEF("mode_color", "configure mode and special colors", NULL, cliModeColor),
 #endif
@@ -278,11 +278,11 @@ const clicmd_t cmdTable[] = {
 #endif
     CLI_COMMAND_DEF("get", "get variable value",
             "[name]", cliGet),
-#ifdef GPS
+#ifdef CONFIG_GPS
     CLI_COMMAND_DEF("gpspassthrough", "passthrough gps to serial", NULL, cliGpsPassthrough),
 #endif
     CLI_COMMAND_DEF("help", NULL, NULL, cliHelp),
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
     CLI_COMMAND_DEF("led", "configure leds", NULL, cliLed),
 #endif
     CLI_COMMAND_DEF("map", "configure rc channel order",
@@ -348,7 +348,7 @@ static const char * const lookupTableAlignment[] = {
     "CW270FLIP"
 };
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static const char * const lookupTableGPSProvider[] = {
     "NMEA", "UBLOX"
 };
@@ -411,11 +411,11 @@ typedef enum {
     TABLE_OFF_ON = 0,
     TABLE_UNIT,
     TABLE_ALIGNMENT,
-#ifdef GPS
+#ifdef CONFIG_GPS
     TABLE_GPS_PROVIDER,
     TABLE_GPS_SBAS_MODE,
 #endif
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     TABLE_BLACKBOX_DEVICE,
 #endif
     TABLE_CURRENT_SENSOR,
@@ -431,11 +431,11 @@ static const lookupTableEntry_t lookupTables[] = {
     { lookupTableOffOn, sizeof(lookupTableOffOn) / sizeof(char *) },
     { lookupTableUnit, sizeof(lookupTableUnit) / sizeof(char *) },
     { lookupTableAlignment, sizeof(lookupTableAlignment) / sizeof(char *) },
-#ifdef GPS
+#ifdef CONFIG_GPS
     { lookupTableGPSProvider, sizeof(lookupTableGPSProvider) / sizeof(char *) },
     { lookupTableGPSSBASMode, sizeof(lookupTableGPSSBASMode) / sizeof(char *) },
 #endif
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     { lookupTableBlackboxDevice, sizeof(lookupTableBlackboxDevice) / sizeof(char *) },
 #endif
     { lookupTableCurrentSensor, sizeof(lookupTableCurrentSensor) / sizeof(char *) },
@@ -549,7 +549,7 @@ const clivalue_t valueTable[] = {
 
     { "reboot_character",           VAR_UINT8  | MASTER_VALUE, .config.minmax = { 48,  126 } , PG_SERIAL_CONFIG, offsetof(serialConfig_t, reboot_character)},
 
-#ifdef GPS
+#ifdef CONFIG_GPS
     { "gps_provider",               VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_GPS_PROVIDER }, PG_GPS_CONFIG, offsetof(gpsConfig_t, provider)},
     { "gps_sbas_mode",              VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_GPS_SBAS_MODE }, PG_GPS_CONFIG, offsetof(gpsConfig_t, sbasMode)},
     { "gps_auto_config",            VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON }, PG_GPS_CONFIG, offsetof(gpsConfig_t, autoConfig)},
@@ -575,7 +575,7 @@ const clivalue_t valueTable[] = {
     { "nav_slew_rate",              VAR_UINT8  | PROFILE_VALUE, .config.minmax = { 0,  100 }, PG_NAVIGATION_CONFIG, offsetof(gpsProfile_t, nav_slew_rate) },
 #endif
 
-#ifdef TELEMETRY
+#ifdef CONFIG_TELEMETRY
     { "telemetry_switch",           VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON } , PG_TELEMETRY_CONFIG, offsetof(telemetryConfig_t, telemetry_switch)},
     { "telemetry_inversion",        VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON } , PG_TELEMETRY_CONFIG, offsetof(telemetryConfig_t, telemetry_inversion)},
 
@@ -669,7 +669,7 @@ const clivalue_t valueTable[] = {
     { "acc_trim_pitch",             VAR_INT16  | PROFILE_VALUE, .config.minmax = { -300,  300 } , PG_ACCELEROMETER_CONFIG, offsetof(accelerometerConfig_t, accelerometerTrims.values.pitch)},
     { "acc_trim_roll",              VAR_INT16  | PROFILE_VALUE, .config.minmax = { -300,  300 } , PG_ACCELEROMETER_CONFIG, offsetof(accelerometerConfig_t, accelerometerTrims.values.roll)},
 
-#ifdef BARO
+#ifdef CONFIG_BARO
     { "baro_tab_size",              VAR_UINT8  | PROFILE_VALUE, .config.minmax = { 0,  BARO_SAMPLE_COUNT_MAX } , PG_BAROMETER_CONFIG, offsetof(barometerConfig_t, baro_sample_count)},
     { "baro_noise_lpf",             VAR_FLOAT  | PROFILE_VALUE, .config.minmax = { 0 , 1 } , PG_BAROMETER_CONFIG, offsetof(barometerConfig_t, baro_noise_lpf)},
     { "baro_cf_vel",                VAR_FLOAT  | PROFILE_VALUE, .config.minmax = { 0 , 1 } , PG_BAROMETER_CONFIG, offsetof(barometerConfig_t, baro_cf_vel)},
@@ -678,7 +678,7 @@ const clivalue_t valueTable[] = {
     { "baro_hardware",              VAR_UINT8  | MASTER_VALUE, .config.minmax = { 0,  BARO_MAX } , PG_SENSOR_SELECTION_CONFIG, offsetof(sensorSelectionConfig_t, baro_hardware)},
 #endif
 
-#ifdef MAG
+#ifdef CONFIG_MAG
     { "mag_hardware",               VAR_UINT8  | MASTER_VALUE, .config.minmax = { 0,  MAG_MAX } , PG_SENSOR_SELECTION_CONFIG, offsetof(sensorSelectionConfig_t, mag_hardware)},
 
     { "mag_declination",            VAR_INT16  | PROFILE_VALUE, .config.minmax = { -18000,  18000 } , PG_COMPASS_CONFIGURATION, offsetof(compassConfig_t, mag_declination)},
@@ -713,7 +713,7 @@ const clivalue_t valueTable[] = {
     { "yaw_lpf",                    VAR_UINT16 | PROFILE_VALUE, .config.minmax = {0, 500 } , PG_PID_PROFILE, offsetof(pidProfile_t, yaw_lpf)},
     { "dterm_cut_hz",               VAR_UINT16 | PROFILE_VALUE, .config.minmax = {0, 500 } , PG_PID_PROFILE, offsetof(pidProfile_t, dterm_lpf)},
 
-#ifdef GTUNE
+#ifdef CONFIG_GTUNE
     { "gtune_loP_rll",              VAR_UINT8  | PROFILE_VALUE, .config.minmax = { 10,  200 } , PG_GTUNE_CONFIG, offsetof(gtuneConfig_t, gtune_lolimP[FD_ROLL])},
     { "gtune_loP_ptch",             VAR_UINT8  | PROFILE_VALUE, .config.minmax = { 10,  200 } , PG_GTUNE_CONFIG, offsetof(gtuneConfig_t, gtune_lolimP[FD_PITCH])},
     { "gtune_loP_yw",               VAR_UINT8  | PROFILE_VALUE, .config.minmax = { 10,  200 } , PG_GTUNE_CONFIG, offsetof(gtuneConfig_t, gtune_lolimP[FD_YAW])},
@@ -725,7 +725,7 @@ const clivalue_t valueTable[] = {
     { "gtune_average_cycles",       VAR_UINT8  | PROFILE_VALUE, .config.minmax = { 8,  128 } , PG_GTUNE_CONFIG, offsetof(gtuneConfig_t, gtune_average_cycles)},
 #endif
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
     { "blackbox_rate_num",          VAR_UINT8  | MASTER_VALUE, .config.minmax = { 1,  32 } , PG_BLACKBOX_CONFIG, offsetof(blackboxConfig_t, rate_num)},
     { "blackbox_rate_denom",        VAR_UINT8  | MASTER_VALUE, .config.minmax = { 1,  32 } , PG_BLACKBOX_CONFIG, offsetof(blackboxConfig_t, rate_denom)},
     { "blackbox_device",            VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_BLACKBOX_DEVICE } , PG_BLACKBOX_CONFIG, offsetof(blackboxConfig_t, device)},
@@ -1222,7 +1222,7 @@ static void cliRxRange(char *cmdline)
     }
 }
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
 static void cliLed(char *cmdline)
 {
     int i;
@@ -1834,7 +1834,7 @@ static void cliDump(char *cmdline)
         cliPrint("\r\n\r\n# serial\r\n");
         cliSerial("");
 
-#ifdef LED_STRIP
+#ifdef CONFIG_LED_STRIP
         cliPrint("\r\n\r\n# led\r\n");
         cliLed("");
 
@@ -1978,13 +1978,13 @@ static void cliFeature(char *cmdline)
             if (strncasecmp(cmdline, featureNames[i], len) == 0) {
 
                 mask = 1 << i;
-#ifndef GPS
+#ifndef CONFIG_GPS
                 if (mask & FEATURE_GPS) {
                     cliPrint("unavailable\r\n");
                     break;
                 }
 #endif
-#ifndef SONAR
+#ifndef CONFIG_SONAR
                 if (mask & FEATURE_SONAR) {
                     cliPrint("unavailable\r\n");
                     break;
@@ -2004,7 +2004,7 @@ static void cliFeature(char *cmdline)
     }
 }
 
-#ifdef GPS
+#ifdef CONFIG_GPS
 static void cliGpsPassthrough(char *cmdline)
 {
     UNUSED(cmdline);

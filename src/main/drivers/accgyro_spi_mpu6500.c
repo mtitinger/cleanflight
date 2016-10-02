@@ -79,7 +79,7 @@ static void mpu6500SpiInit(void)
     GPIO_Init(MPU6500_CS_GPIO, &GPIO_InitStructure);
 #endif
 
-#ifdef STM32F10X
+#ifdef CONFIG_CPU_STM32F10X
     RCC_APB2PeriphClockCmd(MPU6500_CS_GPIO_CLK_PERIPHERAL, ENABLE);
 
     gpio_config_t gpio;

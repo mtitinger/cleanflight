@@ -42,7 +42,7 @@
     TIM4 4 channels
 */
 
-#if defined(CJMCU) || defined(EUSTM32F103RC) || defined(NAZE) || defined(OLIMEXINO) || defined(PORT103R)
+#if defined(CJMCU) || defined(EUSTM32F103RC) || defined(CONFIG_NAZE) || defined(CONFIG_OLIMEXINO) || defined(PORT103R)
 const timerHardware_t timerHardware[USABLE_TIMER_CHANNEL_COUNT] = {
     { TIM2, GPIOA, Pin_0, TIM_Channel_1, TIM2_IRQn, 0, Mode_IPD},          // PWM1 - RC1
     { TIM2, GPIOA, Pin_1, TIM_Channel_2, TIM2_IRQn, 0, Mode_IPD},          // PWM2 - RC2
@@ -542,7 +542,7 @@ void timerConfigure(const timerHardware_t *timerHardwarePtr, uint16_t period, ui
     timerNVICConfigure(timerHardwarePtr->irq);
     // HACK - enable second IRQ on timers that need it
     switch(timerHardwarePtr->irq) {
-#if defined(STM32F10X)
+#if defined(CONFIG_CPU_STM32F10X)
     case TIM1_CC_IRQn:
         timerNVICConfigure(TIM1_UP_IRQn);
         break;
@@ -908,7 +908,7 @@ static void timCCxHandler(TIM_TypeDef *tim, timerConfig_t *timerConfig)
 
 #if USED_TIMERS & TIM_N(1)
 _TIM_IRQ_HANDLER(TIM1_CC_IRQHandler, 1);
-# if defined(STM32F10X)
+# if defined(CONFIG_CPU_STM32F10X)
 _TIM_IRQ_HANDLER(TIM1_UP_IRQHandler, 1);       // timer can't be shared
 # endif
 # ifdef STM32F303xC

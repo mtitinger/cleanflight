@@ -98,7 +98,7 @@ static const uint8_t beep_txLostBeep[] = {
 static const uint8_t beep_sos[] = {
     10, 10, 10, 10, 10, 40, 40, 10, 40, 10, 40, 40, 10, 10, 10, 10, 10, 70, BEEPER_COMMAND_STOP
 };
-// Arming when GPS is fixed
+// Arming when CONFIG_GPS is fixed
 static const uint8_t beep_armedGpsFix[] = {
     5, 5, 15, 5, 5, 5, 15, 30, BEEPER_COMMAND_STOP
 };
@@ -119,7 +119,7 @@ static const uint8_t beep_gyroCalibrated[] = {
     20, 10, 20, 10, 20, 10, BEEPER_COMMAND_STOP
 };
 
-// array used for variable # of beeps (reporting GPS sat count, etc)
+// array used for variable # of beeps (reporting CONFIG_GPS sat count, etc)
 static uint8_t beep_multiBeeps[MAX_MULTI_BEEPS + 2];
 
 #define BEEPER_CONFIRMATION_BEEP_DURATION 2

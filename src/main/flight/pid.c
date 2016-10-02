@@ -49,7 +49,7 @@
 
 int16_t axisPID[3];
 
-#ifdef BLACKBOX
+#ifdef CONFIG_BLACKBOX
 int32_t axisPID_P[3], axisPID_I[3], axisPID_D[3];
 #endif
 

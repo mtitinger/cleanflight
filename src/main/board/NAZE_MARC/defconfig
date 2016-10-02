@@ -1,8 +1,0 @@
-#
-# Automatically generated file; DO NOT EDIT.
-# Cleanflight/  Firmware Configuration
-#
-CONFIG_TELEMETRY=y
-CONFIG_TELEMETRY_HOTT=y
-CONFIG_TELEMETRY_HOTT_DEBUG=y
-CONFIG_TELEMETRY_FRSKY=y

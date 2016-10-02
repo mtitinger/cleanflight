@@ -51,10 +51,10 @@
 //#define USE_UART3_RX_DMA
 //#define USE_UART3_TX_DMA
 
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
 static uartPort_t uartPort1;
 #endif
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
 static uartPort_t uartPort2;
 #endif
 #ifdef USE_UART3
@@ -81,7 +81,7 @@ static void handleUsartTxDma(dmaChannel_t* descriptor, dmaCallbackHandler_t* han
 }
 #endif
 
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
 uartPort_t *serialUART1(uint32_t baudRate, portMode_t mode, portOptions_t options)
 {
     uartPort_t *s;
@@ -158,7 +158,7 @@ uartPort_t *serialUART1(uint32_t baudRate, portMode_t mode, portOptions_t option
 }
 #endif
 
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
 uartPort_t *serialUART2(uint32_t baudRate, portMode_t mode, portOptions_t options)
 {
     uartPort_t *s;
@@ -342,7 +342,7 @@ void usartIrqHandler(uartPort_t *s)
     }
 }
 
-#ifdef USE_UART1
+#ifdef CONFIG_USE_UART1
 void USART1_IRQHandler(void)
 {
     uartPort_t *s = &uartPort1;
@@ -351,7 +351,7 @@ void USART1_IRQHandler(void)
 }
 #endif
 
-#ifdef USE_UART2
+#ifdef CONFIG_USE_UART2
 void USART2_IRQHandler(void)
 {
     uartPort_t *s = &uartPort2;
